@@ -185,7 +185,7 @@ function ProjectCard({ p, idx, onPreview }: { p: typeof PROJECTS[0]; idx: number
 function PreviewModal({ project, onClose }: { project: typeof PROJECTS[0]; onClose: () => void }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
-  const [blocked, setBlocked] = useState(false);
+  const isDevUrl = project.liveUrl?.includes('localhost') || project.liveUrl?.includes('127.0.0.1');
   useEffect(() => { 
     document.body.style.overflow = "hidden"; 
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -208,25 +208,23 @@ function PreviewModal({ project, onClose }: { project: typeof PROJECTS[0]; onClo
           </div>
         </div>
         <div className="pv-frame">
-          {!loaded && !blocked && <div className="pv-loading"><div className="pv-spinner" style={{ borderTopColor: project.accent }} /><span>Loading…</span></div>}
-          {project.liveUrl
-            ? <iframe 
-                src={project.liveUrl} 
-                title={project.title} 
-                onLoad={() => setLoaded(true)} 
-                onError={() => setBlocked(true)}
-                style={{ opacity: loaded ? 1 : 0, transition: "opacity .5s" }} 
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups" 
-              />
-            : <div className="pv-nourl" style={{ color: project.accent }}><span className="pn-icon">◎</span><p>Live preview coming soon.</p></div>
+          {project.liveUrl && !isDevUrl
+            ? <>
+                {!loaded && <div className="pv-loading"><div className="pv-spinner" style={{ borderTopColor: project.accent }} /><span>Loading…</span></div>}
+                <iframe 
+                  src={project.liveUrl} 
+                  title={project.title} 
+                  onLoad={() => setLoaded(true)} 
+                  style={{ opacity: loaded ? 1 : 0, transition: "opacity .5s" }} 
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups" 
+                />
+              </>
+            : <div className="pv-nourl" style={{ color: project.accent }}>
+                <span className="pn-icon">◎</span>
+                <p>{isDevUrl ? "Preview not available in dev mode." : "Live preview coming soon."}</p>
+                {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="pv-visit" style={{ background: project.accent, marginTop: 16 }}>Open in New Tab ↗</a>}
+              </div>
           }
-          {blocked && (
-            <div className="pv-nourl" style={{ color: project.accent }}>
-              <span className="pn-icon">🔒</span>
-              <p>This site cannot be embedded.</p>
-              <a href={project.liveUrl || "#"} target="_blank" rel="noreferrer" className="pv-visit" style={{ background: project.accent, marginTop: 16 }}>Open in New Tab ↗</a>
-            </div>
-          )}
         </div>
       </div>
     </div>

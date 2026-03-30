@@ -71,10 +71,20 @@ function useReveal() {
   }, []);
 }
 
-/* ── BUTTON ────────────────────────────────────────────────────────── */
+/* ── MAGNETIC BUTTON ────────────────────────────────────────────────────────── */
 function MagBtn({ children, className, onClick, href, target }: { children: React.ReactNode; className?: string; onClick?: () => void; href?: string; target?: string }) {
-  if (href) return <a className={className} href={href} target={target} rel={target ? "noreferrer" : undefined}>{children}</a>;
-  return <button className={className} onClick={onClick}>{children}</button>;
+  const ref = useRef<HTMLElement>(null);
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    el.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
+  };
+  const onLeave = () => { if (ref.current) ref.current.style.transform = ""; };
+  const props = { ref: ref as React.RefObject<HTMLAnchorElement>, className, onMouseMove: onMove, onMouseLeave: onLeave, onClick, href, target, rel: target ? "noreferrer" : undefined };
+  if (href) return <a {...props}>{children}</a>;
+  return <button {...(props as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>)}>{children}</button>;
 }
 
 /* ── PROJECT THUMB ──────────────────────────────────────────────────────────── */

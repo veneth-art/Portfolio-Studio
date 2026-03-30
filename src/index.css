@@ -255,7 +255,7 @@ textarea,input,select{font-family:inherit}
 .ps-tool:nth-child(2){animation-delay:1.5s}
 .ps-tool:nth-child(3){animation-delay:3s}
 .ps-tool:nth-child(4){animation-delay:4.5s}
-@keyframes toolSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(-4px)}
+@keyframes toolSlide{0%,100%{transform:translateX(0)}50%{transform:translateX(-4px)}}
 
 
 
@@ -606,5 +606,264 @@ textarea,input,select{font-family:inherit}
   cursor:pointer;flex-shrink:0;
 }
 .theme-toggle:hover{background:var(--border);border-color:var(--border2)}
+
+/* ── PARTICLE BACKGROUND ── */
+.particle-bg{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  z-index:0;pointer-events:none;opacity:.7;
+}
+.particle-bg canvas{position:absolute;top:0;left:0}
+
+/* ── PAGE TRANSITION ── */
+.page-transition{
+  position:relative;z-index:1;
+  transition:opacity .4s ease,transform .4s ease;
+}
+.page-transition.active{
+  animation:pageWipe .5s ease;
+}
+@keyframes pageWipe{
+  0%{opacity:0.3;transform:translateY(8px)}
+  100%{opacity:1;transform:translateY(0)}
+}
+
+/* ── LOADING SCREEN ── */
+.loading-screen{
+  position:fixed;inset:0;z-index:10000;
+  background:var(--dark);display:flex;
+  align-items:center;justify-content:center;
+  transition:opacity .6s ease,visibility .6s ease;
+}
+.loading-screen.fade-out{
+  opacity:0;visibility:hidden;pointer-events:none;
+}
+.loading-content{
+  text-align:center;position:relative;z-index:2;
+}
+.loading-logo{
+  font-family:'Playfair Display',serif;
+  font-size:72px;font-weight:400;
+  margin-bottom:48px;
+  display:flex;justify-content:center;gap:0;
+}
+.loading-logo span{
+  display:inline-block;
+  animation:letterBounce 1s ease infinite;
+}
+.ll-v{animation-delay:0s;color:var(--accent)}
+.ll-e{animation-delay:.06s}
+.ll-n{animation-delay:.12s;color:var(--accent)}
+.ll-e2{animation-delay:.18s}
+.ll-t{animation-delay:.24s}
+.ll-h{animation-delay:.3s;color:var(--accent)}
+@keyframes letterBounce{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+}
+.loading-bar-wrap{
+  width:280px;height:2px;
+  background:rgba(255,255,255,.1);
+  border-radius:2px;overflow:hidden;
+  margin-bottom:16px;
+}
+.loading-bar{
+  height:100%;background:linear-gradient(90deg,var(--accent),#e8c875);
+  border-radius:2px;transition:width .1s ease;
+}
+.loading-pct{
+  font-size:12px;font-weight:600;
+  letter-spacing:.1em;color:rgba(248,244,238,.4);
+}
+.loading-particles{
+  position:absolute;inset:0;overflow:hidden;
+  pointer-events:none;
+}
+.lp{
+  position:absolute;width:4px;height:4px;
+  border-radius:50%;background:var(--accent);
+  opacity:.3;animation:floatUp 4s ease-in-out infinite;
+  left:calc(var(--i) * 5%);
+  animation-delay:calc(var(--i) * 0.2s);
+  bottom:-10px;
+}
+@keyframes floatUp{
+  0%{transform:translateY(0) scale(1);opacity:0}
+  20%{opacity:.4}
+  80%{opacity:.2}
+  100%{transform:translateY(-100vh) scale(.5);opacity:0}
+}
+
+/* ── ENHANCED HOVER EFFECTS ── */
+
+/* Magnetic hover on images */
+.thumb-wrap::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(201,168,76,.1) 0%,transparent 50%);
+  opacity:0;transition:opacity .4s ease;
+  pointer-events:none;
+}
+.thumb-wrap:hover::after{opacity:1}
+
+/* Project card glow */
+.proj-card::before{
+  content:'';position:absolute;inset:-1px;
+  border-radius:calc(var(--r2) + 1px);
+  background:linear-gradient(135deg,var(--accent),transparent,var(--accent));
+  opacity:0;transition:opacity .4s ease;
+  z-index:-1;
+}
+.proj-card:hover::before{opacity:.3}
+
+/* Button shine effect */
+.btn-dark::after,
+.btn-outline::after{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);
+  transition:left .5s ease;
+}
+.btn-dark:hover::after,
+.btn-outline:hover::after{left:100%}
+
+/* Service row arrow */
+.srv-hdr::before{
+  content:'→';position:absolute;left:-24px;
+  opacity:0;transform:translateX(-8px);
+  transition:opacity .25s,transform .25s;
+  color:var(--accent);
+}
+.srv-row:hover .srv-hdr::before{
+  opacity:1;transform:translateX(0);
+}
+
+/* Testimonial card lift */
+.testi-card{
+  transform:translateY(0);
+  transition:transform .4s ease,box-shadow .4s ease,border-color .4s ease;
+}
+.testi-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 20px 60px rgba(24,21,15,.12);
+  border-color:var(--accent);
+}
+
+/* Process card 3D tilt */
+.proc-card{
+  transform:perspective(1000px) rotateX(0) rotateY(0);
+  transition:transform .4s ease,box-shadow .4s ease;
+}
+.proc-card:hover{
+  transform:perspective(1000px) rotateX(-2deg) rotateY(2deg);
+  box-shadow:0 24px 60px rgba(24,21,15,.15);
+}
+
+/* Link underline animation */
+.alink{
+  position:relative;
+}
+.alink::after{
+  content:'';position:absolute;bottom:0;left:0;
+  width:0;height:1px;background:var(--accent);
+  transition:width .3s ease;
+}
+.alink:hover::after{width:100%}
+
+/* Nav link underline */
+.nav-item::after{
+  content:'';position:absolute;bottom:4px;left:50%;
+  width:0;height:2px;background:var(--accent);
+  transform:translateX(-50%);transition:width .3s ease;
+  border-radius:1px;
+}
+.nav-item:hover::after{width:60%}
+
+/* CTA section gradient animation */
+.cta-box{
+  background-size:200% 200%;
+  animation:gradientShift 8s ease infinite;
+}
+@keyframes gradientShift{
+  0%,100%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+}
+
+/* Text reveal animation for headings */
+.sec-h2 span,
+.hero-h1 span{
+  display:inline-block;
+  animation:textReveal 1s ease forwards;
+  animation-delay:calc(var(--i, 0) * 0.1s);
+  opacity:0;transform:translateY(20px);
+}
+@keyframes textReveal{
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Scroll progress indicator */
+.scroll-progress{
+  position:fixed;top:0;left:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),#e8c875);
+  z-index:1000;transform-origin:left;
+  transform:scaleX(0);
+  transition:transform .1s linear;
+}
+
+/* Parallax effect helper */
+.parallax-layer{
+  transition:transform .1s ease-out;
+}
+
+/* Image zoom on hover */
+.thumb-img,
+.about-photo,
+.ps-photo{
+  transition:transform .6s cubic-bezier(.4,0,.2,1);
+}
+.thumb-wrap:hover .thumb-img,
+.about-photo-frame:hover .about-photo,
+.photo-stack:hover .ps-photo{
+  transform:scale(1.08);
+}
+
+/* Glow on focus states */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible{
+  outline:2px solid var(--accent);
+  outline-offset:3px;
+}
+
+/* Counter animation */
+.stat-number{
+  display:inline-block;
+  transition:transform .3s ease;
+}
+.stat-number:hover{
+  transform:scale(1.1);
+  color:var(--accent);
+}
+
+/* Shimmer loading effect */
+.shimmer{
+  background:linear-gradient(90deg,var(--cream) 0%,var(--warm) 50%,var(--cream) 100%);
+  background-size:200% 100%;
+  animation:shimmer 1.5s ease-in-out infinite;
+}
+@keyframes shimmer{
+  0%{background-position:200% 0}
+  100%{background-position:-200% 0}
+}
+
+/* Hero text scramble effect helper */
+.scramble-char{
+  display:inline-block;
+  transition:transform .1s ease,opacity .1s ease;
+}
+.scramble-char.scrambling{
+  opacity:.5;
+  transform:translateY(-2px);
+}
 
 

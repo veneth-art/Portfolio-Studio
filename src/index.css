@@ -43,7 +43,7 @@ body{
   background:var(--page-bg);
   color:var(--text-primary);
   font-family:'Inter',sans-serif;font-size:15px;line-height:1.7;
-  overflow-xhidden;-webkit-font-smoothing:antialiased;cursor:none;
+  overflow-x: hidden;-webkit-font-smoothing:antialiased;cursor:none;
   transition:background .35s ease, color .35s ease;
 }
 a{text-decoration:none;color:inherit}

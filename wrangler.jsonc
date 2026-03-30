@@ -2,11 +2,12 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "veneth-studio",
   "compatibility_date": "2025-09-27",
+  "pages": {
+    "project_root": "dist",
+    "not_found_handling": "single-page-application"
+  },
   "observability": {
     "enabled": true
-  },
-  "assets": {
-    "not_found_handling": "single-page-application"
   },
   "compatibility_flags": [
     "nodejs_compat"

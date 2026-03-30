@@ -553,12 +553,12 @@ select {
 
 .hero-h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(44px, 6vw, 86px);
+  font-size: clamp(32px, 3vw, 78px);
   font-weight: 400;
   line-height: 1.0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
   margin-bottom: 24px;
 }
 
@@ -586,7 +586,7 @@ select {
   line-height: 1.85;
   color: var(--mid);
   max-width: 480px;
-  margin-bottom: 36px
+  margin-bottom: 36px;
 }
 
 .hero-btns {
@@ -638,17 +638,17 @@ select {
 
 .photo-stack {
   position: relative;
-  width: 380px;
+  width: 400px;
   height: 480px;
   margin: 0 auto
 }
 
 .ps-back {
   position: absolute;
-  top: 28px;
-  right: -20px;
-  width: 260px;
-  height: 360px;
+  top: -20px;
+  right: -60px;
+  width: 360px;
+  height: 600px;
   background: var(--warm);
   border-radius: var(--r3);
   transform: rotate(3.5deg);
@@ -657,10 +657,10 @@ select {
 
 .ps-front {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 290px;
-  height: 390px;
+  bottom: -15px;
+  left: 60px;
+  width: 380px;
+  height: 480px;
   border-radius: var(--r3);
   overflow: hidden;
   box-shadow: var(--sh3);
@@ -681,7 +681,7 @@ select {
 
 .ps-pill {
   position: absolute;
-  bottom: 12px;
+  bottom: 18px;
   left: 50%;
   transform: translateX(-50%);
   background: var(--white);
@@ -737,8 +737,8 @@ select {
 
 .ps-tools {
   position: absolute;
-  top: 24px;
-  right: -88px;
+  top: 130px;
+  right: -120px;
   display: flex;
   flex-direction: column;
   gap: 6px;

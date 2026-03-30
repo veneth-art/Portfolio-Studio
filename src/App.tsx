@@ -71,11 +71,45 @@ function useReveal() {
   }, []);
 }
 
-/* ── BUTTON ────────────────────────────────────────────────────────── */
+/* ── MAGNETIC BUTTON ────────────────────────────────────────────────────────── */
 function MagBtn({ children, className, onClick, href, target }: { children: React.ReactNode; className?: string; onClick?: () => void; href?: string; target?: string }) {
-  const props = { className, onClick, href, target, rel: target ? "noreferrer" : undefined };
+  const ref = useRef<HTMLElement>(null);
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const x = e.clientX - r.left - r.width / 2;
+    const y = e.clientY - r.top - r.height / 2;
+    el.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
+  };
+  const onLeave = () => { if (ref.current) ref.current.style.transform = ""; };
+  const props = { ref: ref as React.RefObject<HTMLAnchorElement>, className, onMouseMove: onMove, onMouseLeave: onLeave, onClick, href, target, rel: target ? "noreferrer" : undefined };
   if (href) return <a {...props}>{children}</a>;
   return <button {...(props as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>)}>{children}</button>;
+}
+
+/* ── CURSOR ─────────────────────────────────────────────────────────────────── */
+function Cursor() {
+  const dotRef = useRef<HTMLDivElement>(null);
+  const ringRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    let rx = -100, ry = -100, mx = -100, my = -100;
+    let raf: number;
+    const onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; if (dotRef.current) { dotRef.current.style.left = mx + "px"; dotRef.current.style.top = my + "px"; } };
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const tick = () => {
+      rx = lerp(rx, mx, 0.12); ry = lerp(ry, my, 0.12);
+      if (ringRef.current) { ringRef.current.style.left = rx + "px"; ringRef.current.style.top = ry + "px"; }
+      raf = requestAnimationFrame(tick);
+    };
+    window.addEventListener("mousemove", onMove, { passive: true });
+    raf = requestAnimationFrame(tick);
+    const onDown = () => { dotRef.current?.classList.add("pressing"); ringRef.current?.classList.add("pressing"); };
+    const onUp = () => { dotRef.current?.classList.remove("pressing"); ringRef.current?.classList.remove("pressing"); };
+    window.addEventListener("mousedown", onDown);
+    window.addEventListener("mouseup", onUp);
+    return () => { cancelAnimationFrame(raf); window.removeEventListener("mousemove", onMove); window.removeEventListener("mousedown", onDown); window.removeEventListener("mouseup", onUp); };
+  }, []);
+  return (<><div ref={dotRef} className="cur-dot" aria-hidden="true" /><div ref={ringRef} className="cur-ring" aria-hidden="true" /></>);
 }
 
 /* ── PROJECT THUMB ──────────────────────────────────────────────────────────── */
@@ -280,11 +314,22 @@ export default function App() {
   const [previewProj, setPreviewProj] = useState<typeof PROJECTS[0] | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [heroLoaded, setHeroLoaded] = useState(false);
+  const [dark, setDark] = useState(false);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+  }, [dark]);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setHeroLoaded(true), 100);
+    return () => clearTimeout(timer);
   }, []);
 
   const scrollTo = useCallback((id: string) => {
@@ -300,6 +345,8 @@ export default function App() {
 
   return (
     <>
+      <Cursor />
+
       {/* ── NAV ── */}
       <header className={`site-nav${scrolled ? " stuck" : ""}`}>
         <div className="nav-wrap">
@@ -313,35 +360,44 @@ export default function App() {
             ))}
             <button className="nav-cta" onClick={() => { setContactOpen(true); setMenuOpen(false); }}>Contact</button>
           </nav>
-          <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
-            <span className={menuOpen ? "x" : ""}/><span className={menuOpen ? "x" : ""}/><span className={menuOpen ? "x" : ""}/>
-          </button>
+          <div style={{display:"flex",alignItems:"center",gap:8}}>
+            <button className="theme-toggle" onClick={() => setDark(v => !v)} aria-label="Toggle theme">
+              {dark ? "☀️" : "🌙"}
+            </button>
+            <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
+              <span className={menuOpen ? "x" : ""}/><span className={menuOpen ? "x" : ""}/><span className={menuOpen ? "x" : ""}/>
+            </button>
+          </div>
         </div>
       </header>
 
       {/* ── HERO ── */}
       <section id="top" className="hero-sec">
+        <div className="hero-blob b1" aria-hidden="true"/>
+        <div className="hero-blob b2" aria-hidden="true"/>
+        <div className="hero-blob b3" aria-hidden="true"/>
+
         <div className="hero-wrap">
           {/* LEFT */}
           <div className="hero-left">
-            <div className="hero-badge">
+            <div className={`hero-badge${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".1s" }}>
               <span className="badge-dot"/><span>Veneth ChandraKumar · UI/UX &amp; No-Code Developer</span>
             </div>
-            <h1 className="hero-h1">
+            <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
               <span className="hl hl-serif">i design</span>
               <span className="hl hl-italic">&amp; build</span>
               <span className="hl hl-sm">digital experiences</span>
               <span className="hl hl-accent">that convert.</span>
             </h1>
-            <p className="hero-para">
+            <p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>
               Specialising in UI/UX Design, No-Code Development, and Vibe Coding.
               I engineer responsive, fully functional web platforms that elevate brands and drive real user action.
             </p>
-            <div className="hero-btns">
+            <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
               <MagBtn className="btn-dark" onClick={() => scrollTo("projects")}>View Selected Works →</MagBtn>
               <MagBtn className="btn-outline" onClick={() => setContactOpen(true)}>Let's Talk ↗</MagBtn>
             </div>
-            <div className="hero-stats">
+            <div className={`hero-stats${heroLoaded ? " in" : ""}`}>
               {[["5+","Projects Delivered"],["3","No-Code Platforms"],["100%","Client Satisfaction"]].map(([n,l]) => (
                 <div key={l} className="hstat"><span className="hstat-n">{n}</span><span className="hstat-l">{l}</span></div>
               ))}
@@ -349,11 +405,20 @@ export default function App() {
           </div>
 
           {/* RIGHT: Photo */}
-          <div className="hero-right">
+          <div className={`hero-right${heroLoaded ? " in" : ""}`}>
             <div className="photo-stack">
               <div className="ps-back" />
               <div className="ps-front">
                 <img src={VENETH_PHOTO} alt="Veneth ChandraKumar" className="ps-photo" />
+                <div className="ps-overlay" />
+                <div className="ps-pill"><span className="pill-dot" />Available for Projects</div>
+              </div>
+              <div className="ps-deco-ring" />
+              <div className="ps-tools">
+                <span className="ps-tool">Figma</span>
+                <span className="ps-tool">Webflow</span>
+                <span className="ps-tool">Framer</span>
+                <span className="ps-tool">Three.js</span>
               </div>
             </div>
           </div>

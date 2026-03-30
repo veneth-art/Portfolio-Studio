@@ -1,5 +1,8 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { VENETH_PHOTO } from "./veneth_photo";
+import ParticleBackground from "./ParticleBackground";
+import LoadingScreen from "./LoadingScreen";
+import SmoothScroll from "./SmoothScroll";
 
 /* ── DATA ──────────────────────────────────────────────────────────────────── */
 const PROJECTS = [
@@ -316,6 +319,8 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [dark, setDark] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [pageTransition, setPageTransition] = useState(false);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
@@ -335,6 +340,8 @@ export default function App() {
   const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
+      setPageTransition(true);
+      setTimeout(() => setPageTransition(false), 600);
       const headerOffset = 80;
       const elementPosition = el.getBoundingClientRect().top;
       const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
@@ -344,8 +351,11 @@ export default function App() {
   }, []);
 
   return (
-    <>
-      <Cursor />
+    <SmoothScroll>
+      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
+      <ParticleBackground />
+      <div className={`page-transition ${pageTransition ? "active" : ""}`}>
+        <Cursor />
 
       {/* ── NAV ── */}
       <header className={`site-nav${scrolled ? " stuck" : ""}`}>
@@ -587,6 +597,7 @@ export default function App() {
       {/* MODALS */}
       {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
       {previewProj && <PreviewModal project={previewProj} onClose={() => setPreviewProj(null)} />}
-    </>
+      </div>
+    </SmoothScroll>
   );
 }

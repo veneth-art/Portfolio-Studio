@@ -373,15 +373,24 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     };
     document.addEventListener("keydown", handleKeyDown);
 
-    // Detect location
-    fetch('https://ipapi.co/json/')
+    // Detect location with fast fallback
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 3000);
+
+    fetch('https://ipapi.co/json/', { signal: controller.signal })
       .then(res => res.json())
       .then(data => {
+        clearTimeout(timeoutId);
         setIsIndia(data?.country_code === 'IN');
       })
-      .catch(() => setIsIndia(null));
+      .catch(() => {
+        clearTimeout(timeoutId);
+        setIsIndia(null);
+      });
 
     return () => {
+      clearTimeout(timeoutId);
+      controller.abort();
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };

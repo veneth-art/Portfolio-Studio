@@ -356,18 +356,37 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", project: "", budget: "", message: "" });
+  const [isIndia, setIsIndia] = useState<boolean | null>(null);
+  const [form, setForm] = useState({ 
+    name: "", 
+    email: "", 
+    phone: "",
+    project: "", 
+    budget: "", 
+    message: "" 
+  });
+
   useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
+
+    // Detect location
+    fetch('https://ipapi.co/json/')
+      .then(res => res.json())
+      .then(data => {
+        setIsIndia(data?.country_code === 'IN');
+      })
+      .catch(() => setIsIndia(null));
+
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -380,6 +399,25 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       setLoading(false);
     }
   };
+
+  const budgetOptionsIndia = [
+    { value: "25k-50k", label: "₹25,000 - ₹50,000" },
+    { value: "50k-1L", label: "₹50,000 - ₹1,00,000" },
+    { value: "1L-2.5L", label: "₹1,00,000 - ₹2,50,000" },
+    { value: "2.5L-5L", label: "₹2,50,000 - ₹5,00,000" },
+    { value: "5L+", label: "₹5,00,000+" },
+  ];
+
+  const budgetOptionsGlobal = [
+    { value: "2.5k-5k", label: "$2,500 - $5,000" },
+    { value: "5k-10k", label: "$5,000 - $10,000" },
+    { value: "10k-25k", label: "$10,000 - $25,000" },
+    { value: "25k-50k", label: "$25,000 - $50,000" },
+    { value: "50k+", label: "$50,000+" },
+  ];
+
+  const budgetOptions = isIndia === true ? budgetOptionsIndia : budgetOptionsGlobal;
+
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
       <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
@@ -410,6 +448,10 @@ function ContactModal({ onClose }: { onClose: () => void }) {
               </div>
               <div className="ct-row">
                 <div className="ct-field">
+                  <label htmlFor="ct-phone">Phone Number</label>
+                  <input id="ct-phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={e => setForm(v => ({ ...v, phone: e.target.value }))} />
+                </div>
+                <div className="ct-field">
                   <label htmlFor="ct-project">Project Type</label>
                   <select id="ct-project" value={form.project} onChange={e => setForm(v => ({ ...v, project: e.target.value }))}>
                     <option value="">Select a type...</option>
@@ -419,14 +461,26 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                     <option value="other">Other</option>
                   </select>
                 </div>
+              </div>
+              <div className="ct-row">
                 <div className="ct-field">
-                  <label htmlFor="ct-budget">Budget Range</label>
+                  <label htmlFor="ct-budget">Budget Range {isIndia === true && <span className="budget-badge">₹ INR</span>}</label>
                   <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
                     <option value="">Select range...</option>
-                    <option value="5k-10k">$5,000 - $10,000</option>
-                    <option value="10k-25k">$10,000 - $25,000</option>
-                    <option value="25k+">$25,000+</option>
+                    {budgetOptions.map(opt => (
+                      <option key={opt.value} value={opt.value}>{opt.label}</option>
+                    ))}
                   </select>
+                </div>
+                <div className="ct-field">
+                  <label htmlFor="ct-location">Your Location</label>
+                  <input 
+                    id="ct-location" 
+                    type="text" 
+                    placeholder="City, Country" 
+                    value={isIndia === null ? "Detecting location..." : (isIndia ? "🇮🇳 India" : "🌍 International")}
+                    disabled 
+                  />
                 </div>
               </div>
               <div className="ct-field">

@@ -401,19 +401,18 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   };
 
   const budgetOptionsIndia = [
-    { value: "25k-50k", label: "₹25,000 - ₹50,000" },
-    { value: "50k-1L", label: "₹50,000 - ₹1,00,000" },
-    { value: "1L-2.5L", label: "₹1,00,000 - ₹2,50,000" },
-    { value: "2.5L-5L", label: "₹2,50,000 - ₹5,00,000" },
-    { value: "5L+", label: "₹5,00,000+" },
+    { value: "15k-25k", label: "₹15,000 - ₹25,000" },
+    { value: "30k-50k", label: "₹30,000 - ₹50,000" },
+    { value: "50k-70k", label: "₹50,000 - ₹70,000" },
+    { value: "80k+", label: "₹80,000+" },
   ];
 
   const budgetOptionsGlobal = [
-    { value: "2.5k-5k", label: "$2,500 - $5,000" },
-    { value: "5k-10k", label: "$5,000 - $10,000" },
-    { value: "10k-25k", label: "$10,000 - $25,000" },
-    { value: "25k-50k", label: "$25,000 - $50,000" },
-    { value: "50k+", label: "$50,000+" },
+    { value: "600-850", label: "$600 - $850" },
+    { value: "900-1k", label: "$900 - $1,000" },
+    { value: "1.5k-1.8k", label: "$1,500 - $1,800" },
+    { value: "2k-2.5k", label: "$2,000 - $2,500" },
+    { value: "2.5k+", label: "$2,500+" },
   ];
 
   const budgetOptions = isIndia === true ? budgetOptionsIndia : budgetOptionsGlobal;

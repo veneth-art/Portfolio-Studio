@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "veneth-contact-api",
+  "compatibility_date": "2025-01-01",
+  "main": "./worker/index.ts",
+  "workers_dev": true,
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "veneth-studio",
+      "database_id": "bdaa8030-de52-4a75-b934-4a3d2feaf2ae"
+    }
+  ],
+  "vars": {
+    "ALLOWED_ORIGIN": "*"
+  },
+  "observability": {
+    "enabled": true
+  }
+}

@@ -356,7 +356,7 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isIndia, setIsIndia] = useState<boolean | null>(null);
+  const [isIndia, setIsIndia] = useState<boolean>(true);
   const [form, setForm] = useState({ 
     name: "", 
     email: "", 
@@ -373,24 +373,12 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     };
     document.addEventListener("keydown", handleKeyDown);
 
-    // Detect location with fast fallback
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
-
-    fetch('https://ipapi.co/json/', { signal: controller.signal })
-      .then(res => res.json())
-      .then(data => {
-        clearTimeout(timeoutId);
-        setIsIndia(data?.country_code === 'IN');
-      })
-      .catch(() => {
-        clearTimeout(timeoutId);
-        setIsIndia(null);
-      });
+    // Fast location detection using timezone
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    const isIndianTimezone = timezone.includes('Kolkata') || timezone.includes('India') || timezone.includes('IST');
+    setIsIndia(isIndianTimezone);
 
     return () => {
-      clearTimeout(timeoutId);
-      controller.abort();
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
@@ -424,12 +412,12 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     { value: "2.5k+", label: "$2,500+" },
   ];
 
-  const budgetOptions = isIndia === true ? budgetOptionsIndia : budgetOptionsGlobal;
+  const budgetOptions = isIndia ? budgetOptionsIndia : budgetOptionsGlobal;
 
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
-      <div className="contact-modal-wrapper">
-        <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
+      <div className="contact-modal-wrapper" onClick={e => e.stopPropagation()}>
+        <div className="ct-modal" role="document">
           <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
           {sent ? (
             <div className="ct-success">
@@ -487,7 +475,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                 </div>
                 <div className="ct-row">
                   <div className="ct-field">
-                    <label htmlFor="ct-budget">Budget Range {isIndia === true && <span className="budget-badge">₹ INR</span>}</label>
+                    <label htmlFor="ct-budget">Budget Range {isIndia && <span className="budget-badge">₹ INR</span>}</label>
                     <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
                       <option value="">Select range...</option>
                       {budgetOptions.map(opt => (
@@ -498,8 +486,8 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                   <div className="ct-field">
                     <label>Your Location</label>
                     <div className="location-indicator">
-                      <span className="flag">{isIndia === null ? "🌐" : isIndia ? "🇮🇳" : "🌍"}</span>
-                      <span className="text">{isIndia === null ? "Detecting location..." : isIndia ? "India" : "International"}</span>
+                      <span className="flag">{isIndia ? "🇮🇳" : "🌍"}</span>
+                      <span className="text">{isIndia ? "India" : "International"}</span>
                     </div>
                   </div>
                 </div>

@@ -2665,21 +2665,23 @@ textarea:focus-visible {
 
 /* ── NEW CONTACT MODAL STYLES ─────────────────────────────────────────────── */
 .contact-modal-wrapper {
-  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
 }
 
 .ct-modal {
   background: var(--card-bg);
   border-radius: 24px;
-  max-width: 680px;
+  max-width: 640px;
   width: 100%;
-  padding: 48px;
+  padding: 40px 48px;
   position: relative;
   animation: modalSlideUp .4s cubic-bezier(0.16, 1, 0.3, 1);
   max-height: 90vh;
   overflow-y: auto;
-  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.15), 0 10px 30px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.2), 0 10px 30px rgba(0, 0, 0, 0.15);
   border: 1px solid var(--border);
 }
 
@@ -2696,8 +2698,8 @@ textarea:focus-visible {
 
 .ct-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 16px;
+  right: 16px;
   width: 36px;
   height: 36px;
   border-radius: 50%;
@@ -2772,7 +2774,9 @@ textarea:focus-visible {
 }
 
 @media (max-width: 600px) {
-  .ct-row { grid-template-columns: 1fr; }
+  .ct-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .ct-field {
@@ -2789,7 +2793,9 @@ textarea:focus-visible {
   color: var(--text-secondary);
 }
 
-.ct-field label .required { color: var(--accent); }
+.ct-field label .required {
+  color: var(--accent);
+}
 
 .ct-field input,
 .ct-field select,
@@ -2807,7 +2813,9 @@ textarea:focus-visible {
 
 .ct-field input:hover,
 .ct-field select:hover,
-.ct-field textarea:hover { border-color: var(--border2); }
+.ct-field textarea:hover {
+  border-color: var(--border2);
+}
 
 .ct-field input:focus,
 .ct-field select:focus,
@@ -2818,7 +2826,9 @@ textarea:focus-visible {
 }
 
 .ct-field input::placeholder,
-.ct-field textarea::placeholder { color: var(--text-muted); }
+.ct-field textarea::placeholder {
+  color: var(--text-muted);
+}
 
 .ct-field select {
   cursor: pointer;
@@ -2841,8 +2851,13 @@ textarea:focus-visible {
   color: var(--text-secondary);
 }
 
-.location-indicator .flag { font-size: 18px; }
-.location-indicator .text { flex: 1; }
+.location-indicator .flag {
+  font-size: 18px;
+}
+
+.location-indicator .text {
+  flex: 1;
+}
 
 .budget-badge {
   font-size: 10px;
@@ -2878,7 +2893,10 @@ textarea:focus-visible {
   transition: opacity .3s;
 }
 
-.ct-submit:hover:not(:disabled)::before { opacity: 1; }
+.ct-submit:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
 .ct-submit:hover:not(:disabled) {
   transform: translateY(-3px);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25);
@@ -2893,7 +2911,10 @@ textarea:focus-visible {
   gap: 8px;
 }
 
-.ct-submit:disabled { opacity: 0.7; cursor: not-allowed; }
+.ct-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
 
 .ct-submit .loading-spinner {
   width: 18px;
@@ -2912,8 +2933,15 @@ textarea:focus-visible {
 }
 
 @keyframes successFadeIn {
-  from { opacity: 0; transform: scale(0.9); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .success-icon {
@@ -2960,17 +2988,34 @@ textarea:focus-visible {
   animation: successRipple 1.5s ease-out infinite;
 }
 
-.success-icon::after { animation-delay: 0.5s; }
+.success-icon::after {
+  animation-delay: 0.5s;
+}
 
 @keyframes successPop {
-  0% { transform: scale(0); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(0);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 @keyframes successRipple {
-  0% { transform: scale(1); opacity: 0.3; }
-  100% { transform: scale(1.5); opacity: 0; }
+  0% {
+    transform: scale(1);
+    opacity: 0.3;
+  }
+
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
 }
 
 .ct-success h3 {
@@ -3006,16 +3051,38 @@ textarea:focus-visible {
   color: var(--text-secondary);
 }
 
-.ct-success .contact-info .info-item span { font-size: 16px; }
+.ct-success .contact-info .info-item span {
+  font-size: 16px;
+}
 
 @keyframes modalSlideUp {
-  from { opacity: 0; transform: translateY(60px) scale(0.95); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 @media (max-width: 600px) {
-  .ct-modal { padding: 32px 24px; border-radius: 20px; }
-  .ct-title { font-size: 28px; }
-  .ct-success h3 { font-size: 26px; }
-  .ct-success .contact-info { flex-direction: column; gap: 12px; }
+  .ct-modal {
+    padding: 32px 24px;
+    border-radius: 20px;
+  }
+
+  .ct-title {
+    font-size: 28px;
+  }
+
+  .ct-success h3 {
+    font-size: 26px;
+  }
+
+  .ct-success .contact-info {
+    flex-direction: column;
+    gap: 12px;
+  }
 }

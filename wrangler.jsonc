@@ -10,11 +10,5 @@
       "database_name": "veneth-studio",
       "database_id": "REMOVED"
     }
-  ],
-  "vars": {
-    "ALLOWED_ORIGIN": "*"
-  },
-  "observability": {
-    "enabled": true
-  }
+  ]
 }

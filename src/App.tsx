@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { VENETH_PHOTO } from "./veneth_photo";
 import ParticleBackground from "./ParticleBackground";
 import SmoothScroll from "./SmoothScroll";
+import { submitContact } from "./lib/api";
 
 /* ── TYPES ─────────────────────────────────────────────────────────────────── */
 interface Project {
@@ -370,9 +371,14 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1200));
-    setLoading(false);
-    setSent(true);
+    try {
+      await submitContact(form);
+      setSent(true);
+    } catch (err) {
+      alert("Failed to send message. Please try again or email directly.");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">

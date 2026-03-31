@@ -5,6 +5,7 @@ interface Env {
 interface ContactSubmission {
   name: string;
   email: string;
+  phone?: string;
   project?: string;
   budget?: string;
   message: string;
@@ -40,7 +41,7 @@ function errorResponse(message, status = 400) {
 }
 
 async function handleContact(env: Env, body: ContactSubmission): Promise<Response> {
-  const { name, email, project, budget, message } = body;
+  const { name, email, phone, project, budget, message } = body;
   
   if (!name || !email || !message) {
     return errorResponse('Missing required fields: name, email, message', 400);
@@ -60,11 +61,12 @@ async function handleContact(env: Env, body: ContactSubmission): Promise<Respons
   
   try {
     const result = await env.DB.prepare(
-      `INSERT INTO contact_submissions (name, email, project, budget, message, created_at)
-       VALUES (?, ?, ?, ?, ?, datetime('now'))`
+      `INSERT INTO contact_submissions (name, email, phone, project, budget, message, created_at)
+       VALUES (?, ?, ?, ?, ?, ?, datetime('now'))`
     ).bind(
       name.trim(), 
       email.trim().toLowerCase(), 
+      phone?.trim() || null, 
       project || null, 
       budget || null, 
       message.trim()

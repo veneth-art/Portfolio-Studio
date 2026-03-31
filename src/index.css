@@ -1965,6 +1965,16 @@ select {
   color: var(--mid)
 }
 
+.budget-badge {
+  font-size: 9px;
+  background: var(--accent);
+  color: var(--dark);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
 .ct-field input,
 .ct-field select,
 .ct-field textarea {

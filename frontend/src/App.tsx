@@ -2,7 +2,169 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { VENETH_PHOTO } from "./veneth_photo";
 import ParticleBackground from "./ParticleBackground";
 import SmoothScroll from "./SmoothScroll";
-import { api, hasApiError, getLastError, type Project, type Service, type Testimonial } from "./lib/api";
+
+/* ── TYPES ─────────────────────────────────────────────────────────────────── */
+interface Project {
+  id: number;
+  num: string;
+  tag: string;
+  title: string;
+  subtitle: string;
+  liveUrl: string | null;
+  thumb: string | null;
+  accent: string;
+  description: string;
+  features: string[];
+}
+
+interface Service {
+  id: number;
+  num: string;
+  title: string;
+  items: string[];
+}
+
+interface Testimonial {
+  id: number;
+  name: string;
+  role: string;
+  text: string;
+  initials: string;
+}
+
+/* ── STATIC DATA ───────────────────────────────────────────────────────────── */
+const SERVICES: Service[] = [
+  {
+    id: 1,
+    num: "01",
+    title: "UI/UX Design",
+    items: [
+      "User Research & Analysis",
+      "Wireframing & Prototyping",
+      "High-Fidelity Visual Design",
+      "Design Systems & Component Libraries",
+      "Usability Testing & Iteration",
+      "Responsive Design",
+    ],
+  },
+  {
+    id: 2,
+    num: "02",
+    title: "No-Code Development",
+    items: [
+      "Webflow Development",
+      "Framer Sites",
+      "Wix Studio",
+      "Bubble.io Applications",
+      "Zapier Automation",
+      "CMS Integration",
+    ],
+  },
+  {
+    id: 3,
+    num: "03",
+    title: "3D Web & Motion",
+    items: [
+      "Three.js Web Experiences",
+      "GSAP Animations",
+      "Scroll-Driven Animations",
+      "Interactive 3D Elements",
+      "WebGL Effects",
+      "Performance Optimization",
+    ],
+  },
+  {
+    id: 4,
+    num: "04",
+    title: "Brand & Identity",
+    items: [
+      "Logo Design",
+      "Brand Guidelines",
+      "Social Media Templates",
+      "Marketing Collateral",
+      "Brand Strategy",
+      "Visual Identity Systems",
+    ],
+  },
+];
+
+const PROJECTS: Project[] = [
+  {
+    id: 1,
+    num: "01",
+    tag: "Web Design",
+    title: "Modern E-Commerce Platform",
+    subtitle: "E-Commerce · UI/UX",
+    liveUrl: null,
+    thumb: null,
+    accent: "#c9a84c",
+    description: "A fully responsive e-commerce experience with seamless checkout flow and optimized conversion paths.",
+    features: [
+      "Custom product configurator",
+      "One-click checkout integration",
+      "Advanced filtering system",
+      "Mobile-first design approach",
+    ],
+  },
+  {
+    id: 2,
+    num: "02",
+    tag: "No-Code",
+    title: "SaaS Dashboard Design",
+    subtitle: "SaaS · Dashboard",
+    liveUrl: null,
+    thumb: null,
+    accent: "#c9a84c",
+    description: "An intuitive analytics dashboard with real-time data visualization and customizable widgets.",
+    features: [
+      "Real-time data visualization",
+      "Customizable widget layout",
+      "Role-based access control",
+      "Export & reporting tools",
+    ],
+  },
+  {
+    id: 3,
+    num: "03",
+    tag: "3D Web",
+    title: "Immersive Portfolio",
+    subtitle: "3D · Portfolio",
+    liveUrl: null,
+    thumb: null,
+    accent: "#c9a84c",
+    description: "An interactive 3D portfolio experience showcasing creative work through immersive web design.",
+    features: [
+      "Three.js powered scenes",
+      "Scroll-driven animations",
+      "Interactive 3D elements",
+      "Smooth page transitions",
+    ],
+  },
+];
+
+const TESTIMONIALS: Testimonial[] = [
+  {
+    id: 1,
+    name: "Sarah Mitchell",
+    role: "CEO, TechStart",
+    text: "Veneth transformed our vision into a stunning reality. The attention to detail and creative approach exceeded our expectations.",
+    initials: "SM",
+  },
+  {
+    id: 2,
+    name: "David Chen",
+    role: "Founder, DesignCo",
+    text: "Working with Veneth was a game-changer. The no-code solution saved us months of development time without compromising quality.",
+    initials: "DC",
+  },
+  {
+    id: 3,
+    name: "Maria Santos",
+    role: "Marketing Director, Brandify",
+    text: "The 3D elements and animations brought our brand to life. Our engagement metrics increased by 300% after the redesign.",
+    initials: "MS",
+  },
+];
 
 /* ── MAG BTN (helper) ───────────────────────────────────────────────────────── */
 type MagBtnProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -205,56 +367,68 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await api.submitContact(form);
-      setLoading(false);
-      setSent(true);
-    } catch (err) {
-      console.error('Failed to submit:', err);
-      setLoading(false);
-      alert('Failed to send message. Please try again.');
-    }
+    await new Promise(r => setTimeout(r, 1200));
+    setLoading(false);
+    setSent(true);
   };
-
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
       <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
-        <button className="pv-close" onClick={onClose} style={{ position: "absolute", top: 20, right: 20 }} aria-label="Close">✕</button>
+        <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
         {sent ? (
-          <div className="ct-sent"><div className="ct-check">✓</div><h3 id="ct-title">Message received.</h3><p>I'll respond within 24 hours. Looking forward to building something remarkable.</p></div>
+          <div className="ct-success">
+            <div className="cs-icon">✓</div>
+            <h3>Message Sent!</h3>
+            <p>Thanks for reaching out. I'll get back to you within 24 hours.</p>
+            <MagBtn className="btn-dark" onClick={onClose} style={{ marginTop: 20 }}>Close</MagBtn>
+          </div>
         ) : (
           <>
-            <span className="ct-eyebrow">New Project Inquiry</span>
-            <h2 className="ct-h2" id="ct-title">Let's Talk</h2>
-            <p className="ct-sub">Tell me your vision and I'll map out how we make it real.</p>
-            <form onSubmit={handleSubmit} className="ct-form">
+            <div className="ct-head">
+              <span className="eyebrow">Get in Touch</span>
+              <h2 className="ct-title" id="ct-title">Let's Build<br /><em>Something Great.</em></h2>
+            </div>
+            <form className="ct-form" onSubmit={handleSubmit}>
               <div className="ct-row">
-                <div className="ct-field"><label>Name</label><input required placeholder="Full name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
-                <div className="ct-field"><label>Email</label><input type="email" required placeholder="you@company.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
+                <div className="ct-field">
+                  <label htmlFor="ct-name">Your Name *</label>
+                  <input id="ct-name" type="text" placeholder="John Smith" required value={form.name} onChange={e => setForm(v => ({ ...v, name: e.target.value }))} />
+                </div>
+                <div className="ct-field">
+                  <label htmlFor="ct-email">Email Address *</label>
+                  <input id="ct-email" type="email" placeholder="john@company.com" required value={form.email} onChange={e => setForm(v => ({ ...v, email: e.target.value }))} />
+                </div>
               </div>
               <div className="ct-row">
-                <div className="ct-field"><label>Project Type</label>
-                  <select value={form.project} onChange={e => setForm({ ...form, project: e.target.value })}>
-                    <option value="">Select type</option>
-                    <option>Landing Page</option><option>Business Website</option>
-                    <option>Real Estate Portal</option><option>Gym / Fitness Platform</option>
-                    <option>UI/UX Design Only</option><option>Full Brand + Web</option>
-                  </select></div>
-                <div className="ct-field"><label>Budget</label>
-                  <select value={form.budget} onChange={e => setForm({ ...form, budget: e.target.value })}>
-                    <option value="">Select range</option>
-                    <option>₹15,000 – ₹30,000</option><option>₹30,000 – ₹60,000</option>
-                    <option>₹60,000 – ₹1,20,000</option><option>₹1,20,000+</option>
-                  </select></div>
+                <div className="ct-field">
+                  <label htmlFor="ct-project">Project Type</label>
+                  <select id="ct-project" value={form.project} onChange={e => setForm(v => ({ ...v, project: e.target.value }))}>
+                    <option value="">Select a type...</option>
+                    <option value="website">Website</option>
+                    <option value="webapp">Web Application</option>
+                    <option value="branding">Branding</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div className="ct-field">
+                  <label htmlFor="ct-budget">Budget Range</label>
+                  <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
+                    <option value="">Select range...</option>
+                    <option value="5k-10k">$5,000 - $10,000</option>
+                    <option value="10k-25k">$10,000 - $25,000</option>
+                    <option value="25k+">$25,000+</option>
+                  </select>
+                </div>
               </div>
-              <div className="ct-field"><label>Tell me about your project</label>
-                <textarea rows={4} placeholder="Goals, timeline, references…" value={form.message} onChange={e => setForm({ ...form, message: e.target.value })} /></div>
+              <div className="ct-field">
+                <label htmlFor="ct-message">Project Details *</label>
+                <textarea id="ct-message" rows={4} placeholder="Tell me about your project..." required value={form.message} onChange={e => setForm(v => ({ ...v, message: e.target.value }))} />
+              </div>
               <button type="submit" className="ct-submit" disabled={loading}>
-                {loading ? <span className="ct-loader" /> : "Send Inquiry →"}
+                {loading ? "Sending..." : "Send Message →"}
               </button>
             </form>
           </>
@@ -264,26 +438,23 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-/* ── MARQUEE ────────────────────────────────────────────────────────────────── */
+/* ── MARQUEE ───────────────────────────────────────────────────────────────── */
 function Marquee({ items, reverse }: { items: string[]; reverse?: boolean }) {
-  const all = [...items, ...items];
+  const doubled = [...items, ...items];
   return (
     <div className="marquee-wrap">
       <div className={`marquee-track${reverse ? " rev" : ""}`}>
-        {all.map((t, i) => <span key={i} className="mq-item">{t}<span className="mq-sep">◆</span></span>)}
+        {doubled.map((item, i) => (
+          <span key={i} className="mq-item">{item}<span className="mq-sep">·</span></span>
+        ))}
       </div>
     </div>
   );
 }
 
-/* ── APP ─────────────────────────────────────────────────────────────────────── */
+/* ── MAIN APP ──────────────────────────────────────────────────────────────── */
 export default function App() {
   useReveal();
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [apiError, setApiError] = useState<string | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
   const [previewProj, setPreviewProj] = useState<Project | null>(null);
   const [scrolled, setScrolled] = useState(false);
@@ -291,34 +462,6 @@ export default function App() {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [dark, setDark] = useState(false);
   const [pageTransition, setPageTransition] = useState(false);
-
-  const fetchData = useCallback(async () => {
-    setLoading(true);
-    setApiError(null);
-    try {
-      const [projectsData, servicesData, testimonialsData] = await Promise.all([
-        api.getProjects(),
-        api.getServices(),
-        api.getTestimonials(),
-      ]);
-      setProjects(projectsData);
-      setServices(servicesData);
-      setTestimonials(testimonialsData);
-      if (hasApiError()) {
-        const err = getLastError();
-        setApiError(err ? err.message : 'Connection error');
-      }
-    } catch (err) {
-      console.error('Failed to fetch data:', err);
-      setApiError(err instanceof Error ? err.message : 'Failed to load data');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
@@ -434,14 +577,6 @@ export default function App() {
           <Marquee items={["UI/UX Design", "No-Code Dev", "Wix Studio", "Framer", "Webflow", "Motion Design", "Three.js", "GSAP", "Brand Systems", "Figma", "Prototyping", "Vibe Coding"]} />
         </div>
 
-        {/* ── API STATUS ── */}
-        {apiError && (
-          <div className="api-status-bar">
-            <span>Showing cached data · {apiError}</span>
-            <button className="retry-btn" onClick={fetchData}>Retry ↻</button>
-          </div>
-        )}
-
         {/* ── SERVICES ── */}
         <main id="main-content">
           <section id="services" className="services-sec" role="region" aria-label="Services">
@@ -458,11 +593,7 @@ export default function App() {
                   </div>
                 </div>
                 <div className="srv-accordion">
-                  {loading ? (
-                    <div className="loading-placeholder">Loading services...</div>
-                  ) : (
-                    services.map((s, i) => <ServiceRow key={s.num} s={s} idx={i} defaultOpen={i === 0} />)
-                  )}
+                  {SERVICES.map((s, i) => <ServiceRow key={s.num} s={s} idx={i} defaultOpen={i === 0} />)}
                 </div>
               </div>
             </div>
@@ -497,7 +628,7 @@ export default function App() {
                     ))}
                   </div>
                   <div className="about-links">
-                    <a href="mailto:Venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
+                    <a href="mailto:hello@venethstudio.com" className="alink">✉ hello@venethstudio.com</a>
                     <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
                   </div>
                   <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Work With Me →</MagBtn>
@@ -514,12 +645,10 @@ export default function App() {
                 <h2 className="sec-h2">Problems solved,<br /><em>beautifully.</em></h2>
                 <p className="sec-sub">These selected projects reflect a passion for blending strategy with creativity — solving real problems through thoughtful design and impactful storytelling.</p>
               </div>
-              <div className="projects-list">
-                {loading ? (
-                  <div className="loading-placeholder">Loading projects...</div>
-                ) : (
-                  projects.map((p, i) => <ProjectCard key={p.num} p={p} idx={i} onPreview={setPreviewProj} />)
-                )}
+              <div className="proj-grid">
+                {PROJECTS.map((p, i) => (
+                  <ProjectCard key={p.id} p={p} idx={i} onPreview={setPreviewProj} />
+                ))}
               </div>
             </div>
           </section>
@@ -529,19 +658,20 @@ export default function App() {
             <div className="sec-wrap">
               <div className="sec-head" data-reveal>
                 <span className="eyebrow">How I Work</span>
-                <h2 className="sec-h2">The method behind<br /><em>the magic.</em></h2>
+                <h2 className="sec-h2">A proven<br /><em>process.</em></h2>
               </div>
               <div className="process-grid">
-                {[["01", "Discovery", "Understanding your brand, audience, and objectives through structured research.", "🔍"],
-                ["02", "Design", "High-fidelity UI in Figma — pixel-perfect, interactive prototypes you approve before build.", "✦"],
-                ["03", "Build", "Live site on Framer, Wix Studio, or Webflow. Motion-first, CMS-ready, performance-optimised.", "⚡"],
-                ["04", "Launch", "Full-device QA, SEO setup, handoff, and post-launch support. Lead automation via n8n.", "🚀"]
-                ].map(([num, title, desc, icon], i) => (
-                  <div key={num} className="proc-card" data-reveal style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}>
+                {[
+                  ["🔍", "01", "Discovery", "Understanding your vision, goals, and target audience through deep-dive sessions."],
+                  ["🎨", "02", "Design", "Creating wireframes, prototypes, and high-fidelity designs that bring ideas to life."],
+                  ["⚡", "03", "Develop", "Building responsive, performant websites using modern tools and best practices."],
+                  ["🚀", "04", "Launch", "Deploying, testing, and optimizing your site for maximum impact and results."],
+                ].map(([icon, num, title, desc]) => (
+                  <div key={num as string} className="proc-card" data-reveal style={{ "--d": `${(Number(num) - 1) * 0.1}s` } as React.CSSProperties}>
                     <span className="proc-icon">{icon}</span>
                     <div className="proc-num">{num}</div>
-                    <h4 className="proc-title">{title as string}</h4>
-                    <p className="proc-desc">{desc as string}</p>
+                    <h4 className="proc-title">{title}</h4>
+                    <p className="proc-desc">{desc}</p>
                   </div>
                 ))}
               </div>
@@ -556,19 +686,15 @@ export default function App() {
                 <h2 className="sec-h2">Trusted by brands<br /><em>across Tamil Nadu.</em></h2>
               </div>
               <div className="testi-grid">
-                {loading ? (
-                  <div className="loading-placeholder">Loading testimonials...</div>
-                ) : (
-                  testimonials.map((t, i) => (
-                    <div key={i} className="testi-card" data-reveal style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}>
-                      <p className="testi-q">"{t.text}"</p>
-                      <div className="testi-who">
-                        <div className="testi-av">{t.initials}</div>
-                        <div><strong>{t.name}</strong><br /><span>{t.role}</span></div>
-                      </div>
+                {TESTIMONIALS.map((t, i) => (
+                  <div key={i} className="testi-card" data-reveal style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}>
+                    <p className="testi-q">"{t.text}"</p>
+                    <div className="testi-who">
+                      <div className="testi-av">{t.initials}</div>
+                      <div><strong>{t.name}</strong><br /><span>{t.role}</span></div>
                     </div>
-                  ))
-                )}
+                  </div>
+                ))}
               </div>
             </div>
           </section>

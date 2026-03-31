@@ -1,8 +1,3 @@
-/// <reference path="./types.d.ts" />
-
-export type { Env, Project, Service, Testimonial, ContactSubmission } from "./types";
-import type { Project, Service, Testimonial, ContactSubmission } from "./types";
-
 const securityHeaders = {
   'X-Content-Type-Options': 'nosniff',
   'X-Frame-Options': 'DENY',
@@ -11,7 +6,7 @@ const securityHeaders = {
   'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
 };
 
-function getCorsHeaders(origin: string | null | undefined, allowedOrigin?: string) {
+function getCorsHeaders(origin, allowedOrigin) {
   const validOrigin = allowedOrigin || '*';
   const allowOrigin = (origin && allowedOrigin && (origin === allowedOrigin || allowedOrigin === '*')) 
     ? origin 
@@ -25,7 +20,7 @@ function getCorsHeaders(origin: string | null | undefined, allowedOrigin?: strin
   };
 }
 
-function jsonResponse(data: unknown, status = 200, env?: Env, origin?: string | null): Response {
+function jsonResponse(data, status = 200, env, origin) {
   const allowedOrigin = env ? env.ALLOWED_ORIGIN : undefined;
   const corsHeaders = getCorsHeaders(origin, allowedOrigin);
   return new Response(JSON.stringify(data), {
@@ -39,7 +34,7 @@ function jsonResponse(data: unknown, status = 200, env?: Env, origin?: string | 
   });
 }
 
-function errorResponse(message: string, status = 400, env?: Env, origin?: string | null): Response {
+function errorResponse(message, status = 400, env, origin) {
   const allowedOrigin = env ? env.ALLOWED_ORIGIN : undefined;
   const corsHeaders = getCorsHeaders(origin, allowedOrigin);
   return new Response(JSON.stringify({ error: message }), {
@@ -52,12 +47,12 @@ function errorResponse(message: string, status = 400, env?: Env, origin?: string
   });
 }
 
-async function handleProjects(env: Env): Promise<Response> {
+async function handleProjects(env) {
   const { results } = await env.DB.prepare(
     'SELECT * FROM projects ORDER BY num ASC'
-  ).all<Project>();
+  ).all();
   
-  const projects = results.map((p: Project) => ({
+  const projects = results.map((p) => ({
     ...p,
     liveUrl: p.live_url,
     features: typeof p.features === 'string' ? JSON.parse(p.features) : p.features,
@@ -66,12 +61,12 @@ async function handleProjects(env: Env): Promise<Response> {
   return jsonResponse(projects, 200, env);
 }
 
-async function handleServices(env: Env): Promise<Response> {
+async function handleServices(env) {
   const { results } = await env.DB.prepare(
     'SELECT * FROM services ORDER BY num ASC'
-  ).all<Service>();
+  ).all();
   
-  const services = results.map((s: Service) => ({
+  const services = results.map((s) => ({
     ...s,
     items: JSON.parse(s.items),
   }));
@@ -79,15 +74,15 @@ async function handleServices(env: Env): Promise<Response> {
   return jsonResponse(services, 200, env);
 }
 
-async function handleTestimonials(env: Env): Promise<Response> {
+async function handleTestimonials(env) {
   const { results } = await env.DB.prepare(
     'SELECT * FROM testimonials ORDER BY id ASC'
-  ).all<Testimonial>();
+  ).all();
   
   return jsonResponse(results, 200, env);
 }
 
-async function handleContact(env: Env, body: ContactSubmission): Promise<Response> {
+async function handleContact(env, body) {
   const { name, email, project, budget, message } = body;
   
   if (!name || !email || !message) {
@@ -112,7 +107,11 @@ async function handleContact(env: Env, body: ContactSubmission): Promise<Respons
   return jsonResponse({ success: true, message: 'Message received successfully' }, 201, env);
 }
 
-async function handleUpload(env: Env, request: Request): Promise<Response> {
+async function handleUpload(env, request) {
+  if (!env.R2_BUCKET) {
+    return errorResponse('R2 not configured', 500, env);
+  }
+  
   const contentType = request.headers.get('Content-Type') || '';
   
   if (!contentType.includes('multipart/form-data') && !contentType.includes('application/octet-stream')) {
@@ -127,26 +126,26 @@ async function handleUpload(env: Env, request: Request): Promise<Response> {
   }
   
   const maxSize = 10 * 1024 * 1024;
-  if ((file as File).size > maxSize) {
+  if (file.size > maxSize) {
     return errorResponse('File too large (max 10MB)', 400, env);
   }
   
   const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
-  if (!allowedTypes.includes((file as File).type)) {
+  if (!allowedTypes.includes(file.type)) {
     return errorResponse('File type not allowed', 400, env);
   }
   
   const timestamp = Date.now();
   const randomStr = Math.random().toString(36).substring(2, 8);
-  const ext = (file as File).name.split('.').pop() || 'bin';
+  const ext = file.name.split('.').pop() || 'bin';
   const fileName = `${timestamp}-${randomStr}.${ext}`;
   
-  await env.R2_BUCKET.put(fileName, file as File, {
+  await env.R2_BUCKET.put(fileName, file, {
     httpMetadata: {
-      contentType: (file as File).type,
+      contentType: file.type,
     },
     customMetadata: {
-      originalName: (file as File).name,
+      originalName: file.name,
       uploadedAt: new Date().toISOString(),
     },
   });
@@ -155,14 +154,18 @@ async function handleUpload(env: Env, request: Request): Promise<Response> {
     success: true, 
     fileName,
     url: `/api/files/${fileName}`,
-    size: (file as File).size,
+    size: file.size,
   }, 201, env);
 }
 
-async function handleListFiles(env: Env): Promise<Response> {
+async function handleListFiles(env) {
+  if (!env.R2_BUCKET) {
+    return errorResponse('R2 not configured', 500, env);
+  }
+  
   const listed = await env.R2_BUCKET.list({ limit: 100 });
   
-  const files = listed.objects.map((obj: R2Object) => ({
+  const files = listed.objects.map((obj) => ({
     name: obj.key,
     size: obj.size,
     uploaded: obj.uploaded,
@@ -172,7 +175,11 @@ async function handleListFiles(env: Env): Promise<Response> {
   return jsonResponse({ files, count: files.length }, 200, env);
 }
 
-async function handleGetFile(env: Env, fileName: string): Promise<Response> {
+async function handleGetFile(env, fileName) {
+  if (!env.R2_BUCKET) {
+    return errorResponse('R2 not configured', 500, env);
+  }
+  
   const object = await env.R2_BUCKET.get(fileName);
   
   if (!object) {
@@ -192,13 +199,17 @@ async function handleGetFile(env: Env, fileName: string): Promise<Response> {
   });
 }
 
-async function handleDeleteFile(env: Env, fileName: string): Promise<Response> {
+async function handleDeleteFile(env, fileName) {
+  if (!env.R2_BUCKET) {
+    return errorResponse('R2 not configured', 500, env);
+  }
+  
   await env.R2_BUCKET.delete(fileName);
   return jsonResponse({ success: true, message: 'File deleted' }, 200, env);
 }
 
 export default {
-  async fetch(request: Request, env: Env): Promise<Response> {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
     const origin = request.headers.get('Origin');
     const path = url.pathname.replace('/api', '');
@@ -222,7 +233,7 @@ export default {
       }
 
       if (path === '/contact' && request.method === 'POST') {
-        const body = await request.clone().json() as ContactSubmission;
+        const body = await request.clone().json();
         return handleContact(env, body);
       }
 

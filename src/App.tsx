@@ -419,79 +419,101 @@ function ContactModal({ onClose }: { onClose: () => void }) {
 
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
-      <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
-        <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
-        {sent ? (
-          <div className="ct-success">
-            <div className="cs-icon">✓</div>
-            <h3>Message Sent!</h3>
-            <p>Thanks for reaching out. I'll get back to you within 24 hours.</p>
-            <MagBtn className="btn-dark" onClick={onClose} style={{ marginTop: 20 }}>Close</MagBtn>
-          </div>
-        ) : (
-          <>
-            <div className="ct-head">
-              <span className="eyebrow">Get in Touch</span>
-              <h2 className="ct-title" id="ct-title">Let's Build<br /><em>Something Great.</em></h2>
+      <div className="contact-modal-wrapper">
+        <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
+          <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
+          {sent ? (
+            <div className="ct-success">
+              <div className="success-icon">
+                <div className="circle">
+                  <div className="checkmark" />
+                </div>
+              </div>
+              <h3>Message Sent!</h3>
+              <p>Thanks for reaching out. I'll get back to you within 24 hours.</p>
+              <div className="contact-info">
+                <div className="info-item">
+                  <span>📧</span>
+                  <span>hello@venethstudio.com</span>
+                </div>
+                <div className="info-item">
+                  <span>📱</span>
+                  <span>+91 98765 43210</span>
+                </div>
+              </div>
             </div>
-            <form className="ct-form" onSubmit={handleSubmit}>
-              <div className="ct-row">
-                <div className="ct-field">
-                  <label htmlFor="ct-name">Your Name *</label>
-                  <input id="ct-name" type="text" placeholder="John Smith" required value={form.name} onChange={e => setForm(v => ({ ...v, name: e.target.value }))} />
-                </div>
-                <div className="ct-field">
-                  <label htmlFor="ct-email">Email Address *</label>
-                  <input id="ct-email" type="email" placeholder="john@company.com" required value={form.email} onChange={e => setForm(v => ({ ...v, email: e.target.value }))} />
-                </div>
+          ) : (
+            <>
+              <div className="ct-head">
+                <span className="eyebrow">Get in Touch</span>
+                <h2 className="ct-title" id="ct-title">Let's Build <em>Something Great.</em></h2>
+                <p className="ct-subtitle">Tell me about your project and I'll get back to you soon</p>
               </div>
-              <div className="ct-row">
-                <div className="ct-field">
-                  <label htmlFor="ct-phone">Phone Number</label>
-                  <input id="ct-phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={e => setForm(v => ({ ...v, phone: e.target.value }))} />
+              <form className="ct-form" onSubmit={handleSubmit}>
+                <div className="ct-row">
+                  <div className="ct-field">
+                    <label htmlFor="ct-name">Your Name <span className="required">*</span></label>
+                    <input id="ct-name" type="text" placeholder="John Smith" required value={form.name} onChange={e => setForm(v => ({ ...v, name: e.target.value }))} />
+                  </div>
+                  <div className="ct-field">
+                    <label htmlFor="ct-email">Email <span className="required">*</span></label>
+                    <input id="ct-email" type="email" placeholder="john@company.com" required value={form.email} onChange={e => setForm(v => ({ ...v, email: e.target.value }))} />
+                  </div>
+                </div>
+                <div className="ct-row">
+                  <div className="ct-field">
+                    <label htmlFor="ct-phone">Phone Number</label>
+                    <input id="ct-phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={e => setForm(v => ({ ...v, phone: e.target.value }))} />
+                  </div>
+                  <div className="ct-field">
+                    <label htmlFor="ct-project">Project Type</label>
+                    <select id="ct-project" value={form.project} onChange={e => setForm(v => ({ ...v, project: e.target.value }))}>
+                      <option value="">Select a type...</option>
+                      <option value="website">Website</option>
+                      <option value="webapp">Web Application</option>
+                      <option value="branding">Branding</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                </div>
+                <div className="ct-row">
+                  <div className="ct-field">
+                    <label htmlFor="ct-budget">Budget Range {isIndia === true && <span className="budget-badge">₹ INR</span>}</label>
+                    <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
+                      <option value="">Select range...</option>
+                      {budgetOptions.map(opt => (
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="ct-field">
+                    <label>Your Location</label>
+                    <div className="location-indicator">
+                      <span className="flag">{isIndia === null ? "🌐" : isIndia ? "🇮🇳" : "🌍"}</span>
+                      <span className="text">{isIndia === null ? "Detecting location..." : isIndia ? "India" : "International"}</span>
+                    </div>
+                  </div>
                 </div>
                 <div className="ct-field">
-                  <label htmlFor="ct-project">Project Type</label>
-                  <select id="ct-project" value={form.project} onChange={e => setForm(v => ({ ...v, project: e.target.value }))}>
-                    <option value="">Select a type...</option>
-                    <option value="website">Website</option>
-                    <option value="webapp">Web Application</option>
-                    <option value="branding">Branding</option>
-                    <option value="other">Other</option>
-                  </select>
+                  <label htmlFor="ct-message">Project Details <span className="required">*</span></label>
+                  <textarea id="ct-message" rows={4} placeholder="Tell me about your project, your goals, and any specific requirements..." required value={form.message} onChange={e => setForm(v => ({ ...v, message: e.target.value }))} />
                 </div>
-              </div>
-              <div className="ct-row">
-                <div className="ct-field">
-                  <label htmlFor="ct-budget">Budget Range {isIndia === true && <span className="budget-badge">₹ INR</span>}</label>
-                  <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
-                    <option value="">Select range...</option>
-                    {budgetOptions.map(opt => (
-                      <option key={opt.value} value={opt.value}>{opt.label}</option>
-                    ))}
-                  </select>
-                </div>
-                <div className="ct-field">
-                  <label htmlFor="ct-location">Your Location</label>
-                  <input 
-                    id="ct-location" 
-                    type="text" 
-                    placeholder="City, Country" 
-                    value={isIndia === null ? "Detecting location..." : (isIndia ? "🇮🇳 India" : "🌍 International")}
-                    disabled 
-                  />
-                </div>
-              </div>
-              <div className="ct-field">
-                <label htmlFor="ct-message">Project Details *</label>
-                <textarea id="ct-message" rows={4} placeholder="Tell me about your project..." required value={form.message} onChange={e => setForm(v => ({ ...v, message: e.target.value }))} />
-              </div>
-              <button type="submit" className="ct-submit" disabled={loading}>
-                {loading ? "Sending..." : "Send Message →"}
-              </button>
-            </form>
-          </>
-        )}
+                <button type="submit" className="ct-submit" disabled={loading}>
+                  <span>
+                    {loading ? (
+                      <>
+                        <span className="loading-spinner" />
+                        Sending...
+                      </>
+                    ) : (
+                      <>Send Message →</>
+                    )}
+                  </span>
+                </button>
+              </form>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

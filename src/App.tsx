@@ -39,8 +39,8 @@ const PROJECTS = [
 const SERVICES = [
   { num: "01", title: "UI/UX Design", items: ["Wireframing and interactive prototyping", "User Interface design for web & mobile", "Usability testing and feedback analysis", "Interaction design and micro-animations"] },
   { num: "02", title: "No-Code Development", items: ["Wix Studio, Framer & Webflow builds", "CMS setup and content management", "Responsive, mobile-first architecture", "Third-party integrations and automation"] },
-  { num: "03", title: "Web Design", items: ["Landing page design and optimisation", "Responsive website design for all screens", "Performance-first architecture", "SEO setup and post-launch support"] },
-  { num: "04", title: "Branding", items: ["Brand strategy and visual identity", "Typography and colour system design", "Brand storytelling and messaging", "Style guide and asset handoff"] },
+  { num: "03", title: "Graphic Design", items: ["Landing page design and optimisation", "Responsive website design for all screens", "Performance-first architecture", "SEO setup and post-launch support"] },
+  { num: "04", title: "Vibe Coding", items: ["Brand strategy and visual identity", "Typography and colour system design", "Brand storytelling and messaging", "Style guide and asset handoff"] },
 ];
 
 const TESTIMONIALS = [

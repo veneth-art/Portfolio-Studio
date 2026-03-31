@@ -1,29 +1,23 @@
 {
-  "name": "veneth-portfolio",
+  "name": "veneth-studio",
+  "version": "1.0.0",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "npm run build && wrangler dev",
-    "deploy": "npm run build && wrangler deploy"
-  },
-  "dependencies": {
-    "@studio-freight/lenis": "^1.0.42",
-    "lenis": "^1.1.14",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
-    "three": "^0.170.0"
-  },
-  "devDependencies": {
-    "@cloudflare/vite-plugin": "^1.30.2",
-    "@types/react": "^19.2.14",
-    "@types/react-dom": "^19.2.3",
-    "@vitejs/plugin-react": "^6.0.1",
-    "typescript": "~5.9.3",
-    "vite": "^8.0.1",
-    "wrangler": "^4.78.0"
+    "dev": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build",
+    "preview": "cd frontend && npm run preview",
+    "deploy": "cd frontend && npm run deploy",
+    "d1:init": "cd frontend && npx wrangler d1 create veneth-studio",
+    "d1:local": "cd frontend && npx wrangler d1 execute veneth-studio --local --file=./src/db/schema.sql",
+    "d1:deploy": "cd frontend && npx wrangler d1 execute veneth-studio --remote --file=./src/db/schema.sql",
+    "d1:studio": "cd frontend && npx wrangler d1 studio veneth-studio",
+    "r2:init": "cd frontend && npx wrangler r2 bucket create veneth-assets",
+    "worker:dev": "cd frontend && npx wrangler dev --local",
+    "worker:deploy": "cd frontend && npx wrangler deploy",
+    "pages:dev": "cd frontend && npx wrangler pages dev dist",
+    "pages:deploy": "cd frontend && npx wrangler pages deploy dist",
+    "login": "cd frontend && npx wrangler login",
+    "whoami": "cd frontend && npx wrangler whoami",
+    "install:all": "cd frontend && npm install"
   }
 }

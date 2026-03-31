@@ -1,53 +1,29 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import { VENETH_PHOTO } from "./veneth_photo";
 import ParticleBackground from "./ParticleBackground";
-import LoadingScreen from "./LoadingScreen";
 import SmoothScroll from "./SmoothScroll";
+import { api, hasApiError, getLastError, type Project, type Service, type Testimonial } from "./lib/api";
 
-/* ── DATA ──────────────────────────────────────────────────────────────────── */
-const PROJECTS = [
-  {
-    num: "01", tag: "UI/UX · No-Code",
-    title: "CoreShift Gym",
-    subtitle: "High-Performance Athletic Platform",
-    liveUrl: "https://coreshift.lovable.app",
-    thumb: "https://image.thum.io/get/width/900/crop/560/https://coreshift.lovable.app",
-    accent: "#e85d26",
-    features: ["Dynamic class scheduling UI with live filter system", "Scroll-triggered hero with kinetic typography", "Interactive membership plan finder & BMI widget", "Full mobile-first layout with touch gestures", "Performance-optimised video background — sub-3s load", "Clip-path & text-skew reveal animations"],
-    description: "A bold, conversion-focused fitness platform built to drive memberships and class bookings through frictionless UX and energetic visual design.",
-  },
-  {
-    num: "02", tag: "Web Design · 3D",
-    title: "Vēlā Estates",
-    subtitle: "Luxury Real Estate Portal",
-    liveUrl: "https://vela-estates.netlify.app/",
-    thumb: "https://image.thum.io/get/width/900/crop/560/https://vela-estates.netlify.app/",
-    accent: "#b8922a",
-    features: ["Advanced property filtering — price, location & amenities", "Full-screen immersive galleries with virtual tour links", "Parallax hero with slow editorial text reveals", "Sticky lead-capture forms on property pages", "Three.js ambient particle background", "GSAP page transitions & smooth scroll"],
-    description: "A premium real estate portal crafted for high-net-worth buyers in Tamil Nadu — editorial aesthetics meets conversion-engineered lead capture.",
-  },
-  {
-    num: "03", tag: "UI/UX · Accessibility",
-    title: "Elara Dental",
-    subtitle: "Premium Clinic & Care Platform",
-    liveUrl: null, thumb: null, accent: "#2a7ab8",
-    features: ["Multi-step appointment booking with progress UI", "Before & After interactive image comparison slider", "WCAG 2.1 AA — high-contrast for elderly users", "Calming fade-in motion system across all pages", "Service directory with filterable categories", "Patient review carousel with trust signals"],
-    description: "A patient-first dental platform combining trust-building design with intuitive booking flows — lowering anxiety, raising appointments.",
-  },
-];
-
-const SERVICES = [
-  { num: "01", title: "UI/UX Design", items: ["Wireframing and interactive prototyping", "User Interface design for web & mobile", "Usability testing and feedback analysis", "Interaction design and micro-animations"] },
-  { num: "02", title: "No-Code Development", items: ["Wix Studio, Framer & Webflow builds", "CMS setup and content management", "Responsive, mobile-first architecture", "Third-party integrations and automation"] },
-  { num: "03", title: "Graphic Design", items: ["Landing page design and optimisation", "Responsive website design for all screens", "Performance-first architecture", "SEO setup and post-launch support"] },
-  { num: "04", title: "Vibe Coding", items: ["Brand strategy and visual identity", "Typography and colour system design", "Brand storytelling and messaging", "Style guide and asset handoff"] },
-];
-
-const TESTIMONIALS = [
-  { name: "Rajan Krishnamurthy", role: "Director, Vēlā Estates", text: "Veneth completely transformed our property listings. The site feels premium and our leads doubled in the first month.", initials: "RK" },
-  { name: "Priya Suresh", role: "Owner, CoreShift Gym", text: "Incredible attention to detail. The animations and mobile experience are exactly what we needed to convert visitors into members.", initials: "PS" },
-  { name: "Dr. Anand Mehra", role: "Elara Dental Clinic", text: "Professional, fast, and truly understood our brand. The booking flow alone saved us hours of admin work every week.", initials: "AM" },
-];
+/* ── MAG BTN (helper) ───────────────────────────────────────────────────────── */
+type MagBtnProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  href?: string;
+  target?: string;
+  children: React.ReactNode;
+};
+function MagBtn({ href, target, children, className, ...props }: MagBtnProps) {
+  if (href) {
+    return (
+      <a href={href} className={className} target={target || "_blank"} rel="noreferrer">
+        {children}
+      </a>
+    );
+  }
+  return (
+    <button className={className} {...props}>
+      {children}
+    </button>
+  );
+}
 
 /* ── HOOKS ──────────────────────────────────────────────────────────────────── */
 function useReveal() {
@@ -65,29 +41,11 @@ function useReveal() {
       els.forEach(el => obs.observe(el));
       return obs;
     };
-    // Run immediately
     const obs1 = observe();
-    // Re-run after paint to catch late-mounted elements
     const t1 = setTimeout(() => { obs1.disconnect(); observe(); }, 200);
     const t2 = setTimeout(() => { observe(); }, 600);
     return () => { obs1.disconnect(); clearTimeout(t1); clearTimeout(t2); };
   }, []);
-}
-
-/* ── MAGNETIC BUTTON ────────────────────────────────────────────────────────── */
-function MagBtn({ children, className, onClick, href, target }: { children: React.ReactNode; className?: string; onClick?: () => void; href?: string; target?: string }) {
-  const ref = useRef<HTMLElement>(null);
-  const onMove = (e: React.MouseEvent) => {
-    const el = ref.current; if (!el) return;
-    const r = el.getBoundingClientRect();
-    const x = e.clientX - r.left - r.width / 2;
-    const y = e.clientY - r.top - r.height / 2;
-    el.style.transform = `translate(${x * 0.18}px, ${y * 0.18}px)`;
-  };
-  const onLeave = () => { if (ref.current) ref.current.style.transform = ""; };
-  const props = { ref: ref as React.RefObject<HTMLAnchorElement>, className, onMouseMove: onMove, onMouseLeave: onLeave, onClick, href, target, rel: target ? "noreferrer" : undefined };
-  if (href) return <a {...props}>{children}</a>;
-  return <button {...(props as unknown as React.ButtonHTMLAttributes<HTMLButtonElement>)}>{children}</button>;
 }
 
 /* ── CURSOR ─────────────────────────────────────────────────────────────────── */
@@ -116,12 +74,12 @@ function Cursor() {
 }
 
 /* ── PROJECT THUMB ──────────────────────────────────────────────────────────── */
-function ProjectThumb({ p }: { p: typeof PROJECTS[0] }) {
+function ProjectThumb({ p }: { p: Project }) {
   const [loaded, setLoaded] = useState(false);
   const [err, setErr] = useState(false);
   if (!p.thumb || err) {
     return (
-      <div className="thumb-placeholder" style={{ background: `linear-gradient(145deg,#f5f0e8,#ece5d5)` }}>
+      <div className="thumb-placeholder" style={{ background: "var(--thumb-placeholder-bg)" }}>
         <div className="tp-bignum" style={{ color: p.accent + "20" }}>{p.num}</div>
         <div className="tp-tag" style={{ color: p.accent }}>{p.tag}</div>
         <div className="tp-lines">{[...Array(7)].map((_, i) => <div key={i} className="tp-line" />)}</div>
@@ -140,7 +98,7 @@ function ProjectThumb({ p }: { p: typeof PROJECTS[0] }) {
 }
 
 /* ── SERVICE ROW ────────────────────────────────────────────────────────────── */
-function ServiceRow({ s, idx, defaultOpen }: { s: typeof SERVICES[0]; idx: number; defaultOpen?: boolean }) {
+function ServiceRow({ s, idx, defaultOpen }: { s: Service; idx: number; defaultOpen?: boolean }) {
   const [open, setOpen] = useState(defaultOpen ?? false);
   return (
     <div className={`srv-row srv-row-in${open ? " open" : ""}`} style={{ animationDelay: `${idx * 0.08}s` }}>
@@ -157,7 +115,7 @@ function ServiceRow({ s, idx, defaultOpen }: { s: typeof SERVICES[0]; idx: numbe
 }
 
 /* ── PROJECT CARD ───────────────────────────────────────────────────────────── */
-function ProjectCard({ p, idx, onPreview }: { p: typeof PROJECTS[0]; idx: number; onPreview: (p: typeof PROJECTS[0]) => void }) {
+function ProjectCard({ p, idx, onPreview }: { p: Project; idx: number; onPreview: (p: Project) => void }) {
   return (
     <div className="proj-card" data-reveal style={{ "--d": `${idx * 0.1}s` } as React.CSSProperties}>
       <div className="proj-img-col">
@@ -182,7 +140,7 @@ function ProjectCard({ p, idx, onPreview }: { p: typeof PROJECTS[0]; idx: number
 }
 
 /* ── PREVIEW MODAL ──────────────────────────────────────────────────────────── */
-function PreviewModal({ project, onClose }: { project: typeof PROJECTS[0]; onClose: () => void }) {
+function PreviewModal({ project, onClose }: { project: Project; onClose: () => void }) {
   const modalRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const isDevUrl = project.liveUrl?.includes('localhost') || project.liveUrl?.includes('127.0.0.1');
@@ -247,11 +205,25 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      await api.submitContact(form);
+      setLoading(false);
+      setSent(true);
+    } catch (err) {
+      console.error('Failed to submit:', err);
+      setLoading(false);
+      alert('Failed to send message. Please try again.');
+    }
+  };
+
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
       <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
         <button className="pv-close" onClick={onClose} style={{ position: "absolute", top: 20, right: 20 }} aria-label="Close">✕</button>
-        <button className="pv-close" onClick={onClose} style={{ position: "absolute", top: 20, right: 20 }}>✕</button>
         {sent ? (
           <div className="ct-sent"><div className="ct-check">✓</div><h3 id="ct-title">Message received.</h3><p>I'll respond within 24 hours. Looking forward to building something remarkable.</p></div>
         ) : (
@@ -259,7 +231,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
             <span className="ct-eyebrow">New Project Inquiry</span>
             <h2 className="ct-h2" id="ct-title">Let's Talk</h2>
             <p className="ct-sub">Tell me your vision and I'll map out how we make it real.</p>
-            <form onSubmit={e => { e.preventDefault(); setLoading(true); setTimeout(() => { setLoading(false); setSent(true); }, 1200); }} className="ct-form">
+            <form onSubmit={handleSubmit} className="ct-form">
               <div className="ct-row">
                 <div className="ct-field"><label>Name</label><input required placeholder="Full name" value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></div>
                 <div className="ct-field"><label>Email</label><input type="email" required placeholder="you@company.com" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></div>
@@ -292,8 +264,6 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   );
 }
 
-
-
 /* ── MARQUEE ────────────────────────────────────────────────────────────────── */
 function Marquee({ items, reverse }: { items: string[]; reverse?: boolean }) {
   const all = [...items, ...items];
@@ -306,19 +276,49 @@ function Marquee({ items, reverse }: { items: string[]; reverse?: boolean }) {
   );
 }
 
-
-
 /* ── APP ─────────────────────────────────────────────────────────────────────── */
 export default function App() {
   useReveal();
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [contactOpen, setContactOpen] = useState(false);
-  const [previewProj, setPreviewProj] = useState<typeof PROJECTS[0] | null>(null);
+  const [previewProj, setPreviewProj] = useState<Project | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [dark, setDark] = useState(false);
-  const [loading, setLoading] = useState(true);
   const [pageTransition, setPageTransition] = useState(false);
+
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setApiError(null);
+    try {
+      const [projectsData, servicesData, testimonialsData] = await Promise.all([
+        api.getProjects(),
+        api.getServices(),
+        api.getTestimonials(),
+      ]);
+      setProjects(projectsData);
+      setServices(servicesData);
+      setTestimonials(testimonialsData);
+      if (hasApiError()) {
+        const err = getLastError();
+        setApiError(err ? err.message : 'Connection error');
+      }
+    } catch (err) {
+      console.error('Failed to fetch data:', err);
+      setApiError(err instanceof Error ? err.message : 'Failed to load data');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
@@ -350,7 +350,6 @@ export default function App() {
 
   return (
     <SmoothScroll>
-      {loading && <LoadingScreen onComplete={() => setLoading(false)} />}
       <ParticleBackground />
       <div className={`page-transition ${pageTransition ? "active" : ""}`}>
         <Cursor />
@@ -386,14 +385,12 @@ export default function App() {
           <div className="hero-blob b3" aria-hidden="true" />
 
           <div className="hero-wrap">
-            {/* LEFT */}
             <div className="hero-left">
               <div className={`hero-badge${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".1s" }}>
                 <span className="badge-dot" /><span>Veneth ChandraKumar · UI/UX &amp; No-Code Developer</span>
               </div>
               <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
                 <span className="hl hl-serif">I design <span className="hl hl-italic">&amp; build</span></span>
-
                 <span className="hl hl-sm">digital experiences</span>
                 <span className="hl hl-accent">that convert.</span>
               </h1>
@@ -412,7 +409,6 @@ export default function App() {
               </div>
             </div>
 
-            {/* RIGHT: Photo */}
             <div className={`hero-right${heroLoaded ? " in" : ""}`}>
               <div className="photo-stack">
                 <div className="ps-back" />
@@ -438,6 +434,14 @@ export default function App() {
           <Marquee items={["UI/UX Design", "No-Code Dev", "Wix Studio", "Framer", "Webflow", "Motion Design", "Three.js", "GSAP", "Brand Systems", "Figma", "Prototyping", "Vibe Coding"]} />
         </div>
 
+        {/* ── API STATUS ── */}
+        {apiError && (
+          <div className="api-status-bar">
+            <span>Showing cached data · {apiError}</span>
+            <button className="retry-btn" onClick={fetchData}>Retry ↻</button>
+          </div>
+        )}
+
         {/* ── SERVICES ── */}
         <main id="main-content">
           <section id="services" className="services-sec" role="region" aria-label="Services">
@@ -454,7 +458,11 @@ export default function App() {
                   </div>
                 </div>
                 <div className="srv-accordion">
-                  {SERVICES.map((s, i) => <ServiceRow key={s.num} s={s} idx={i} defaultOpen={i === 0} />)}
+                  {loading ? (
+                    <div className="loading-placeholder">Loading services...</div>
+                  ) : (
+                    services.map((s, i) => <ServiceRow key={s.num} s={s} idx={i} defaultOpen={i === 0} />)
+                  )}
                 </div>
               </div>
             </div>
@@ -489,7 +497,7 @@ export default function App() {
                     ))}
                   </div>
                   <div className="about-links">
-                    <a href="mailto:hello@venethstudio.com" className="alink">✉ hello@venethstudio.com</a>
+                    <a href="mailto:Venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
                     <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
                   </div>
                   <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Work With Me →</MagBtn>
@@ -507,7 +515,11 @@ export default function App() {
                 <p className="sec-sub">These selected projects reflect a passion for blending strategy with creativity — solving real problems through thoughtful design and impactful storytelling.</p>
               </div>
               <div className="projects-list">
-                {PROJECTS.map((p, i) => <ProjectCard key={p.num} p={p} idx={i} onPreview={setPreviewProj} />)}
+                {loading ? (
+                  <div className="loading-placeholder">Loading projects...</div>
+                ) : (
+                  projects.map((p, i) => <ProjectCard key={p.num} p={p} idx={i} onPreview={setPreviewProj} />)
+                )}
               </div>
             </div>
           </section>
@@ -544,15 +556,19 @@ export default function App() {
                 <h2 className="sec-h2">Trusted by brands<br /><em>across Tamil Nadu.</em></h2>
               </div>
               <div className="testi-grid">
-                {TESTIMONIALS.map((t, i) => (
-                  <div key={i} className="testi-card" data-reveal style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}>
-                    <p className="testi-q">"{t.text}"</p>
-                    <div className="testi-who">
-                      <div className="testi-av">{t.initials}</div>
-                      <div><strong>{t.name}</strong><br /><span>{t.role}</span></div>
+                {loading ? (
+                  <div className="loading-placeholder">Loading testimonials...</div>
+                ) : (
+                  testimonials.map((t, i) => (
+                    <div key={i} className="testi-card" data-reveal style={{ "--d": `${i * 0.1}s` } as React.CSSProperties}>
+                      <p className="testi-q">"{t.text}"</p>
+                      <div className="testi-who">
+                        <div className="testi-av">{t.initials}</div>
+                        <div><strong>{t.name}</strong><br /><span>{t.role}</span></div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))
+                )}
               </div>
             </div>
           </section>
@@ -566,7 +582,7 @@ export default function App() {
           <section id="contact" className="cta-sec">
             <div className="sec-wrap">
               <div className="cta-box" data-reveal>
-                <span className="eyebrow" style={{ color: "rgba(248,244,238,.55)" }}>Ready to Build?</span>
+                <span className="eyebrow" style={{ color: "var(--text-on-dark-muted)" }}>Ready to Build?</span>
                 <h2 className="cta-h2">Your Next Web Experience<br /><em>Starts Here.</em></h2>
                 <p className="cta-sub">Available for real estate, healthcare, hospitality, fitness, and lifestyle brands across Tamil Nadu and beyond.</p>
                 <div className="cta-btns">

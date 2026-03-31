@@ -1,0 +1,30 @@
+{
+  "name": "veneth-portfolio",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "npm run build && wrangler pages dev dist",
+    "deploy": "npm run build && wrangler deploy"
+  },
+  "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
+    "lenis": "^1.1.14",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@cloudflare/vite-plugin": "^1.30.2",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "~5.9.3",
+    "vite": "^8.0.1",
+    "wrangler": "^4.78.0"
+  }
+}

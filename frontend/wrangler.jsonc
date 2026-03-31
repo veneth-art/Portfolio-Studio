@@ -1,0 +1,36 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "veneth-studio",
+	"compatibility_date": "2025-09-27",
+	"main": "./src/worker/index.ts",
+	"pages_build_output_dir": "./dist",
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "veneth-studio",
+			"database_id": "REMOVED"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "R2_BUCKET",
+			"bucket_name": "veneth-assets"
+		}
+	],
+	"vars": {
+		"ALLOWED_ORIGIN": "https://venethstudio.com"
+	},
+	"limits": {
+		"rps": 100,
+		"rqpm": 6000
+	},
+	"routes": [
+		{
+			"pattern": "api.venethstudio.com",
+			"zone_name": "venethstudio.com"
+		}
+	],
+	"observability": {
+		"enabled": true
+	}
+}

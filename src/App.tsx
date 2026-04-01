@@ -538,7 +538,11 @@ export default function App() {
                 <span className="hl hl-accent">that convert.</span>
               </h1>
               <p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>
-                Specialising in UI/UX Design, No-Code Development, and Vibe Coding.
+                Specialising in <span className="hero-skill-badges">
+                  <span className="hsb">UI/UX Design</span>
+                  <span className="hsb">No-Code Development</span>
+                  <span className="hsb">Vibe Coding</span>
+                </span>.
                 I engineer responsive, fully functional web platforms that elevate brands and drive real user action.
               </p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>

@@ -5,7 +5,7 @@ compatibility_date = "2024-01-01"
 [[d1_databases]]
 binding = "DB"
 database_name = "veneth-contacts"
-database_id = "2ad99ae7-3e5c-414c-b32e-06b1e3d8b52a"
+database_id = "bdaa8030-de52-4a75-b934-4a3d2feaf2ae"
 
 [vars]
 FROM_EMAIL = "noreply@veneth.studio"

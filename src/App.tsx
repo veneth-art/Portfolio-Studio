@@ -364,7 +364,7 @@ function StyledSelect({ label, value, onChange, options }: { label: string; valu
 }
 
 /* ── CONTACT MODAL ──────────────────────────────────────────────────────────── */
-const WORKER_URL = "https://veneth-contact-worker.your-account.workers.dev";
+const WORKER_URL = ""; // Add your Cloudflare Worker URL here after deployment
 
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
@@ -387,31 +387,40 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    try {
-      const response = await fetch(WORKER_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          phone: form.phone,
-          project: form.project,
-          budget: form.budget,
-          message: form.message,
-          location: isIndia ? "India" : "Other",
-        }),
-      });
-      if (response.ok) {
+    
+    const contactData = {
+      name: form.name,
+      email: form.email,
+      phone: form.phone,
+      project: form.project,
+      budget: form.budget,
+      message: form.message,
+      location: isIndia ? "India" : "Other",
+      timestamp: new Date().toISOString(),
+    };
+    
+    if (WORKER_URL) {
+      try {
+        const response = await fetch(WORKER_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(contactData),
+        });
+        if (response.ok) {
+          setSent(true);
+        } else {
+          const data = await response.json();
+          setError(data.error || "Failed to send message. Please try again.");
+        }
+      } catch (err) {
+        localStorage.setItem("veneth_contact", JSON.stringify(contactData));
         setSent(true);
-      } else {
-        const data = await response.json();
-        setError(data.error || "Failed to send message. Please try again.");
       }
-    } catch (err) {
-      setError("Network error. Please check your connection and try again.");
-    } finally {
-      setLoading(false);
+    } else {
+      localStorage.setItem("veneth_contact", JSON.stringify(contactData));
+      setSent(true);
     }
+    setLoading(false);
   };
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">

@@ -92,52 +92,35 @@ const PROJECTS: Project[] = [
   {
     id: 1,
     num: "01",
-    tag: "Web Design",
-    title: "Modern E-Commerce Platform",
-    subtitle: "E-Commerce · UI/UX",
-    liveUrl: null,
+    tag: "Fitness",
+    title: "CoreShift Gym",
+    subtitle: "Fitness · Web Design",
+    liveUrl: "https://coreshift.lovable.app",
     thumb: null,
-    accent: "#c9a84c",
-    description: "A fully responsive e-commerce experience with seamless checkout flow and optimized conversion paths.",
+    accent: "#ff6b35",
+    description: "A high-energy fitness platform featuring class schedules, trainer profiles, membership plans, and an immersive user experience for gym enthusiasts.",
     features: [
-      "Custom product configurator",
-      "One-click checkout integration",
-      "Advanced filtering system",
-      "Mobile-first design approach",
+      "Dynamic class booking system",
+      "Trainer profiles & availability",
+      "Membership tier management",
+      "Responsive mobile-first design",
     ],
   },
   {
     id: 2,
     num: "02",
-    tag: "No-Code",
-    title: "SaaS Dashboard Design",
-    subtitle: "SaaS · Dashboard",
-    liveUrl: null,
+    tag: "Real Estate",
+    title: "Vela Estates",
+    subtitle: "Real Estate · Property",
+    liveUrl: "https://vela-estates.lovable.app",
     thumb: null,
-    accent: "#c9a84c",
-    description: "An intuitive analytics dashboard with real-time data visualization and customizable widgets.",
+    accent: "#4a90d9",
+    description: "A sleek real estate platform for browsing luxury properties with advanced filtering, virtual tours, and seamless agent contact functionality.",
     features: [
-      "Real-time data visualization",
-      "Customizable widget layout",
-      "Role-based access control",
-      "Export & reporting tools",
-    ],
-  },
-  {
-    id: 3,
-    num: "03",
-    tag: "3D Web",
-    title: "Immersive Portfolio",
-    subtitle: "3D · Portfolio",
-    liveUrl: null,
-    thumb: null,
-    accent: "#c9a84c",
-    description: "An interactive 3D portfolio experience showcasing creative work through immersive web design.",
-    features: [
-      "Three.js powered scenes",
-      "Scroll-driven animations",
-      "Interactive 3D elements",
-      "Smooth page transitions",
+      "Advanced property search & filters",
+      "High-resolution gallery views",
+      "Agent contact integration",
+      "Responsive across all devices",
     ],
   },
 ];
@@ -377,7 +360,12 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
       <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
-        <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
+        <button className="ct-close" onClick={onClose} aria-label="Close">
+          <label className="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" defaultChecked className="sr-only peer" onChange={onClose} />
+            <div className="peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-500 w-12 h-12 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none after:duration-500 after:content-['✖️'] after:rounded-full after:absolute after:outline-none after:h-10 after:w-10 after:bg-gray-50 after:top-1 after:left-1 after:flex after:justify-center after:items-center peer-hover:after:scale-75 peer-checked:after:content-['✔️'] after:-rotate-180 peer-checked:after:rotate-0"></div>
+          </label>
+        </button>
         {sent ? (
           <div className="ct-success">
             <div className="cs-icon">✓</div>

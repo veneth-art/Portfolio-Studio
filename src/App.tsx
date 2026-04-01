@@ -364,7 +364,7 @@ function StyledSelect({ label, value, onChange, options }: { label: string; valu
 }
 
 /* ── CONTACT MODAL ──────────────────────────────────────────────────────────── */
-const WORKER_URL = "https://veneth-contact-api.studio-design.workers.dev";
+const WORKER_URL = "https://veneth-studio.workers.dev";
 
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);

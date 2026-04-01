@@ -589,15 +589,17 @@ select {
   margin-bottom: 36px;
 }
 
-.hero-tags {
+.hero-skill-badges {
+  /* display: inline-flex; */
+  gap: 8px;
   flex-wrap: wrap;
-  gap: 6px;
+  align-items: center;
   vertical-align: baseline;
 }
 
-.hero-tag {
+.hsb {
   display: inline-block;
-  padding: 4px 10px;
+  padding: 4px 12px;
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 20px;
@@ -606,13 +608,40 @@ select {
   color: var(--text-primary);
   transition: all 0.3s ease;
   cursor: default;
+  animation: skillFadeIn 0.5s ease forwards;
+  opacity: 0;
 }
 
-.hero-tag:hover {
+.hsb:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.hsb:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.hsb:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+.hsb:hover {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--dark);
   transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.25);
+}
+
+@keyframes skillFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .hero-btns {

@@ -111,7 +111,7 @@ const PROJECTS: Project[] = [
     num: "02",
     tag: "Real Estate",
     title: "Vela Estates",
-    subtitle: "Real Estate · Property",
+    subtitle: "Real Estate · Web Design",
     liveUrl: "https://vela-estates.lovable.app",
     thumb: null,
     accent: "#4a90d9",
@@ -276,7 +276,7 @@ function ProjectCard({ p, idx, onPreview }: { p: Project; idx: number; onPreview
         <p className="proj-desc">{p.description}</p>
         <ul className="proj-feats">{p.features.slice(0, 4).map((f, i) => <li key={i}><span style={{ color: p.accent }}>—</span> {f}</li>)}</ul>
         <div className="proj-actions">
-          <MagBtn className="proj-preview-btn" onClick={() => onPreview(p)}>View Case Study →</MagBtn>
+          <MagBtn className="proj-preview-btn" onClick={() => onPreview(p)}>View Case Study</MagBtn>
           {p.liveUrl && <MagBtn className="proj-live-btn" href={p.liveUrl} target="_blank">Live Site ↗</MagBtn>}
         </div>
       </div>
@@ -412,7 +412,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                 </div>
                 <div className="ct-field">
                   <label htmlFor="ct-email">Email Address *</label>
-                  <input id="ct-email" type="email" placeholder="veneth@gmail.com" required value={form.email} onChange={e => {
+                  <input id="ct-email" type="email" placeholder="venethck34@gmail.com" required value={form.email} onChange={e => {
                     setForm(v => ({ ...v, email: e.target.value }));
                     const domain = e.target.value.split('@')[1] || '';
                     setIsIndia(domain.endsWith('.in'));
@@ -430,7 +430,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                   onChange={v => setIsIndia(v === "india")}
                   options={[
                     { value: "india", label: "India (₹ INR)" },
-                    { value: "other", label: "Other Countries ($ USD)" }
+                    { value: "other", label: "Other Countries ($ USD)" },
                   ]}
                   id=""
                 />
@@ -441,7 +441,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                   value={form.project}
                   onChange={v => setForm(f => ({ ...f, project: v }))}
                   options={[
-                    { value: "", label: "Select a type..." },
+                    // { value: "", label: "Select a type..." },//
                     { value: "website", label: "Website" },
                     { value: "webapp", label: "Web Application" },
                     { value: "mobile", label: "Mobile Application Design" },
@@ -454,14 +454,13 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                   value={form.budget}
                   onChange={v => setForm(f => ({ ...f, budget: v }))}
                   options={isIndia ? [
-                    { value: "", label: "Select range..." },
-                    { value: "15k-25k", label: "₹15,000 - ₹25,000" },
-                    { value: "35k-50k", label: "₹35,000 - ₹50,000" },
-                    { value: "55k-70k", label: "₹55,000 - ₹70,000" },
-                    { value: "80k-90k", label: "₹80,000 - ₹90,000" },
-                    { value: "1L+", label: "₹1,00,000+" }
+                    // { value: "", label: "Select range..." },//
+                    { value: "15k-30k", label: "₹15,000 - ₹30,000" },
+                    { value: "35k-50k", label: "₹35,000 - ₹60,000" },
+                    { value: "55k-70k", label: "₹70,000 - ₹90,000" },
+                    { value: "80k-90k", label: "₹1,00,000+" },
                   ] : [
-                    { value: "", label: "Select range..." },
+                    //{ value: "", label: "Select range..." },//
                     { value: "750-850", label: "$750 - $850" },
                     { value: "1k-1.4k", label: "$1,000 - $1,400" },
                     { value: "1.5k-2k", label: "$1,500 - $2,000" },
@@ -475,7 +474,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                 <textarea id="ct-message" rows={4} placeholder="Tell me about your project..." required value={form.message} onChange={e => setForm(v => ({ ...v, message: e.target.value }))} />
               </div>
               <button type="submit" className="ct-submit" disabled={loading}>
-                {loading ? "Sending..." : "Send Message →"}
+                {loading ? "Sending..." : "Send Message"}
               </button>
             </form>
           </>
@@ -580,7 +579,7 @@ export default function App() {
                 <span className="badge-dot" /><span>Veneth ChandraKumar · UI/UX Designer &amp; No-Code Developer</span>
               </div>
               <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
-                <span className="hl hl-serif">I design <span className="hl hl-italic">&amp; build</span></span>
+                <span className="hl hl-serif">Building <span className="hl hl-italic">high-performance</span></span>
                 <span className="hl hl-sm">digital experiences</span>
                 <span className="hl hl-accent">that drive growth.</span>
               </h1>
@@ -593,12 +592,9 @@ export default function App() {
                 Building high-performance digital experiences that elevate brands and drive real results.
               </p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
-                <MagBtn className="btn-dark" onClick={() => scrollTo("projects")}>View Selected Works →</MagBtn>
+                <MagBtn className="btn-dark" onClick={() => scrollTo("projects")}>View Selected Works</MagBtn>
                 <button className="hero-talk-btn" onClick={() => setContactOpen(true)}>
                   Get in touch
-                  <div className="hero-talk-hover">
-                    <div />
-                  </div>
                 </button>
               </div>
               <div className={`hero-stats${heroLoaded ? " in" : ""}`}>
@@ -687,7 +683,7 @@ export default function App() {
                     <a href="mailto:venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
                     <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
                   </div>
-                  <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Work With Me →</MagBtn>
+                  <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Work With Me</MagBtn>
                 </div>
               </div>
             </div>
@@ -768,7 +764,7 @@ export default function App() {
                 <h2 className="cta-h2">Your Next Web Experience<br /><em>Starts Here.</em></h2>
                 <p className="cta-sub">Available for real estate, healthcare, hospitality, fitness, and lifestyle brands across Tamil Nadu and beyond.</p>
                 <div className="cta-btns">
-                  <MagBtn className="btn-light" onClick={() => setContactOpen(true)}>Start a Project →</MagBtn>
+                  <MagBtn className="btn-light" onClick={() => setContactOpen(true)}>Start a Project</MagBtn>
                   <MagBtn className="btn-outline-light" href="https://instagram.com/Veneth_design" target="_blank">Follow on Instagram</MagBtn>
                 </div>
               </div>
@@ -785,13 +781,13 @@ export default function App() {
                 <p className="ft-tagline">Crafting digital experiences that elevate brands and drive results.</p>
                 <div className="ft-social">
                   <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="ft-social-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
                   </a>
                   <a href="https://twitter.com/veneth_design" target="_blank" rel="noreferrer" className="ft-social-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
                   </a>
                   <a href="https://linkedin.com/in/veneth" target="_blank" rel="noreferrer" className="ft-social-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
                   </a>
                 </div>
               </div>
@@ -809,22 +805,21 @@ export default function App() {
                 <ul className="ft-nav">
                   <li><a>UI/UX Design</a></li>
                   <li><a>Web Development</a></li>
-                  <li><a>No-Code Solutions</a></li>
-                  <li><a>Brand Identity</a></li>
+                  <li><a>No-Code Development</a></li>
+                  <li><a>Vibe Coding</a></li>
                 </ul>
               </div>
               <div className="ft-col">
                 <h4 className="ft-col-title">Contact</h4>
                 <ul className="ft-nav">
-                  <li><a href="mailto:hello@venethstudio.com">hello@venethstudio.com</a></li>
-                  <li><a href="tel:+919876543210">+91 98765 43210</a></li>
+                  <li><a href="mailto:venethck34@gmail.com">Venethck34@gmail.com</a></li>
+                  <li><a href="tel:+918248547040">+91 8248547040</a></li>
                   <li><span className="ft-location">Trichy, Tamil Nadu, India</span></li>
                 </ul>
               </div>
             </div>
             <div className="ft-bottom">
               <p className="ft-copy">© 2025 Veneth Studio. All rights reserved.</p>
-              <p className="ft-made">Designed & Built with ❤️</p>
             </div>
           </div>
         </footer>

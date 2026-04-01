@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "veneth-contact-api",
+  "name": "veneth-studio",
   "compatibility_date": "2025-01-01",
   "main": "./worker/index.ts",
   "workers_dev": true,

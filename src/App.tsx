@@ -364,7 +364,7 @@ function StyledSelect({ label, value, onChange, options }: { label: string; valu
 }
 
 /* ── CONTACT MODAL ──────────────────────────────────────────────────────────── */
-const WORKER_URL = ""; // Add your Cloudflare Worker URL here after deployment
+const WORKER_URL = "https://veneth-contact-api.studio-design.workers.dev";
 
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);

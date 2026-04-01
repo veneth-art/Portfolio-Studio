@@ -63,27 +63,27 @@ const SERVICES: Service[] = [
   {
     id: 3,
     num: "03",
-    title: "3D Web & Motion",
+    title: "Mobile App Design",
     items: [
-      "Three.js Web Experiences",
-      "GSAP Animations",
-      "Scroll-Driven Animations",
-      "Interactive 3D Elements",
-      "WebGL Effects",
-      "Performance Optimization",
+      "User Research & Analysis",
+      "Wireframing & Prototyping",
+      "UI Design & Visual Design",
+      "Interaction Design",
+      "Usability Testing",
+      "App Store Optimization",
     ],
   },
   {
     id: 4,
     num: "04",
-    title: "Brand & Identity",
+    title: "Vibe Coding",
     items: [
-      "Logo Design",
-      "Brand Guidelines",
-      "Social Media Templates",
-      "Marketing Collateral",
-      "Brand Strategy",
-      "Visual Identity Systems",
+      "AI-Assisted Development",
+      "Rapid Prototyping",
+      "Full-Stack Solutions",
+      "API Integration",
+      "MVP Launch",
+      "Iterative Refinement",
     ],
   },
 ];
@@ -506,12 +506,7 @@ export default function App() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
-  const [dark, setDark] = useState(true);
   const [pageTransition, setPageTransition] = useState(false);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
-  }, [dark]);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -556,14 +551,9 @@ export default function App() {
               ))}
               <button className="nav-cta" onClick={() => { setContactOpen(true); setMenuOpen(false); }}>Contact</button>
             </nav>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <button className="theme-toggle" onClick={() => setDark(v => !v)} aria-label="Toggle theme">
-                {dark ? "☀️" : "🌙"}
-              </button>
-              <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
-                <span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} />
-              </button>
-            </div>
+            <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
+              <span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} />
+            </button>
           </div>
         </header>
 
@@ -760,12 +750,12 @@ export default function App() {
           <section id="contact" className="cta-sec">
             <div className="sec-wrap">
               <div className="cta-box" data-reveal>
-                <span className="eyebrow" style={{ color: "var(--text-on-dark-muted)" }}>Ready to Build?</span>
+                <span className="eyebrow cta-eyebrow">Ready to Build?</span>
                 <h2 className="cta-h2">Your Next Web Experience<br /><em>Starts Here.</em></h2>
                 <p className="cta-sub">Available for real estate, healthcare, hospitality, fitness, and lifestyle brands across Tamil Nadu and beyond.</p>
                 <div className="cta-btns">
-                  <MagBtn className="btn-light" onClick={() => setContactOpen(true)}>Start a Project</MagBtn>
-                  <MagBtn className="btn-outline-light" href="https://instagram.com/Veneth_design" target="_blank">Follow on Instagram</MagBtn>
+                  <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Start a Project</MagBtn>
+                  <MagBtn className="btn-outline" href="https://instagram.com/Veneth_design" target="_blank">Follow on Instagram</MagBtn>
                 </div>
               </div>
             </div>

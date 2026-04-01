@@ -2,7 +2,6 @@ import { useEffect, useRef, useState, useCallback } from "react";
 import { VENETH_PHOTO } from "./veneth_photo";
 import ParticleBackground from "./ParticleBackground";
 import SmoothScroll from "./SmoothScroll";
-import { submitContact } from "./lib/api";
 
 /* ── TYPES ─────────────────────────────────────────────────────────────────── */
 interface Project {
@@ -356,161 +355,84 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [isIndia, setIsIndia] = useState<boolean>(true);
-  const [form, setForm] = useState({ 
-    name: "", 
-    email: "", 
-    phone: "",
-    project: "", 
-    budget: "", 
-    message: "" 
-  });
-
+  const [form, setForm] = useState({ name: "", email: "", project: "", budget: "", message: "" });
   useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
-
-    // Fast location detection using timezone
-    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const isIndianTimezone = timezone.includes('Kolkata') || timezone.includes('India') || timezone.includes('IST');
-    setIsIndia(isIndianTimezone);
-
     return () => {
       document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    try {
-      await submitContact(form);
-      setSent(true);
-    } catch (err) {
-      alert("Failed to send message. Please try again or email directly.");
-    } finally {
-      setLoading(false);
-    }
+    await new Promise(r => setTimeout(r, 1200));
+    setLoading(false);
+    setSent(true);
   };
-
-  const budgetOptionsIndia = [
-    { value: "15k-25k", label: "₹15,000 - ₹25,000" },
-    { value: "30k-50k", label: "₹30,000 - ₹50,000" },
-    { value: "50k-70k", label: "₹50,000 - ₹70,000" },
-    { value: "80k+", label: "₹80,000+" },
-  ];
-
-  const budgetOptionsGlobal = [
-    { value: "600-850", label: "$600 - $850" },
-    { value: "900-1k", label: "$900 - $1,000" },
-    { value: "1.5k-1.8k", label: "$1,500 - $1,800" },
-    { value: "2k-2.5k", label: "$2,000 - $2,500" },
-    { value: "2.5k+", label: "$2,500+" },
-  ];
-
-  const budgetOptions = isIndia ? budgetOptionsIndia : budgetOptionsGlobal;
-
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
-      <div className="contact-modal-wrapper" onClick={e => e.stopPropagation()}>
-        <div className="ct-modal" role="document">
-          <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
-          {sent ? (
-            <div className="ct-success">
-              <div className="success-icon">
-                <div className="circle">
-                  <div className="checkmark" />
-                </div>
-              </div>
-              <h3>Message Sent!</h3>
-              <p>Thanks for reaching out. I'll get back to you within 24 hours.</p>
-              <div className="contact-info">
-                <div className="info-item">
-                  <span>📧</span>
-                  <span>hello@venethstudio.com</span>
-                </div>
-                <div className="info-item">
-                  <span>📱</span>
-                  <span>+91 98765 43210</span>
-                </div>
-              </div>
+      <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
+        <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
+        {sent ? (
+          <div className="ct-success">
+            <div className="cs-icon">✓</div>
+            <h3>Message Sent!</h3>
+            <p>Thanks for reaching out. I'll get back to you within 24 hours.</p>
+            <MagBtn className="btn-dark" onClick={onClose} style={{ marginTop: 20 }}>Close</MagBtn>
+          </div>
+        ) : (
+          <>
+            <div className="ct-head">
+              <span className="eyebrow">Get in Touch</span>
+              <h2 className="ct-title" id="ct-title">Let's Build<br /><em>Something Great.</em></h2>
             </div>
-          ) : (
-            <>
-              <div className="ct-head">
-                <span className="eyebrow">Get in Touch</span>
-                <h2 className="ct-title" id="ct-title">Let's Build <em>Something Great.</em></h2>
-                <p className="ct-subtitle">Tell me about your project and I'll get back to you soon</p>
-              </div>
-              <form className="ct-form" onSubmit={handleSubmit}>
-                <div className="ct-row">
-                  <div className="ct-field">
-                    <label htmlFor="ct-name">Your Name <span className="required">*</span></label>
-                    <input id="ct-name" type="text" placeholder="John Smith" required value={form.name} onChange={e => setForm(v => ({ ...v, name: e.target.value }))} />
-                  </div>
-                  <div className="ct-field">
-                    <label htmlFor="ct-email">Email <span className="required">*</span></label>
-                    <input id="ct-email" type="email" placeholder="john@company.com" required value={form.email} onChange={e => setForm(v => ({ ...v, email: e.target.value }))} />
-                  </div>
-                </div>
-                <div className="ct-row">
-                  <div className="ct-field">
-                    <label htmlFor="ct-phone">Phone Number</label>
-                    <input id="ct-phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={e => setForm(v => ({ ...v, phone: e.target.value }))} />
-                  </div>
-                  <div className="ct-field">
-                    <label htmlFor="ct-project">Project Type</label>
-                    <select id="ct-project" value={form.project} onChange={e => setForm(v => ({ ...v, project: e.target.value }))}>
-                      <option value="">Select a type...</option>
-                      <option value="website">Website</option>
-                      <option value="webapp">Web Application</option>
-                      <option value="branding">Branding</option>
-                      <option value="other">Other</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="ct-row">
-                  <div className="ct-field">
-                    <label htmlFor="ct-budget">Budget Range {isIndia && <span className="budget-badge">₹ INR</span>}</label>
-                    <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
-                      <option value="">Select range...</option>
-                      {budgetOptions.map(opt => (
-                        <option key={opt.value} value={opt.value}>{opt.label}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="ct-field">
-                    <label>Your Location</label>
-                    <div className="location-indicator">
-                      <span className="flag">{isIndia ? "🇮🇳" : "🌍"}</span>
-                      <span className="text">{isIndia ? "India" : "International"}</span>
-                    </div>
-                  </div>
+            <form className="ct-form" onSubmit={handleSubmit}>
+              <div className="ct-row">
+                <div className="ct-field">
+                  <label htmlFor="ct-name">Your Name *</label>
+                  <input id="ct-name" type="text" placeholder="John Smith" required value={form.name} onChange={e => setForm(v => ({ ...v, name: e.target.value }))} />
                 </div>
                 <div className="ct-field">
-                  <label htmlFor="ct-message">Project Details <span className="required">*</span></label>
-                  <textarea id="ct-message" rows={4} placeholder="Tell me about your project, your goals, and any specific requirements..." required value={form.message} onChange={e => setForm(v => ({ ...v, message: e.target.value }))} />
+                  <label htmlFor="ct-email">Email Address *</label>
+                  <input id="ct-email" type="email" placeholder="john@company.com" required value={form.email} onChange={e => setForm(v => ({ ...v, email: e.target.value }))} />
                 </div>
-                <button type="submit" className="ct-submit" disabled={loading}>
-                  <span>
-                    {loading ? (
-                      <>
-                        <span className="loading-spinner" />
-                        Sending...
-                      </>
-                    ) : (
-                      <>Send Message →</>
-                    )}
-                  </span>
-                </button>
-              </form>
-            </>
-          )}
-        </div>
+              </div>
+              <div className="ct-row">
+                <div className="ct-field">
+                  <label htmlFor="ct-project">Project Type</label>
+                  <select id="ct-project" value={form.project} onChange={e => setForm(v => ({ ...v, project: e.target.value }))}>
+                    <option value="">Select a type...</option>
+                    <option value="website">Website</option>
+                    <option value="webapp">Web Application</option>
+                    <option value="branding">Branding</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div className="ct-field">
+                  <label htmlFor="ct-budget">Budget Range</label>
+                  <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
+                    <option value="">Select range...</option>
+                    <option value="850-1k">$850 - $1,000</option>
+                    <option value="12k-15k">$12,000 - $15,000</option>
+                    <option value="15k+">$15,000+</option>
+                  </select>
+                </div>
+              </div>
+              <div className="ct-field">
+                <label htmlFor="ct-message">Project Details *</label>
+                <textarea id="ct-message" rows={4} placeholder="Tell me about your project..." required value={form.message} onChange={e => setForm(v => ({ ...v, message: e.target.value }))} />
+              </div>
+              <button type="submit" className="ct-submit" disabled={loading}>
+                {loading ? "Sending..." : "Send Message →"}
+              </button>
+            </form>
+          </>
+        )}
       </div>
     </div>
   );
@@ -608,7 +530,7 @@ export default function App() {
           <div className="hero-wrap">
             <div className="hero-left">
               <div className={`hero-badge${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".1s" }}>
-                <span className="badge-dot" /><span>Veneth ChandraKumar · UI/UX &amp; No-Code Developer</span>
+                <span className="badge-dot" /><span>Veneth ChandraKumar · UI/UX Designer &amp; No-Code Developer</span>
               </div>
               <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
                 <span className="hl hl-serif">I design <span className="hl hl-italic">&amp; build</span></span>
@@ -706,7 +628,7 @@ export default function App() {
                     ))}
                   </div>
                   <div className="about-links">
-                    <a href="mailto:hello@venethstudio.com" className="alink">✉ hello@venethstudio.com</a>
+                    <a href="mailto:venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
                     <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
                   </div>
                   <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Work With Me →</MagBtn>

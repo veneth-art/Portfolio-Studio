@@ -3,9 +3,10 @@ import Lenis from "lenis";
 
 interface SmoothScrollProps {
   children: React.ReactNode;
+  scrollLock?: boolean;
 }
 
-export default function SmoothScroll({ children }: SmoothScrollProps) {
+export default function SmoothScroll({ children, scrollLock }: SmoothScrollProps) {
   const lenisRef = useRef<Lenis | null>(null);
 
   useEffect(() => {
@@ -29,6 +30,16 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
       lenis.destroy();
     };
   }, []);
+
+  useEffect(() => {
+    if (lenisRef.current) {
+      if (scrollLock) {
+        lenisRef.current.stop();
+      } else {
+        lenisRef.current.start();
+      }
+    }
+  }, [scrollLock]);
 
   return <>{children}</>;
 }

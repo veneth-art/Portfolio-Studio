@@ -364,7 +364,7 @@ function StyledSelect({ label, value, onChange, options }: { label: string; valu
 }
 
 /* ── CONTACT MODAL ──────────────────────────────────────────────────────────── */
-const WORKER_URL = "https://veneth-studio.workers.dev";
+const API_URL = "/api/contact";
 
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
@@ -399,24 +399,19 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       timestamp: new Date().toISOString(),
     };
     
-    if (WORKER_URL) {
-      try {
-        const response = await fetch(WORKER_URL, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(contactData),
-        });
-        if (response.ok) {
-          setSent(true);
-        } else {
-          const data = await response.json();
-          setError(data.error || "Failed to send message. Please try again.");
-        }
-      } catch (err) {
-        localStorage.setItem("veneth_contact", JSON.stringify(contactData));
+    try {
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(contactData),
+      });
+      if (response.ok) {
         setSent(true);
+      } else {
+        const data = await response.json();
+        setError(data.error || "Failed to send message. Please try again.");
       }
-    } else {
+    } catch (err) {
       localStorage.setItem("veneth_contact", JSON.stringify(contactData));
       setSent(true);
     }

@@ -389,7 +389,7 @@ select {
   background: var(--accent);
   color: var(--dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 [data-theme="dark"] .btn-dark {
@@ -3023,8 +3023,5 @@ textarea:focus-visible {
   color: var(--text-muted);
 }
 
-.ft-made {
-  font-size: 13px;
-  color: var(--text-muted);
-}
+
 }

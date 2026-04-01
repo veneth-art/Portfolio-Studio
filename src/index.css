@@ -3403,3 +3403,19 @@ textarea:focus-visible {
     gap: 12px;
   }
 }
+
+.ct-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  font-size: 14px;
+  color: #ef4444;
+}
+
+.ct-error span {
+  font-size: 16px;
+}

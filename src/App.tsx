@@ -364,10 +364,13 @@ function StyledSelect({ label, value, onChange, options }: { label: string; valu
 }
 
 /* ── CONTACT MODAL ──────────────────────────────────────────────────────────── */
+const WORKER_URL = "https://veneth-contact-worker.your-account.workers.dev";
+
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isIndia, setIsIndia] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", project: "", budget: "", message: "" });
   useEffect(() => {
     document.body.style.overflow = "hidden";
@@ -383,9 +386,32 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    await new Promise(r => setTimeout(r, 1200));
-    setLoading(false);
-    setSent(true);
+    setError(null);
+    try {
+      const response = await fetch(WORKER_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          phone: form.phone,
+          project: form.project,
+          budget: form.budget,
+          message: form.message,
+          location: isIndia ? "India" : "Other",
+        }),
+      });
+      if (response.ok) {
+        setSent(true);
+      } else {
+        const data = await response.json();
+        setError(data.error || "Failed to send message. Please try again.");
+      }
+    } catch (err) {
+      setError("Network error. Please check your connection and try again.");
+    } finally {
+      setLoading(false);
+    }
   };
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
@@ -473,6 +499,11 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                 <label htmlFor="ct-message">Project Details *</label>
                 <textarea id="ct-message" rows={4} placeholder="Tell me about your project..." required value={form.message} onChange={e => setForm(v => ({ ...v, message: e.target.value }))} />
               </div>
+              {error && (
+                <div className="ct-error">
+                  <span>⚠️</span> {error}
+                </div>
+              )}
               <button type="submit" className="ct-submit" disabled={loading}>
                 {loading ? "Sending..." : "Send Message"}
               </button>

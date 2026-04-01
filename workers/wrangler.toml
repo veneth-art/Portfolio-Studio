@@ -2,13 +2,10 @@ name = "veneth-contact-worker"
 main = "src/index.ts"
 compatibility_date = "2024-01-01"
 
-[site]
-bucket = "./dist"
-
 [[d1_databases]]
 binding = "DB"
 database_name = "veneth-contacts"
-database_id = "YOUR_DATABASE_ID_HERE"
+database_id = "2ad99ae7-3e5c-414c-b32e-06b1e3d8b52a"
 
-[vars]]
+[vars]
 FROM_EMAIL = "noreply@veneth.studio"

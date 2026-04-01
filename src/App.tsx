@@ -338,7 +338,8 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [form, setForm] = useState({ name: "", email: "", project: "", budget: "", message: "" });
+  const [isIndia, setIsIndia] = useState(false);
+  const [form, setForm] = useState({ name: "", email: "", phone: "", project: "", budget: "", message: "" });
   useEffect(() => {
     document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -360,12 +361,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
       <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
-        <button className="ct-close" onClick={onClose} aria-label="Close">
-          <label className="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" defaultChecked className="sr-only peer" onChange={onClose} />
-            <div className="peer ring-0 bg-rose-400 rounded-full outline-none duration-300 after:duration-500 w-12 h-12 shadow-md peer-checked:bg-emerald-500 peer-focus:outline-none after:duration-500 after:content-['✖️'] after:rounded-full after:absolute after:outline-none after:h-10 after:w-10 after:bg-gray-50 after:top-1 after:left-1 after:flex after:justify-center after:items-center peer-hover:after:scale-75 peer-checked:after:content-['✔️'] after:-rotate-180 peer-checked:after:rotate-0"></div>
-          </label>
-        </button>
+        <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
         {sent ? (
           <div className="ct-success">
             <div className="cs-icon">✓</div>
@@ -383,11 +379,28 @@ function ContactModal({ onClose }: { onClose: () => void }) {
               <div className="ct-row">
                 <div className="ct-field">
                   <label htmlFor="ct-name">Your Name *</label>
-                  <input id="ct-name" type="text" placeholder="John Smith" required value={form.name} onChange={e => setForm(v => ({ ...v, name: e.target.value }))} />
+                  <input id="ct-name" type="text" placeholder="veneth" required value={form.name} onChange={e => setForm(v => ({ ...v, name: e.target.value }))} />
                 </div>
                 <div className="ct-field">
                   <label htmlFor="ct-email">Email Address *</label>
-                  <input id="ct-email" type="email" placeholder="john@company.com" required value={form.email} onChange={e => setForm(v => ({ ...v, email: e.target.value }))} />
+                  <input id="ct-email" type="email" placeholder="veneth@gmail.com" required value={form.email} onChange={e => {
+                    setForm(v => ({ ...v, email: e.target.value }));
+                    const domain = e.target.value.split('@')[1] || '';
+                    setIsIndia(domain.endsWith('.in'));
+                  }} />
+                </div>
+              </div>
+              <div className="ct-row">
+                <div className="ct-field">
+                  <label htmlFor="ct-phone">Phone Number</label>
+                  <input id="ct-phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={e => setForm(v => ({ ...v, phone: e.target.value }))} />
+                </div>
+                <div className="ct-field">
+                  <label htmlFor="ct-location">Location</label>
+                  <select id="ct-location" value={isIndia ? "india" : "other"} onChange={e => setIsIndia(e.target.value === "india")}>
+                    <option value="india">India (₹ INR)</option>
+                    <option value="other">Other Countries ($ USD)</option>
+                  </select>
                 </div>
               </div>
               <div className="ct-row">
@@ -397,7 +410,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                     <option value="">Select a type...</option>
                     <option value="website">Website</option>
                     <option value="webapp">Web Application</option>
-                    <option value="branding">Branding</option>
+                    <option value="Mobile Application design">Mobile Application Design</option>
                     <option value="other">Other</option>
                   </select>
                 </div>
@@ -405,9 +418,22 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                   <label htmlFor="ct-budget">Budget Range</label>
                   <select id="ct-budget" value={form.budget} onChange={e => setForm(v => ({ ...v, budget: e.target.value }))}>
                     <option value="">Select range...</option>
-                    <option value="850-1k">$850 - $1,000</option>
-                    <option value="12k-15k">$12,000 - $15,000</option>
-                    <option value="15k+">$15,000+</option>
+                    {isIndia ? (
+                      <>
+                        <option value="15k-25k">₹15,000 - ₹25,000</option>
+                        <option value="35k-50k">₹35,000 - ₹50,000</option>
+                        <option value="55k-70k">₹55,000 - ₹70,000</option>
+                        <option value="80k-90k">₹80,000 - ₹90,000</option>
+                        <option value="1L+">₹1,00,000+</option>
+                      </>
+                    ) : (
+                      <>
+                        <option value="750-850">$750 - $850</option>
+                        <option value="1k-1.4k">$1,000 - $1,400</option>
+                        <option value="1.5k-2k">$1,500 - $2,000</option>
+                        <option value="2k+">$2,000+</option>
+                      </>
+                    )}
                   </select>
                 </div>
               </div>

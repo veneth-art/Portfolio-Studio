@@ -484,17 +484,15 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                   value={form.budget}
                   onChange={v => setForm(f => ({ ...f, budget: v }))}
                   options={isIndia ? [
-                    // { value: "", label: "Select range..." },//
-                    { value: "15k-30k", label: "₹15,000 - ₹30,000" },
-                    { value: "35k-50k", label: "₹35,000 - ₹60,000" },
-                    { value: "55k-70k", label: "₹70,000 - ₹90,000" },
-                    { value: "80k-90k", label: "₹1,00,000+" },
+                    { value: "₹15,000 - ₹30,000", label: "₹15,000 - ₹30,000" },
+                    { value: "₹35,000 - ₹60,000", label: "₹35,000 - ₹60,000" },
+                    { value: "₹70,000 - ₹90,000", label: "₹70,000 - ₹90,000" },
+                    { value: "₹1,00,000+", label: "₹1,00,000+" },
                   ] : [
-                    //{ value: "", label: "Select range..." },//
-                    { value: "750-850", label: "$750 - $850" },
-                    { value: "1k-1.4k", label: "$1,000 - $1,400" },
-                    { value: "1.5k-2k", label: "$1,500 - $2,000" },
-                    { value: "2k+", label: "$2,000+" }
+                    { value: "$500 - $1,000", label: "$500 - $1,000" },
+                    { value: "$1,000 - $2,500", label: "$1,000 - $2,500" },
+                    { value: "$2,500 - $5,000", label: "$2,500 - $5,000" },
+                    { value: "$5,000+", label: "$5,000+" }
                   ]}
                   id=""
                 />

@@ -7,7 +7,16 @@ bundle.html
 
 # wrangler files
 .wrangler
-.dev.vars*
+.dev.vars
 !.dev.vars.example
-.env*
+
+# env files
+.env
+.env.*
 !.env.example
+
+# Secret tokens
+*.pem
+*.key
+credentials.json
+secrets.json

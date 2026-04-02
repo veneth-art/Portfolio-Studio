@@ -1,0 +1,3 @@
+# Cloudflare D1 Database ID
+# Get this from Cloudflare Dashboard > D1 > Your Database
+DB_ID=REMOVED

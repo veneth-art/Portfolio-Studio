@@ -578,10 +578,19 @@ export default function App() {
               <span className="nav-name">Veneth Studio</span>
             </div>
             <nav className={`nav-menu${menuOpen ? " open" : ""}`}>
-              {[["about", "About"], ["services", "Services"], ["projects", "Work"], ["process", "Process"]].map(([id, label]) => (
-                <button key={id} className="nav-item" onClick={() => scrollTo(id)}>{label}</button>
-              ))}
-              <button className="nav-cta" onClick={() => { setContactOpen(true); setMenuOpen(false); }}>Contact</button>
+              <div className="nav-menu-header">
+                <div className="nav-menu-brand">
+                  <div className="nav-av"><img src={VENETH_PHOTO} alt="Veneth" /></div>
+                  <span className="nav-name">Veneth Studio</span>
+                </div>
+                <button className="nav-menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">✕</button>
+              </div>
+              <div className="nav-menu-items">
+                {[["about", "About"], ["services", "Services"], ["projects", "Work"], ["process", "Process"]].map(([id, label]) => (
+                  <button key={id} className="nav-item" onClick={() => scrollTo(id)}>{label}</button>
+                ))}
+                <button className="nav-cta" onClick={() => { setContactOpen(true); setMenuOpen(false); }}>Contact</button>
+              </div>
             </nav>
             <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
               <span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} />

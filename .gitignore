@@ -20,3 +20,18 @@ bundle.html
 *.key
 credentials.json
 secrets.json
+
+# env.example files
+.env.example
+.env.example.local
+
+#.dev.vars files
+.dev.vars
+.dev.vars.example
+
+# wrangler files
+.wrangler
+.wrangler.toml
+
+
+

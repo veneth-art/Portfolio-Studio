@@ -387,7 +387,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    
+
     const contactData = {
       name: form.name,
       email: form.email,
@@ -398,7 +398,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
       location: isIndia ? "India" : "Other",
       timestamp: new Date().toISOString(),
     };
-    
+
     try {
       const response = await fetch(API_URL, {
         method: "POST",
@@ -631,7 +631,7 @@ export default function App() {
               <div className="photo-stack">
                 <div className="ps-back" />
                 <div className="ps-front">
-                  <img src={VENETH_PHOTO} alt="Veneth ChandraKumar" className="ps-photo" />
+                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar" className="ps-photo" />
                   <div className="ps-overlay" />
                   <div className="ps-pill"><span className="pill-dot" />Available for Projects</div>
                 </div>
@@ -680,7 +680,7 @@ export default function App() {
               <div className="about-grid">
                 <div className="about-photo-col" data-reveal>
                   <div className="about-photo-frame">
-                    <img src={VENETH_PHOTO} alt="Veneth ChandraKumar" className="about-photo" />
+                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar" className="about-photo" />
                     <div className="apf-deco" />
                     <div className="apf-badge">
                       <span className="apf-name">Veneth ChandraKumar</span>

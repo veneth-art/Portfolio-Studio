@@ -607,26 +607,26 @@ select {
 }
 
 .b1 {
-  width: 520px;
-  height: 520px;
+  width: clamp(200px, 40vw, 520px);
+  height: clamp(200px, 40vw, 520px);
   top: -120px;
-  left: -160px;
+  left: clamp(-80px, -10vw, -160px);
   background: rgba(201, 168, 76, .08);
   animation-delay: 0s
 }
 
 .b2 {
-  width: 400px;
-  height: 400px;
+  width: clamp(150px, 30vw, 400px);
+  height: clamp(150px, 30vw, 400px);
   bottom: -80px;
-  right: -80px;
+  right: clamp(-40px, -5vw, -80px);
   background: rgba(201, 168, 76, .06);
   animation-delay: 3.5s
 }
 
 .b3 {
-  width: 300px;
-  height: 300px;
+  width: clamp(120px, 25vw, 300px);
+  height: clamp(120px, 25vw, 300px);
   top: 40%;
   right: 25%;
   background: rgba(201, 168, 76, .04);
@@ -683,7 +683,7 @@ select {
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
-  font-size: 12px;
+  font-size: clamp(11px, 0.85vw, 12px);
   font-weight: 500;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -745,7 +745,7 @@ select {
 }
 
 .hero-para {
-  font-size: 15px;
+  font-size: clamp(14px, 1vw, 15px);
   line-height: 1.85;
   color: var(--mid);
   max-width: 480px;
@@ -828,14 +828,14 @@ select {
 
 .hstat-n {
   font-family: 'Playfair Display', serif;
-  font-size: 36px;
+  font-size: clamp(28px, 3vw, 36px);
   font-weight: 400;
   color: var(--dark);
   line-height: 1
 }
 
 .hstat-l {
-  font-size: 10px;
+  font-size: clamp(11px, 0.8vw, 12px);
   font-weight: 600;
   letter-spacing: .1em;
   text-transform: uppercase;
@@ -1237,15 +1237,15 @@ select {
 
 /* ΓöÇΓöÇ ABOUT ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ */
 .about-sec {
-  padding: 100px 0;
+  padding: clamp(60px, 8vw, 100px) 0;
   /*background: var(--page-bg); */
   transition: background .35s ease
 }
 
 .about-grid {
   display: grid;
-  grid-template-columns: 400px 1fr;
-  gap: 80px;
+  grid-template-columns: clamp(280px, 35vw, 400px) 1fr;
+  gap: clamp(40px, 6vw, 80px);
   align-items: start
 }
 
@@ -1314,7 +1314,7 @@ select {
 }
 
 .about-para {
-  font-size: 15px;
+  font-size: clamp(14px, 1vw, 15px);
   line-height: 1.9;
   color: var(--mid);
   margin-bottom: 16px
@@ -2199,6 +2199,23 @@ select {
     height: 420px
   }
 
+  .ps-back {
+    width: 280px;
+    height: 380px;
+    right: -50px
+  }
+
+  .ps-front {
+    width: 300px;
+    height: 400px;
+    left: 40px;
+    bottom: -10px
+  }
+
+  .ps-deco-ring {
+    right: -50px
+  }
+
   .ps-tools {
     right: -72px
   }
@@ -2273,20 +2290,22 @@ select {
   }
 
   .photo-stack {
-    width: 280px;
-    height: 370px
+    width: clamp(240px, 70vw, 280px);
+    height: clamp(320px, 90vw, 370px)
   }
 
   .ps-back {
-    width: 200px;
-    height: 280px;
-    top: 20px;
-    right: -14px
+    width: clamp(160px, 50vw, 200px);
+    height: clamp(220px, 60vw, 280px);
+    top: 10px;
+    right: -10px
   }
 
   .ps-front {
-    width: 220px;
-    height: 310px
+    width: clamp(180px, 55vw, 220px);
+    height: clamp(250px, 70vw, 310px);
+    left: 20px;
+    bottom: -5px
   }
 
   .ps-tools {
@@ -2305,6 +2324,20 @@ select {
   .about-grid {
     grid-template-columns: 1fr;
     gap: 36px
+  }
+
+  .about-photo {
+    max-width: 320px;
+    margin: 0 auto
+  }
+
+  .apf-deco {
+    display: none
+  }
+
+  .apf-badge {
+    width: calc(100% - 24px);
+    bottom: 12px
   }
 
   .proj-card {

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { VENETH_PHOTO } from "./veneth_photo";
 import ParticleBackground from "./ParticleBackground";
 import SmoothScroll from "./SmoothScroll";
@@ -842,7 +842,7 @@ export default function App() {
               </div>
             </div>
             <div className="ft-bottom">
-              <p className="ft-copy">© 2025 Veneth Studio. All rights reserved.</p>
+              <p className="ft-copy">© {new Date().getFullYear()} Veneth Studio. All rights reserved.</p>
             </div>
           </div>
         </footer>

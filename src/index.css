@@ -962,8 +962,11 @@ select {
 }
 
 @keyframes ringRot {
+  from {
+    transform: rotate(0deg);
+  }
   to {
-    transform: rotate(360deg)
+    transform: rotate(360deg);
   }
 }
 
@@ -1308,7 +1311,9 @@ select {
   border-radius: calc(var(--r3) + 12px);
   border: 1.5px dashed var(--border2);
   z-index: -1;
-  animation: ringRot 22s linear infinite reverse;
+  animation: ringRot linear infinite reverse;
+  animation-duration: 22s;
+  transform-origin: center center;
 }
 
 .apf-badge {

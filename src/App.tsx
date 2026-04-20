@@ -197,25 +197,73 @@ function useReveal() {
 function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
+  const [hasMoved, setHasMoved] = useState(false);
+
   useEffect(() => {
     let rx = -100, ry = -100, mx = -100, my = -100;
     let raf: number;
-    const onMove = (e: MouseEvent) => { mx = e.clientX; my = e.clientY; if (dotRef.current) { dotRef.current.style.left = mx + "px"; dotRef.current.style.top = my + "px"; } };
+
+    const onMove = (e: MouseEvent) => {
+      if (!hasMoved) setHasMoved(true);
+      mx = e.clientX;
+      my = e.clientY;
+      if (dotRef.current) {
+        dotRef.current.style.left = mx + "px";
+        dotRef.current.style.top = my + "px";
+      }
+    };
+
     const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+
     const tick = () => {
-      rx = lerp(rx, mx, 0.12); ry = lerp(ry, my, 0.12);
-      if (ringRef.current) { ringRef.current.style.left = rx + "px"; ringRef.current.style.top = ry + "px"; }
+      rx = lerp(rx, mx, 0.12);
+      ry = lerp(ry, my, 0.12);
+      if (ringRef.current) {
+        ringRef.current.style.left = rx + "px";
+        ringRef.current.style.top = ry + "px";
+      }
       raf = requestAnimationFrame(tick);
     };
+
     window.addEventListener("mousemove", onMove, { passive: true });
     raf = requestAnimationFrame(tick);
-    const onDown = () => { dotRef.current?.classList.add("pressing"); ringRef.current?.classList.add("pressing"); };
-    const onUp = () => { dotRef.current?.classList.remove("pressing"); ringRef.current?.classList.remove("pressing"); };
+
+    const onDown = () => {
+      dotRef.current?.classList.add("pressing");
+      ringRef.current?.classList.add("pressing");
+    };
+    const onUp = () => {
+      dotRef.current?.classList.remove("pressing");
+      ringRef.current?.classList.remove("pressing");
+    };
+
     window.addEventListener("mousedown", onDown);
     window.addEventListener("mouseup", onUp);
-    return () => { cancelAnimationFrame(raf); window.removeEventListener("mousemove", onMove); window.removeEventListener("mousedown", onDown); window.removeEventListener("mouseup", onUp); };
-  }, []);
-  return (<><div ref={dotRef} className="cur-dot" aria-hidden="true" /><div ref={ringRef} className="cur-ring" aria-hidden="true" /></>);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("mousemove", onMove);
+      window.removeEventListener("mousedown", onDown);
+      window.removeEventListener("mouseup", onUp);
+    };
+  }, [hasMoved]);
+
+  return (
+    <>
+      <div
+        ref={dotRef}
+        className="cur-dot"
+        style={{ opacity: hasMoved ? 1 : 0 }}
+        aria-hidden="true"
+      />
+      <div
+        ref={ringRef}
+        className="cur-ring"
+        style={{ opacity: hasMoved ? 1 : 0 }}
+        aria-hidden="true"
+      />
+    </>
+  );
 }
 
 /* ── PROJECT THUMB ──────────────────────────────────────────────────────────── */
@@ -234,7 +282,7 @@ function ProjectThumb({ p }: { p: Project }) {
   return (
     <div className="thumb-wrap">
       {!loaded && <div className="thumb-skel"><div className="thumb-spinner" style={{ borderTopColor: p.accent }} /></div>}
-      <img src={p.thumb} alt={p.title} className="thumb-img" loading="lazy"
+      <img src={p.thumb} alt={`Thumbnail for ${p.title}`} className="thumb-img" loading="lazy" width="420" height="340"
         style={{ opacity: loaded ? 1 : 0 }} onLoad={() => setLoaded(true)} onError={() => setErr(true)} />
       <div className="thumb-overlay" />
       {p.liveUrl && <div className="thumb-live" style={{ background: p.accent }}><span className="live-pulse" />LIVE</div>}
@@ -307,7 +355,7 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
           <div><span className="pv-tag" style={{ color: project.accent }}>{project.tag}</span><h3 className="pv-title" id="pv-title">{project.title}</h3></div>
           <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
             {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="pv-visit" style={{ background: project.accent }}>Open in New Tab ↗</a>}
-            <button className="pv-close" onClick={onClose} aria-label="Close">✕</button>
+            <button className="pv-close" onClick={onClose} aria-label="Close preview">✕</button>
           </div>
         </div>
         <div className="pv-frame">
@@ -316,7 +364,7 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
               {!loaded && <div className="pv-loading"><div className="pv-spinner" style={{ borderTopColor: project.accent }} /><span>Loading…</span></div>}
               <iframe
                 src={project.liveUrl}
-                title={project.title}
+                title={`Live preview of ${project.title}`}
                 onLoad={() => setLoaded(true)}
                 style={{ opacity: loaded ? 1 : 0, transition: "opacity .5s" }}
                 sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
@@ -420,7 +468,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   return (
     <div className="modal-bg" onClick={onClose} role="dialog" aria-modal="true" aria-labelledby="ct-title">
       <div className="ct-modal" onClick={e => e.stopPropagation()} role="document">
-        <button className="ct-close" onClick={onClose} aria-label="Close">✕</button>
+        <button className="ct-close" onClick={onClose} aria-label="Close contact form">✕</button>
         {sent ? (
           <div className="ct-success">
             <div className="cs-icon">✓</div>
@@ -451,7 +499,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
               </div>
               <div className="ct-row">
                 <div className="ct-field">
-                  <label>Phone Number</label>
+                  <label htmlFor="ct-phone">Phone Number</label>
                   <input id="ct-phone" type="tel" placeholder="+91 98765 43210" value={form.phone} onChange={e => setForm(v => ({ ...v, phone: e.target.value }))} />
                 </div>
                 <StyledSelect
@@ -575,16 +623,16 @@ export default function App() {
         <header className={`site-nav${scrolled ? " stuck" : ""}`}>
           <div className="nav-wrap">
             <div className="nav-brand" onClick={() => scrollTo("top")}>
-              <div className="nav-av"><img src={VENETH_PHOTO} alt="Veneth" /></div>
+              <div className="nav-av"><img src={VENETH_PHOTO} alt="Portrait of Veneth" width="38" height="38" /></div>
               <span className="nav-name">Veneth Studio</span>
             </div>
-            <nav className={`nav-menu${menuOpen ? " open" : ""}`}>
+            <nav className={`nav-menu${menuOpen ? " open" : ""}`} role="navigation" aria-label="Main navigation">
               {[["about", "About"], ["services", "Services"], ["projects", "Work"], ["process", "Process"]].map(([id, label]) => (
                 <button key={id} className="nav-item" onClick={() => scrollTo(id)}>{label}</button>
               ))}
               <button className="nav-cta" onClick={() => { setContactOpen(true); setMenuOpen(false); }}>Contact</button>
             </nav>
-            <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Menu">
+            <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle navigation menu" aria-expanded={menuOpen}>
               <span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} />
             </button>
           </div>
@@ -631,7 +679,7 @@ export default function App() {
               <div className="photo-stack">
                 <div className="ps-back" />
                 <div className="ps-front">
-                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar" className="ps-photo" />
+                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="ps-photo" width="380" height="480" />
                   <div className="ps-overlay" />
                   <div className="ps-pill"><span className="pill-dot" />Available for Projects</div>
                 </div>
@@ -680,7 +728,7 @@ export default function App() {
               <div className="about-grid">
                 <div className="about-photo-col" data-reveal>
                   <div className="about-photo-frame">
-                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar" className="about-photo" />
+                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="about-photo" width="400" height="533" />
                     <div className="apf-deco" />
                     <div className="apf-badge">
                       <span className="apf-name">Veneth ChandraKumar</span>

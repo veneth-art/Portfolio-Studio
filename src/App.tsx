@@ -671,7 +671,7 @@ export default function App() {
               </p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
                 <MagBtn className="btn-dark" onClick={() => scrollTo("projects")}>View Selected Works</MagBtn>
-                <button className="hero-talk-btn" onClick={() => setContactOpen(true)}>
+                <button className="hero-talk-btn" onClick={() => scrollTo("contact")}>
                   Get in touch
                 </button>
               </div>
@@ -686,7 +686,7 @@ export default function App() {
               <div className="photo-stack">
                 <div className="ps-back" />
                 <div className="ps-front">
-                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="ps-photo" width="380" height="480" />
+                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="ps-photo" width="380" height="480" loading="eager" fetchpriority="high" />
                   <div className="ps-overlay" />
                   <div className="ps-pill"><span className="pill-dot" />Available for Projects</div>
                 </div>
@@ -735,7 +735,7 @@ export default function App() {
               <div className="about-grid">
                 <div className="about-photo-col" data-reveal>
                   <div className="about-photo-frame">
-                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="about-photo" width="400" height="533" />
+                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="about-photo" width="400" height="533" loading="eager" fetchpriority="high" />
                     <div className="apf-deco" />
                     <div className="apf-badge">
                       <span className="apf-name">Veneth ChandraKumar</span>

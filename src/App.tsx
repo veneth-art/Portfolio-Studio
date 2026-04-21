@@ -128,24 +128,31 @@ const PROJECTS: Project[] = [
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    name: "Sarah Mitchell",
-    role: "CEO, TechStart",
-    text: "Veneth transformed our vision into a stunning reality. The attention to detail and creative approach exceeded our expectations.",
-    initials: "SM",
+    name: "R. Karthikeyan",
+    role: "Managing Director, Kovai Pumps & Engineering, Coimbatore",
+    text: "Veneth completely transformed our outdated website into a modern, high-converting platform. Our customer inquiries increased within weeks.",
+    initials: "RK",
   },
   {
     id: 2,
-    name: "David Chen",
-    role: "Founder, DesignCo",
-    text: "Working with Veneth was a game-changer. The no-code solution saved us months of development time without compromising quality.",
-    initials: "DC",
+    name: "Aishwarya Prakash",
+    role: "Founder, Madras Eco Store, Chennai",
+    text: "We needed a professional website without spending months on development. Veneth delivered a clean, fast solution using no-code tools.",
+    initials: "AP",
   },
   {
     id: 3,
-    name: "Maria Santos",
-    role: "Marketing Director, Brandify",
-    text: "The 3D elements and animations brought our brand to life. Our engagement metrics increased by 300% after the redesign.",
-    initials: "MS",
+    name: "Vignesh Subramani",
+    role: "Marketing Head, Chennai Streetwear Collective",
+    text: "The UI design and animations gave our brand a premium feel. Our social media traffic and engagement improved significantly.",
+    initials: "VS",
+  },
+  {
+    id: 4,
+    name: "S. Jayalakshmi",
+    role: "Owner, Thanjavur Handloom Boutique",
+    text: "Veneth understood our business needs perfectly and created a user-friendly website that helped us attract more local clients.",
+    initials: "SJ",
   },
 ];
 
@@ -814,7 +821,7 @@ export default function App() {
                     <p className="testi-q">"{t.text}"</p>
                     <div className="testi-who">
                       <div className="testi-av">{t.initials}</div>
-                      <div><strong>{t.name}</strong><br /><span>{t.role}</span></div>
+                      <div><strong>{t.name}</strong><span>{t.role}</span></div>
                     </div>
                   </div>
                 ))}
@@ -833,7 +840,7 @@ export default function App() {
               <div className="cta-box" data-reveal>
                 <span className="eyebrow cta-eyebrow">Ready to Build?</span>
                 <h2 className="cta-h2">Your Next Web Experience<br /><em>Starts Here.</em></h2>
-                <p className="cta-sub">Available for real estate, healthcare, hospitality, fitness, and lifestyle brands across Tamil Nadu and beyond.</p>
+                <p className="cta-sub">Available for real estate, healthcare, hospitality, fitness, lifestyle and all Industries brands across Tamil Nadu and beyond.</p>
                 <div className="cta-btns">
                   <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Start a Project</MagBtn>
                   <MagBtn className="btn-outline" href="https://instagram.com/Veneth_design" target="_blank">Follow on Instagram</MagBtn>

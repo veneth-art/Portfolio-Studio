@@ -112,7 +112,7 @@ const PROJECTS: Project[] = [
     tag: "Real Estate",
     title: "Vela Estates",
     subtitle: "Real Estate · Web Design",
-    liveUrl: "https://vela-estates.lovable.app",
+    liveUrl: "https://vela-estate.lovable.app",
     thumb: null,
     accent: "#4a90d9",
     description: "A sleek real estate platform for browsing luxury properties with advanced filtering, virtual tours, and seamless agent contact functionality.",

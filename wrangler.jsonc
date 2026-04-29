@@ -2,12 +2,6 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "veneth-studio",
   "compatibility_date": "2025-01-01",
-  "pages_build_output_dir": "./dist",
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "veneth-studio",
-      "database_id": "REMOVED"
-    }
-  ]
+  "pages_build_output_dir": "./dist"
+
 }

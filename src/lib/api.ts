@@ -13,7 +13,7 @@ export interface ContactResponse {
   id?: number;
 }
 
-const API_BASE = import.meta.env.VITE_API_URL || 'https://veneth-contact-api.studio-design.workers.dev';
+const API_BASE = import.meta.env.VITE_API_URL || '';
 
 export async function submitContact(data: ContactForm): Promise<ContactResponse> {
   const response = await fetch(`${API_BASE}/api/contact`, {

@@ -28,6 +28,6 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: veneth-portfolio
+          projectName: veneth-studio
           directory: dist
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

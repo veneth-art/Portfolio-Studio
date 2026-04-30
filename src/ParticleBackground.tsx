@@ -51,11 +51,17 @@ export default function ParticleBackground() {
 
       const colorChoice = Math.random();
       if (colorChoice < 0.4) {
-        [colorsArray[i], colorsArray[i + 1], colorsArray[i + 2]] = colors.p1;
+        colorsArray[i] = colors.p1[0];
+        colorsArray[i + 1] = colors.p1[1];
+        colorsArray[i + 2] = colors.p1[2];
       } else if (colorChoice < 0.7) {
-        [colorsArray[i], colorsArray[i + 1], colorsArray[i + 2]] = colors.p2;
+        colorsArray[i] = colors.p2[0];
+        colorsArray[i + 1] = colors.p2[1];
+        colorsArray[i + 2] = colors.p2[2];
       } else {
-        [colorsArray[i], colorsArray[i + 1], colorsArray[i + 2]] = colors.p3;
+        colorsArray[i] = colors.p3[0];
+        colorsArray[i + 1] = colors.p3[1];
+        colorsArray[i + 2] = colors.p3[2];
       }
     }
 
@@ -106,11 +112,17 @@ export default function ParticleBackground() {
       for (let i = 0; i < particlesCount * 3; i += 3) {
         const colorChoice = Math.random();
         if (colorChoice < 0.4) {
-          [ca[i], ca[i + 1], ca[i + 2]] = newColors.p1;
+          ca[i] = newColors.p1[0];
+          ca[i + 1] = newColors.p1[1];
+          ca[i + 2] = newColors.p1[2];
         } else if (colorChoice < 0.7) {
-          [ca[i], ca[i + 1], ca[i + 2]] = newColors.p2;
+          ca[i] = newColors.p2[0];
+          ca[i + 1] = newColors.p2[1];
+          ca[i + 2] = newColors.p2[2];
         } else {
-          [ca[i], ca[i + 1], ca[i + 2]] = newColors.p3;
+          ca[i] = newColors.p3[0];
+          ca[i + 1] = newColors.p3[1];
+          ca[i + 2] = newColors.p3[2];
         }
       }
       if (geometryRef.current) {
@@ -131,6 +143,8 @@ export default function ParticleBackground() {
       window.removeEventListener("resize", handleResize);
       observer.disconnect();
       renderer.dispose();
+      if (geometryRef.current) geometryRef.current.dispose();
+      if (particlesMaterial) particlesMaterial.dispose();
       container.removeChild(renderer.domElement);
     };
   }, []);

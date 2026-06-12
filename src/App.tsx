@@ -825,6 +825,7 @@ export default function App() {
             <div className="scroll-stack-container">
               <ScrollStack
                 useWindowScroll
+                active={scrollLocked}
                 itemDistance={90}
                 itemStackDistance={25}
                 stackPosition="18%"

@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef } from "react";
 import { VENETH_PHOTO } from "./veneth_photo";
 import ParticleBackground from "./ParticleBackground";
 import SmoothScroll from "./SmoothScroll";
+import ScrollStack, { ScrollStackItem } from "./ScrollStack";
 
 /* ── TYPES ─────────────────────────────────────────────────────────────────── */
 interface Project {
@@ -37,53 +38,37 @@ const SERVICES: Service[] = [
   {
     id: 1,
     num: "01",
-    title: "UI/UX Design",
+    title: "Website Design",
     items: [
-      "User Research & Analysis",
-      "Wireframing & Prototyping",
-      "High-Fidelity Visual Design",
-      "Design Systems & Component Libraries",
-      "Usability Testing & Iteration",
-      "Responsive Design",
+      "Premium website design",
+      "Conversion-focused UI",
+      "Responsive across devices",
+      "Performance optimization",
+      "SEO-friendly structure"
     ],
   },
   {
     id: 2,
     num: "02",
-    title: "No-Code Development",
+    title: "Landing Pages",
     items: [
-      "Webflow Development",
-      "Framer Sites",
-      "Wix Studio",
-      "Bubble.io Applications",
-      "Zapier Automation",
-      "CMS Integration",
+      "High-converting landing pages",
+      "A/B testing ready",
+      "Clear CTAs",
+      "Fast load times",
+      "Analytics integration"
     ],
   },
   {
     id: 3,
     num: "03",
-    title: "Mobile App Design",
+    title: "Visiting Card & Branding",
     items: [
-      "User Research & Analysis",
-      "Wireframing & Prototyping",
-      "UI Design & Visual Design",
-      "Interaction Design",
-      "Usability Testing",
-      "App Store Optimization",
-    ],
-  },
-  {
-    id: 4,
-    num: "04",
-    title: "Vibe Coding",
-    items: [
-      "AI-Assisted Development",
-      "Rapid Prototyping",
-      "Full-Stack Solutions",
-      "API Integration",
-      "MVP Launch",
-      "Iterative Refinement",
+      "Brand identity design",
+      "Logo and visual assets",
+      "Business card design",
+      "Brand guidelines",
+      "Consistent across touchpoints"
     ],
   },
 ];
@@ -121,6 +106,57 @@ const PROJECTS: Project[] = [
       "High-resolution gallery views",
       "Agent contact integration",
       "Responsive across all devices",
+    ],
+  },
+  {
+    id: 3,
+    num: "03",
+    tag: "Branding",
+    title: "Luxe Mode",
+    subtitle: "Fashion Brand · Branding",
+    liveUrl: null,
+    thumb: null,
+    accent: "#c889c5",
+    description: "Luxury fashion brand identity and website design delivering premium visual language and seamless user flow.",
+    features: [
+      "Logo design",
+      "Brand guidelines",
+      "Website mockups",
+      "Marketing collateral",
+    ],
+  },
+  {
+    id: 4,
+    num: "04",
+    tag: "Healthcare",
+    title: "HealWell Clinic",
+    subtitle: "Healthcare · Web Design",
+    liveUrl: null,
+    thumb: null,
+    accent: "#5c9ea4",
+    description: "Professional clinic website with appointment booking and clear service presentation.",
+    features: [
+      "Appointment system",
+      "Service pages",
+      "Responsive design",
+      "SEO optimization",
+    ],
+  },
+  {
+    id: 5,
+    num: "05",
+    tag: "E-commerce",
+    title: "Artisan Market",
+    subtitle: "E-commerce · Web Design",
+    liveUrl: null,
+    thumb: null,
+    accent: "#ff8a5c",
+    description: "Marketplace for handmade goods with integrated store, product catalog, and secure checkout.",
+    features: [
+      "Product catalog",
+      "Cart & checkout",
+      "Payment integration",
+      "User reviews",
     ],
   },
 ];
@@ -560,8 +596,10 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                 <div className="ct-error">
                   <span>⚠️</span> {error}
                 </div>
-              )}
-              <button type="submit" className="ct-submit" disabled={loading}>
+
+
+               )}
+                 <button type="submit" className="ct-submit" disabled={loading}>
                 {loading ? "Sending..." : "Send Message"}
               </button>
             </form>
@@ -595,11 +633,28 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [pageTransition, setPageTransition] = useState(false);
+  const [scrollLocked, setScrollLocked] = useState(false);
+  const projectsRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", fn, { passive: true });
     return () => window.removeEventListener("scroll", fn);
+  }, []);
+
+  useEffect(() => {
+    const el = document.getElementById("projects");
+    projectsRef.current = el;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setScrollLocked(entry.isIntersecting);
+      },
+      { threshold: 0 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -621,7 +676,7 @@ export default function App() {
   }, []);
 
   return (
-    <SmoothScroll>
+    <SmoothScroll scrollLock={scrollLocked}>
       <ParticleBackground />
       <div className={`page-transition ${pageTransition ? "active" : ""}`}>
         <Cursor />
@@ -656,21 +711,12 @@ export default function App() {
               <div className={`hero-badge${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".1s" }}>
                 <span className="badge-dot" /><span>Veneth ChandraKumar · UI/UX Designer &amp; No-Code Developer</span>
               </div>
-              <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
-                <span className="hl hl-serif">Building <span className="hl hl-italic">high-performance</span></span>
-                <span className="hl hl-sm">digital experiences</span>
-                <span className="hl hl-accent">that drive growth.</span>
-              </h1>
-              <p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>
-                Specialising in <span className="hero-skill-badges">
-                  <span className="hsb">UI/UX Design</span>
-                  <span className="hsb">No-Code Development</span>
-                  <span className="hsb">Vibe Coding</span>
-                </span>.
-                Building high-performance digital experiences that elevate brands and drive real results.
-              </p>
+<h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
+                  I Help Businesses Attract More Clients with Premium Websites &amp; Branding
+                </h1>
+<p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Websites, landing pages, and branding designed to increase engagement, conversions, and revenue.</p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
-                <MagBtn className="btn-dark" onClick={() => scrollTo("projects")}>View Selected Works</MagBtn>
+                <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Book Your Free Consultation</MagBtn>
                 <button className="hero-talk-btn" onClick={() => scrollTo("contact")}>
                   Get in touch
                 </button>
@@ -712,7 +758,7 @@ export default function App() {
           <section id="services" className="services-sec" role="region" aria-label="Services">
             <div className="sec-wrap">
               <div className="sec-head" data-reveal>
-                <span className="eyebrow">What I Can Do For You</span>
+                <span className="eyebrow">What I Offer</span>
                 <h2 className="sec-h2">Services &amp;<br /><em>expertise</em></h2>
               </div>
               <div className="services-grid">
@@ -747,16 +793,16 @@ export default function App() {
                 <div className="about-content" data-reveal style={{ "--d": ".15s" } as React.CSSProperties}>
                   <span className="eyebrow">About Me</span>
                   <h2 className="sec-h2">The Architect<br /><em>Behind the Screen.</em></h2>
-                  <p className="about-para">Hi, I'm Veneth — a UI/UX designer and No-Code developer based in Trichy, Tamil Nadu, passionate about crafting meaningful and impactful digital experiences.</p>
-                  <p className="about-para">Great design is more than aesthetics — it's about seamless interaction and intuitive logic. By leveraging modern design systems and <strong>"vibe coding"</strong> — an AI-assisted, flow-state approach — I rapidly prototype and launch scalable websites perfectly aligned with business goals.</p>
-                  <div className="about-skills">
-                    {[["UI/UX Design", 95], ["No-Code Dev", 90], ["Motion & Animation", 85], ["3D Web (Three.js)", 75]].map(([l, v]) => (
-                      <div key={l} className="sk-bar" data-reveal>
-                        <div className="sk-top"><span>{l}</span><span className="sk-pct">{v}%</span></div>
-                        <div className="sk-track"><div className="sk-fill is-visible" style={{ width: `${v}%` }} /></div>
-                      </div>
-                    ))}
-                  </div>
+                  <p className="about-para">I’m a freelance UI/UX designer specializing in websites, landing pages, and branding. I help businesses present themselves as professional, premium, and client-focused online.</p>
+                  
+<div className="about-icons" data-reveal>
+                      <span className="skill-icon">Figma</span>
+                      <span className="skill-icon">Framer</span>
+                      <span className="skill-icon">Adobe XD</span>
+                      <span className="skill-icon">Prototyping</span>
+                      <span className="skill-icon">Animation</span>
+                      <span className="skill-icon">Branding</span>
+                    </div>
                   <div className="about-links">
                     <a href="mailto:venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
                     <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
@@ -775,11 +821,47 @@ export default function App() {
                 <h2 className="sec-h2">Problems solved,<br /><em>beautifully.</em></h2>
                 <p className="sec-sub">These selected projects reflect a passion for blending strategy with creativity — solving real problems through thoughtful design and impactful storytelling.</p>
               </div>
-              <div className="proj-grid">
-                {PROJECTS.map((p, i) => (
-                  <ProjectCard key={p.id} p={p} idx={i} onPreview={setPreviewProj} />
+            </div>
+            <div className="scroll-stack-container">
+              <ScrollStack
+                useWindowScroll
+                itemDistance={90}
+                itemStackDistance={25}
+                stackPosition="18%"
+                scaleEndPosition="8%"
+                baseScale={0.82}
+              >
+                {PROJECTS.map(p => (
+                  <ScrollStackItem key={p.id}>
+                    <div className="ssc-inner">
+                      <div className="ssc-accent" style={{ background: p.accent }} />
+                      <div className="ssc-body">
+                        <div className="ssc-meta">
+                          <span className="ssc-tag" style={{ color: p.accent }}>{p.tag}</span>
+                          <span className="ssc-num">{p.num}</span>
+                        </div>
+                        <h3 className="ssc-title">{p.title}</h3>
+                        <p className="ssc-desc">{p.description}</p>
+                        <ul className="ssc-feats">
+                          {p.features.slice(0, 3).map((f, i) => (
+                            <li key={i}>{f}</li>
+                          ))}
+                        </ul>
+                        <div className="ssc-actions">
+                          <button className="proj-preview-btn" onClick={() => setPreviewProj(p)}>
+                            View Case Study
+                          </button>
+                          {p.liveUrl && (
+                            <a className="proj-live-btn" href={p.liveUrl} target="_blank" rel="noreferrer">
+                              Live Site →
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </ScrollStackItem>
                 ))}
-              </div>
+              </ScrollStack>
             </div>
           </section>
 
@@ -838,74 +920,25 @@ export default function App() {
           <section id="contact" className="cta-sec">
             <div className="sec-wrap">
               <div className="cta-box" data-reveal>
-                <span className="eyebrow cta-eyebrow">Ready to Build?</span>
-                <h2 className="cta-h2">Your Next Web Experience<br /><em>Starts Here.</em></h2>
-                <p className="cta-sub">Available for real estate, healthcare, hospitality, fitness, lifestyle and all Industries brands across Tamil Nadu and beyond.</p>
+                <span className="eyebrow cta-eyebrow">Let’s Work Together</span>
+                <h2 className="cta-h2">Let’s Work Together</h2>
+                <p className="cta-sub">I work with businesses who value premium design and measurable results. If that’s you, let’s discuss your project.</p>
                 <div className="cta-btns">
-                  <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Start a Project</MagBtn>
-                  <MagBtn className="btn-outline" href="https://instagram.com/Veneth_design" target="_blank">Follow on Instagram</MagBtn>
+                  <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Book a Free Consultation</MagBtn>
+                  <MagBtn className="btn-outline" onClick={() => setContactOpen(true)}>Send Me a Message</MagBtn>
                 </div>
               </div>
             </div>
           </section>
-        </main>
+         </main>
+       </div>
 
         {/* ── FOOTER ── */}
-        <footer className="site-footer">
-          <div className="ft-wrap">
-            <div className="ft-grid">
-              <div className="ft-col ft-brand-col">
-                <h3 className="ft-logo">Veneth Studio</h3>
-                <p className="ft-tagline">Crafting digital experiences that elevate brands and drive results.</p>
-                <div className="ft-social">
-                  <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="ft-social-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" /></svg>
-                  </a>
-                  <a href="https://twitter.com/veneth_design" target="_blank" rel="noreferrer" className="ft-social-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
-                  </a>
-                  <a href="https://linkedin.com/in/veneth" target="_blank" rel="noreferrer" className="ft-social-link">
-                    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-                  </a>
-                </div>
-              </div>
-              <div className="ft-col">
-                <h4 className="ft-col-title">Navigation</h4>
-                <ul className="ft-nav">
-                  <li><a onClick={() => scrollTo("about")}>About</a></li>
-                  <li><a onClick={() => scrollTo("services")}>Services</a></li>
-                  <li><a onClick={() => scrollTo("projects")}>Projects</a></li>
-                  <li><a onClick={() => scrollTo("process")}>Process</a></li>
-                </ul>
-              </div>
-              <div className="ft-col">
-                <h4 className="ft-col-title">Services</h4>
-                <ul className="ft-nav">
-                  <li><a>UI/UX Design</a></li>
-                  <li><a>Web Development</a></li>
-                  <li><a>No-Code Development</a></li>
-                  <li><a>Vibe Coding</a></li>
-                </ul>
-              </div>
-              <div className="ft-col">
-                <h4 className="ft-col-title">Contact</h4>
-                <ul className="ft-nav">
-                  <li><a href="mailto:venethck34@gmail.com">Venethck34@gmail.com</a></li>
-                  <li><a href="tel:+918248547040">+91 8248547040</a></li>
-                  <li><span className="ft-location">Trichy, Tamil Nadu, India</span></li>
-                </ul>
-              </div>
-            </div>
-            <div className="ft-bottom">
-              <p className="ft-copy">© {new Date().getFullYear()} Veneth Studio. All rights reserved.</p>
-            </div>
-          </div>
-        </footer>
+<footer className="site-footer">Footer</footer>
 
         {/* MODALS */}
         {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
         {previewProj && <PreviewModal project={previewProj} onClose={() => setPreviewProj(null)} />}
-      </div>
     </SmoothScroll>
   );
 }

@@ -4224,3 +4224,223 @@ body,
 .ss-option:last-child {
   border-bottom: none;
 }
+
+/* ══ SCROLL STACK CARD CONTENT ══ */
+
+.scroll-stack-container {
+  position: relative;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.scroll-stack-container .scroll-stack-scroller {
+  overflow: visible;
+  height: auto;
+  will-change: auto;
+}
+
+.scroll-stack-container .scroll-stack-inner {
+  padding: 12vh 0 50vh;
+  min-height: auto;
+}
+
+.scroll-stack-container .scroll-stack-card {
+  height: 580px;
+  padding: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  background: var(--page-bg);
+  border: 1px solid var(--border);
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.25);
+  position: relative;
+}
+
+.ssc-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  padding: 3.5rem 3rem;
+  text-align: center;
+  position: relative;
+}
+
+.ssc-accent {
+  width: 100%;
+  height: 5px;
+  flex-shrink: 0;
+  opacity: 0.7;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 28px 28px 0 0;
+}
+
+.ssc-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  width: 100%;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.ssc-meta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+
+.ssc-tag {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ssc-num {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+
+.ssc-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(26px, 2.8vw, 38px);
+  font-weight: 400;
+  color: var(--dark);
+  line-height: 1.15;
+  text-align: center;
+}
+
+.ssc-desc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--mid);
+  text-align: center;
+  max-width: 520px;
+}
+
+.ssc-feats {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 24px;
+  margin: 6px 0;
+}
+
+.ssc-feats li {
+  font-size: 12px;
+  color: var(--text-muted);
+  position: relative;
+  padding-left: 14px;
+  line-height: 1.7;
+}
+
+.ssc-feats li::before {
+  content: '—';
+  position: absolute;
+  left: 0;
+  color: var(--accent);
+  opacity: 0.5;
+}
+
+.ssc-actions {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.ssc-actions .proj-preview-btn {
+  font-size: 13px;
+  padding: 11px 26px;
+  background: var(--dark);
+  color: var(--cream);
+  border-radius: 10px;
+}
+
+.ssc-actions .proj-preview-btn:hover {
+  background: var(--accent);
+  color: var(--dark);
+}
+
+.ssc-actions .proj-live-btn {
+  font-size: 13px;
+  padding: 11px 26px;
+  background: transparent;
+  color: var(--dark);
+  border: 1px solid var(--border2);
+  border-radius: 10px;
+}
+
+.ssc-actions .proj-live-btn:hover {
+  background: var(--warm);
+  border-color: var(--border);
+}
+
+@media (max-width: 768px) {
+  .scroll-stack-container {
+    padding: 0 20px;
+  }
+
+  .scroll-stack-container .scroll-stack-inner {
+    padding: 8vh 0 40vh;
+  }
+
+  .scroll-stack-container .scroll-stack-card {
+    height: 480px;
+    border-radius: 20px;
+  }
+
+  .ssc-inner {
+    padding: 2.5rem 1.5rem;
+  }
+
+  .ssc-body {
+    gap: 12px;
+  }
+
+  .ssc-title {
+    font-size: clamp(22px, 4.5vw, 28px);
+  }
+
+  .ssc-feats {
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .ssc-accent {
+    height: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .scroll-stack-container .scroll-stack-card {
+    height: 440px;
+  }
+
+  .ssc-feats {
+    display: none;
+  }
+
+  .ssc-desc {
+    font-size: 13px;
+  }
+}

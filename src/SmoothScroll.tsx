@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import Lenis from "lenis";
 
 interface SmoothScrollProps {
@@ -9,7 +9,7 @@ interface SmoothScrollProps {
 export default function SmoothScroll({ children, scrollLock }: SmoothScrollProps) {
   const lenisRef = useRef<Lenis | null>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -31,13 +31,14 @@ export default function SmoothScroll({ children, scrollLock }: SmoothScrollProps
     };
   }, []);
 
-  useEffect(() => {
-    if (lenisRef.current) {
-      if (scrollLock) {
-        lenisRef.current.stop();
-      } else {
-        lenisRef.current.start();
-      }
+  useLayoutEffect(() => {
+    const lenis = lenisRef.current;
+    if (!lenis) return;
+    if (scrollLock) {
+      lenis.stop();
+    } else {
+      lenis.scrollTo(window.scrollY, { immediate: true });
+      lenis.start();
     }
   }, [scrollLock]);
 

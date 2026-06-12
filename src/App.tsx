@@ -935,7 +935,53 @@ export default function App() {
        </div>
 
         {/* ── FOOTER ── */}
-<footer className="site-footer">Footer</footer>
+<footer className="site-footer">
+  <div className="ft-wrap">
+    <div className="ft-grid">
+      <div className="ft-brand-col">
+        <div className="ft-logo">Veneth Studio</div>
+        <p className="ft-tagline">Transforming ideas into impactful digital experiences through thoughtful design and strategy.</p>
+        <div className="ft-social">
+          <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z"/><circle cx="12" cy="12" r="3"/><path d="M17.5 6.5h.01"/></svg>
+          </a>
+          <a href="https://www.behance.net/veneth_studio" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Behance">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2Zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168Zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219Zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061ZM3.002 11.97H6.94c2.056 0 2.654-.876 2.654-2.157 0-1.282-.598-2.157-2.654-2.157H3.002v4.314Zm0 2.051v4.966h3.986c2.211 0 2.884-1.052 2.884-2.483 0-1.43-.673-2.483-2.884-2.483H3.002Z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div className="ft-col">
+        <h4 className="ft-col-title">What I Do</h4>
+        <ul className="ft-nav">
+          <li><span>Web Design</span></li>
+          <li><span>UI/UX Design</span></li>
+          <li><span>Brand Identity</span></li>
+          <li><span>E-commerce</span></li>
+        </ul>
+      </div>
+      <div className="ft-col">
+        <h4 className="ft-col-title">Quick Links</h4>
+        <ul className="ft-nav">
+          <li><a onClick={() => scrollTo('top')}>Home</a></li>
+          <li><a onClick={() => scrollTo('projects')}>Projects</a></li>
+          <li><a onClick={() => scrollTo('process')}>Process</a></li>
+          <li><a onClick={() => scrollTo('contact')}>Contact</a></li>
+        </ul>
+      </div>
+      <div className="ft-col">
+        <h4 className="ft-col-title">Get in Touch</h4>
+        <ul className="ft-nav">
+          <li className="ft-location">Tamil Nadu, India</li>
+          <li><a href="mailto:hello@venethstudio.com">hello@venethstudio.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div className="ft-bottom">
+      <span className="ft-copy">&copy; {new Date().getFullYear()} Veneth Studio. All rights reserved.</span>
+      <span className="ft-made">Made with passion in Tamil Nadu</span>
+    </div>
+  </div>
+</footer>
 
         {/* MODALS */}
         {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}

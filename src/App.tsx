@@ -240,19 +240,24 @@ function useReveal() {
 function Cursor() {
   const dotRef = useRef<HTMLDivElement>(null);
   const ringRef = useRef<HTMLDivElement>(null);
-  const [hasMoved, setHasMoved] = useState(false);
+  const hasMovedRef = useRef(false);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     let rx = -100, ry = -100, mx = -100, my = -100;
     let raf: number;
 
     const onMove = (e: MouseEvent) => {
-      if (!hasMoved) setHasMoved(true);
+      if (!hasMovedRef.current) {
+        hasMovedRef.current = true;
+        setVisible(true);
+        rx = e.clientX;
+        ry = e.clientY;
+      }
       mx = e.clientX;
       my = e.clientY;
       if (dotRef.current) {
-        dotRef.current.style.left = mx + "px";
-        dotRef.current.style.top = my + "px";
+        dotRef.current.style.transform = `translate3d(${mx}px, ${my}px, 0) translate(-50%, -50%)`;
       }
     };
 
@@ -262,14 +267,36 @@ function Cursor() {
       rx = lerp(rx, mx, 0.12);
       ry = lerp(ry, my, 0.12);
       if (ringRef.current) {
-        ringRef.current.style.left = rx + "px";
-        ringRef.current.style.top = ry + "px";
+        ringRef.current.style.transform = `translate3d(${rx}px, ${ry}px, 0) translate(-50%, -50%)`;
       }
       raf = requestAnimationFrame(tick);
     };
 
     window.addEventListener("mousemove", onMove, { passive: true });
     raf = requestAnimationFrame(tick);
+
+    const interactives = "a, button, input, select, textarea, [role=button], .clickable";
+    const onOver = () => {
+      dotRef.current?.classList.add("hovering");
+      ringRef.current?.classList.add("hovering");
+    };
+    const onOut = () => {
+      dotRef.current?.classList.remove("hovering");
+      ringRef.current?.classList.remove("hovering");
+    };
+
+    document.addEventListener("mouseover", (e) => {
+      const t = e.target as HTMLElement;
+      if (t.matches?.(interactives) || t.closest?.(interactives)) {
+        onOver();
+      }
+    });
+    document.addEventListener("mouseout", (e) => {
+      const t = e.target as HTMLElement;
+      if (t.matches?.(interactives) || t.closest?.(interactives)) {
+        onOut();
+      }
+    });
 
     const onDown = () => {
       dotRef.current?.classList.add("pressing");
@@ -289,20 +316,20 @@ function Cursor() {
       window.removeEventListener("mousedown", onDown);
       window.removeEventListener("mouseup", onUp);
     };
-  }, [hasMoved]);
+  }, []);
 
   return (
     <>
       <div
         ref={dotRef}
         className="cur-dot"
-        style={{ opacity: hasMoved ? 1 : 0 }}
+        style={{ opacity: visible ? 1 : 0 }}
         aria-hidden="true"
       />
       <div
         ref={ringRef}
         className="cur-ring"
-        style={{ opacity: hasMoved ? 1 : 0 }}
+        style={{ opacity: visible ? 1 : 0 }}
         aria-hidden="true"
       />
     </>
@@ -981,7 +1008,7 @@ export default function App() {
         <h4 className="ft-col-title">Get in Touch</h4>
         <ul className="ft-nav">
           <li className="ft-location">Tamil Nadu, India</li>
-          <li><a href="mailto:hello@venethstudio.com">hello@venethstudio.com</a></li>
+          <li><a href="mailto:hello@venethstudio.com">venethck34@gmail.com</a></li>
         </ul>
       </div>
     </div>

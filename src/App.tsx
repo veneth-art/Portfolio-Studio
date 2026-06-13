@@ -712,9 +712,9 @@ export default function App() {
                 <span className="badge-dot" /><span>Veneth ChandraKumar · UI/UX Designer &amp; No-Code Developer</span>
               </div>
 <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
-                  I Help Businesses Attract More Clients with Premium Websites &amp; Branding
+                 I Design Websites That Help Businesses Look Premium and Get More Clients
                 </h1>
-<p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Websites, landing pages, and branding designed to increase engagement, conversions, and revenue.</p>
+<p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Helping small and growing businesses transform their online presence into a powerful client-generating system through strategic design.</p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
                 <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Book Your Free Consultation</MagBtn>
                 <button className="hero-talk-btn" onClick={() => scrollTo("contact")}>
@@ -765,11 +765,11 @@ export default function App() {
                 <div data-reveal style={{ "--d": ".05s" } as React.CSSProperties}>
                   <p className="srv-blurb">As a digital designer, I am a visual storyteller — crafting experiences that connect deeply and spark creativity. I bridge the gap between creative vision and technical execution.</p>
                   <div className="srv-tags">
-                    {["UI/UX Design", "No-Code Dev", "Motion Design", "Brand Systems", "3D Web"].map(b => <span key={b} className="srv-tag">{b}</span>)}
+                    {["Vibe Coding", "No-Code Dev", "Motion Design", "Brand Systems"].map(b => <span key={b} className="srv-tag">{b}</span>)}
                   </div>
                 </div>
                 <div className="srv-accordion">
-                  {SERVICES.map((s, i) => <ServiceRow key={s.num} s={s} idx={i} defaultOpen={i === 0} />)}
+                  {SERVICES.map((s, i) => <ServiceRow key={s.num} s={s} idx={i} />)}
                 </div>
               </div>
             </div>
@@ -792,17 +792,26 @@ export default function App() {
                 </div>
                 <div className="about-content" data-reveal style={{ "--d": ".15s" } as React.CSSProperties}>
                   <span className="eyebrow">About Me</span>
-                  <h2 className="sec-h2">The Architect<br /><em>Behind the Screen.</em></h2>
-                  <p className="about-para">I’m a freelance UI/UX designer specializing in websites, landing pages, and branding. I help businesses present themselves as professional, premium, and client-focused online.</p>
+                  <h2 className="sec-h2">A little about me.</h2>
+                  <p className="about-para">I’m Veneth, a freelance UI/UX designer from India, focused on designing websites, landing pages, and simple brand visuals.</p>
+                  <p className="about-para">I started my journey with curiosity about how websites are made and how design can influence the way people experience a brand online. Over time, I developed skills in tools like Figma, Framer, Wix Studio, Vibe Coding, and Some AI tools also use. And started working on real and practice projects to improve my craft.</p>
+                  <p className="about-para">Right now, I’m still growing as a designer and building my experience through freelance work and personal projects. Each project helps me learn more about user behavior, layout thinking, and how to create clean and usable interfaces.</p>
+                  <p className="about-para">Outside of design, I spend time learning new tools, exploring UI trends, and improving my design process step by step.</p>
                   
 <div className="about-icons" data-reveal>
-                      <span className="skill-icon">Figma</span>
+                      <span className="skill-icon">UI/UX Design</span>
+                      <span className="skill-icon">Website Design</span>
+                      <span className="skill-icon">Landing Pages</span>
+                      <span className="skill-icon">Brand Identity</span>
+                      <span className="skill-icon">Vibe Coding</span>
+                      <span className="skill-icon">Motion Design</span>
                       <span className="skill-icon">Framer</span>
-                      <span className="skill-icon">Adobe XD</span>
-                      <span className="skill-icon">Prototyping</span>
-                      <span className="skill-icon">Animation</span>
-                      <span className="skill-icon">Branding</span>
+                      <span className="skill-icon">Webflow</span>
+                      <span className="skill-icon">Wix Studio</span>
+                      <span className="skill-icon">Figma</span>
+                    
                     </div>
+                  <p className="about-trust">I prefer working with clients who value quality, clarity, and long-term brand growth over quick, low-cost solutions.</p>
                   <div className="about-links">
                     <a href="mailto:venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
                     <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>

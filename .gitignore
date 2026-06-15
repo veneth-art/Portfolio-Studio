@@ -37,3 +37,6 @@ _cloudflare/
 .DS_Store
 Thumbs.db
 
+#firebase
+firebase_tokens.json
+

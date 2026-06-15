@@ -214,6 +214,35 @@ function MagBtn({ href, target, children, className, ...props }: MagBtnProps) {
 }
 
 /* ── HOOKS ──────────────────────────────────────────────────────────────────── */
+function useScrollLock(locked: boolean) {
+  const scrollPosRef = useRef(0);
+  useEffect(() => {
+    if (locked) {
+      scrollPosRef.current = window.scrollY;
+      const scrollY = scrollPosRef.current;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.width = "100%";
+    } else {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      window.scrollTo(0, scrollPosRef.current);
+    }
+    return () => {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+    };
+  }, [locked]);
+}
+
 function useReveal() {
   useEffect(() => {
     const observe = () => {
@@ -407,14 +436,13 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
   const modalRef = useRef<HTMLDivElement>(null);
   const [loaded, setLoaded] = useState(false);
   const isDevUrl = project.liveUrl?.includes('localhost') || project.liveUrl?.includes('127.0.0.1');
+  useScrollLock(true);
   useEffect(() => {
-    document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
@@ -490,14 +518,13 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   const [isIndia, setIsIndia] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [form, setForm] = useState({ name: "", email: "", phone: "", project: "", budget: "", message: "" });
+  useScrollLock(true);
   useEffect(() => {
-    document.body.style.overflow = "hidden";
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.body.style.overflow = "";
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, [onClose]);
@@ -660,8 +687,9 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [pageTransition, setPageTransition] = useState(false);
-  const [scrollLocked, setScrollLocked] = useState(false);
+  const [isProjectsVisible, setIsProjectsVisible] = useState(false);
   const projectsRef = useRef<HTMLElement | null>(null);
+  useScrollLock(menuOpen);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 40);
@@ -676,7 +704,7 @@ export default function App() {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setScrollLocked(entry.isIntersecting);
+        setIsProjectsVisible(entry.isIntersecting);
       },
       { threshold: 0 }
     );
@@ -703,7 +731,7 @@ export default function App() {
   }, []);
 
   return (
-    <SmoothScroll scrollLock={scrollLocked}>
+    <SmoothScroll>
       <ParticleBackground />
       <div className={`page-transition ${pageTransition ? "active" : ""}`}>
         <Cursor />
@@ -861,7 +889,7 @@ export default function App() {
             <div className="scroll-stack-container">
               <ScrollStack
                 useWindowScroll
-                active={scrollLocked}
+                active={isProjectsVisible}
                 itemDistance={90}
                 itemStackDistance={25}
                 stackPosition="18%"

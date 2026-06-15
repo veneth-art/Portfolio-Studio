@@ -12,6 +12,7 @@ interface Project {
   title: string;
   subtitle: string;
   liveUrl: string | null;
+  embedUrl?: string;
   thumb: string | null;
   accent: string;
   description: string;
@@ -112,17 +113,18 @@ const PROJECTS: Project[] = [
     id: 3,
     num: "03",
     tag: "Branding",
-    title: "Luxe Mode",
-    subtitle: "Fashion Brand · Branding",
-    liveUrl: null,
+    title: "KARMA by Sapna",
+    subtitle: "Business Card Design · Branding",
+    liveUrl: "https://www.behance.net/gallery/251127317/KARMA-by-Sapna-Business-Card-Design",
+    embedUrl: "https://www.behance.net/embed/project/251127317?ilo0=1",
     thumb: null,
-    accent: "#c889c5",
-    description: "Luxury fashion brand identity and website design delivering premium visual language and seamless user flow.",
+    accent: "#d4a574",
+    description: "Elegant business card design for KARMA by Sapna — a brand identity project that combines modern minimalism with a warm, premium feel through thoughtful typography and refined finishes.",
     features: [
-      "Logo design",
-      "Brand guidelines",
-      "Website mockups",
-      "Marketing collateral",
+      "Business card design",
+      "Brand identity system",
+      "Typography & layout",
+      "Premium finish mockups",
     ],
   },
   {
@@ -457,22 +459,31 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
           </div>
         </div>
         <div className="pv-frame">
-          {project.liveUrl && !isDevUrl
-            ? <>
-              {!loaded && <div className="pv-loading"><div className="pv-spinner" style={{ borderTopColor: project.accent }} /><span>Loading…</span></div>}
-              <iframe
-                src={project.liveUrl}
-                title={`Live preview of ${project.title}`}
-                onLoad={() => setLoaded(true)}
-                style={{ opacity: loaded ? 1 : 0, transition: "opacity .5s" }}
-                sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+          {project.embedUrl
+            ? <iframe
+                src={project.embedUrl}
+                title={`Preview of ${project.title}`}
+                style={{ width: "100%", height: "100%", border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                allow="clipboard-write"
               />
-            </>
-            : <div className="pv-nourl" style={{ color: project.accent }}>
-              <span className="pn-icon">◎</span>
-              <p>{isDevUrl ? "Preview not available in dev mode." : "Live preview coming soon."}</p>
-              {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="pv-visit" style={{ background: project.accent, marginTop: 16 }}>Open in New Tab ↗</a>}
-            </div>
+            : project.liveUrl && !isDevUrl
+              ? <>
+                {!loaded && <div className="pv-loading"><div className="pv-spinner" style={{ borderTopColor: project.accent }} /><span>Loading…</span></div>}
+                <iframe
+                  src={project.liveUrl}
+                  title={`Live preview of ${project.title}`}
+                  onLoad={() => setLoaded(true)}
+                  style={{ opacity: loaded ? 1 : 0, transition: "opacity .5s" }}
+                  sandbox="allow-scripts allow-same-origin allow-forms allow-popups"
+                />
+              </>
+              : <div className="pv-nourl" style={{ color: project.accent }}>
+                <span className="pn-icon">◎</span>
+                <p>{isDevUrl ? "Preview not available in dev mode." : "Live preview coming soon."}</p>
+                {project.liveUrl && <a href={project.liveUrl} target="_blank" rel="noreferrer" className="pv-visit" style={{ background: project.accent, marginTop: 16 }}>Open in New Tab ↗</a>}
+              </div>
           }
         </div>
       </div>

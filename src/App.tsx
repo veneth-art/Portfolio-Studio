@@ -114,7 +114,7 @@ const PROJECTS: Project[] = [
   {
     id: 3,
     num: "03",
-    tag: "Branding",
+    tag: "Branding & Business Card Design",
     title: "KARMA by Sapna",
     subtitle: "Business Card Design · Branding",
     liveUrl: "https://www.behance.net/gallery/251127317/KARMA-by-Sapna-Business-Card-Design",
@@ -132,7 +132,7 @@ const PROJECTS: Project[] = [
   {
     id: 4,
     num: "04",
-    tag: "Branding",
+    tag: "Branding & Business Card Design",
     title: "Rhymer Corp",
     subtitle: "Business Card Design · Branding",
     liveUrl: "https://www.behance.net/gallery/252775565/Rhymer-Corp-Corporate-Business-Card-Identity-Design",

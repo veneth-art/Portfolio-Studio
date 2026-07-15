@@ -17,6 +17,7 @@ interface Project {
   accent: string;
   description: string;
   features: string[];
+  ongoing?: boolean;
 }
 
 interface Service {
@@ -78,35 +79,36 @@ const PROJECTS: Project[] = [
   {
     id: 1,
     num: "01",
-    tag: "Fitness",
-    title: "CoreShift Gym",
-    subtitle: "Fitness · Web Design",
-    liveUrl: "https://coreshift.lovable.app",
+    tag: "E-commerce",
+    title: "GSSS & Co",
+    subtitle: "Home Décor · Web Design",
+    liveUrl: "https://gsss-co.web.app/",
     thumb: null,
-    accent: "#ff6b35",
-    description: "A high-energy fitness platform featuring class schedules, trainer profiles, membership plans, and an immersive user experience for gym enthusiasts.",
+    accent: "#6b705c",
+    ongoing: true,
+    description: "Designed a luxury-inspired website for GSSS & Co, a premium home décor and lifestyle products manufacturer. Features elegant visuals, clean layouts, and a seamless browsing experience.",
     features: [
-      "Dynamic class booking system",
-      "Trainer profiles & availability",
-      "Membership tier management",
-      "Responsive mobile-first design",
+      "Premium & Elegant UI/UX Design",
+      "Product Collection Showcase",
+      "Luxury Brand Experience",
+      "Modern Visual Hierarchy",
     ],
   },
   {
     id: 2,
     num: "02",
     tag: "Real Estate",
-    title: "Vela Estates",
+    title: "Rhymer Corp",
     subtitle: "Real Estate · Web Design",
-    liveUrl: "https://vela-estate.lovable.app",
+    liveUrl: "https://rhymer-corp.web.app/",
     thumb: null,
     accent: "#4a90d9",
-    description: "A sleek real estate platform for browsing luxury properties with advanced filtering, virtual tours, and seamless agent contact functionality.",
+    description: "Designed and developed a modern, responsive website for a real estate company to showcase Land, Projects , and Investments — focused on building trust, generating qualified leads, and providing a premium browsing experience.",
     features: [
-      "Advanced property search & filters",
-      "High-resolution gallery views",
-      "Agent contact integration",
-      "Responsive across all devices",
+      "Premium UI/UX Design",
+      "Property & Investment Showcase",
+      "Contact & WhatsApp Integration",
+      "Fully Responsive Design",
     ],
   },
   {
@@ -130,35 +132,35 @@ const PROJECTS: Project[] = [
   {
     id: 4,
     num: "04",
-    tag: "Healthcare",
-    title: "HealWell Clinic",
-    subtitle: "Healthcare · Web Design",
-    liveUrl: null,
+    tag: "Branding",
+    title: "Rhymer Corp",
+    subtitle: "Business Card Design · Branding",
+    liveUrl: "https://www.behance.net/gallery/252775565/Rhymer-Corp-Corporate-Business-Card-Identity-Design",
     thumb: null,
     accent: "#5c9ea4",
-    description: "Professional clinic website with appointment booking and clear service presentation.",
+    description: "Premium corporate identity system for Rhymer Corp — a minimal business card design built around refined typography, generous whitespace, and a carefully curated neutral color palette to communicate trust, professionalism, and timeless elegance.",
     features: [
-      "Appointment system",
-      "Service pages",
-      "Responsive design",
-      "SEO optimization",
+      "Corporate identity system",
+      "Luxury minimal business card",
+      "QR code integration",
+      "Print-ready layout",
     ],
   },
   {
     id: 5,
     num: "05",
-    tag: "E-commerce",
-    title: "Artisan Market",
-    subtitle: "E-commerce · Web Design",
-    liveUrl: null,
+    tag: "Health & Fitness",
+    title: "CoreShift",
+    subtitle: "Fitness · Web Design",
+    liveUrl: "https://coreshift.lovable.app/",
     thumb: null,
     accent: "#ff8a5c",
-    description: "Marketplace for handmade goods with integrated store, product catalog, and secure checkout.",
+    description: "Designed and developed a modern, high-converting website for a fitness and personal training brand — promoting training programs, wellness services, and healthy living through bold visuals, strategic user flows, and conversion-focused CTAs.",
     features: [
-      "Product catalog",
-      "Cart & checkout",
-      "Payment integration",
-      "User reviews",
+      "Premium Fitness UI/UX",
+      "Personal Training Showcase",
+      "Membership & Lead Generation",
+      "Fully Responsive Design",
     ],
   },
 ];
@@ -166,31 +168,31 @@ const PROJECTS: Project[] = [
 const TESTIMONIALS: Testimonial[] = [
   {
     id: 1,
-    name: "R. Karthikeyan",
-    role: "Managing Director, Kovai Pumps & Engineering, Coimbatore",
-    text: "Veneth completely transformed our outdated website into a modern, high-converting platform. Our customer inquiries increased within weeks.",
-    initials: "RK",
+    name: " Mr. Sudheshwar Saran",
+    role: "Founder, GSSS & Co, Uttar Pradesh,india",
+    text: "Veneth captured the luxury feel we wanted for our home decor brand. The website looks elegant, loads fast, and our customers love the browsing experience.",
+    initials: "SS",
   },
   {
     id: 2,
-    name: "Aishwarya Prakash",
-    role: "Founder, Madras Eco Store, Chennai",
-    text: "We needed a professional website without spending months on development. Veneth delivered a clean, fast solution using no-code tools.",
-    initials: "AP",
+    name: "M. Ismail Sait",
+    role: "Director, Rhymer Corp, Bangalore, India",
+    text: "We needed a premium website and brand identity that reflected trust and professionalism. Veneth delivered both — a stunning website and refined business cards that impressed our investors.",
+    initials: "IS",
   },
   {
     id: 3,
-    name: "Vignesh Subramani",
-    role: "Marketing Head, Chennai Streetwear Collective",
-    text: "The UI design and animations gave our brand a premium feel. Our social media traffic and engagement improved significantly.",
-    initials: "VS",
+    name: "Ms. Sapna",
+    role: "Founder, KARMA by Sapna, Uttar Pradesh,india",
+    text: "The business card design exceeded my expectations. Veneth understood my vision perfectly and created something elegant yet modern — exactly what my brand needed.",
+    initials: "SD",
   },
   {
     id: 4,
-    name: "S. Jayalakshmi",
-    role: "Owner, Thanjavur Handloom Boutique",
-    text: "Veneth understood our business needs perfectly and created a user-friendly website that helped us attract more local clients.",
-    initials: "SJ",
+    name: "Arun Kumar",
+    role: "Founder, CoreShift Fitness, Coimbatore",
+    text: "Veneth built a website that truly represents our energy and passion for fitness. The design is bold, responsive, and our membership inquiries have grown since launch.",
+    initials: "AK",
   },
 ];
 
@@ -461,13 +463,13 @@ function PreviewModal({ project, onClose }: { project: Project; onClose: () => v
         <div className="pv-frame">
           {project.embedUrl
             ? <iframe
-                src={project.embedUrl}
-                title={`Preview of ${project.title}`}
-                style={{ width: "100%", height: "100%", border: 0 }}
-                allowFullScreen
-                loading="lazy"
-                allow="clipboard-write"
-              />
+              src={project.embedUrl}
+              title={`Preview of ${project.title}`}
+              style={{ width: "100%", height: "100%", border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              allow="clipboard-write"
+            />
             : project.liveUrl && !isDevUrl
               ? <>
                 {!loaded && <div className="pv-loading"><div className="pv-spinner" style={{ borderTopColor: project.accent }} /><span>Loading…</span></div>}
@@ -663,8 +665,8 @@ function ContactModal({ onClose }: { onClose: () => void }) {
                 </div>
 
 
-               )}
-                 <button type="submit" className="ct-submit" disabled={loading}>
+              )}
+              <button type="submit" className="ct-submit" disabled={loading}>
                 {loading ? "Sending..." : "Send Message"}
               </button>
             </form>
@@ -698,8 +700,6 @@ export default function App() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [pageTransition, setPageTransition] = useState(false);
-  const [isProjectsVisible, setIsProjectsVisible] = useState(false);
-  const projectsRef = useRef<HTMLElement | null>(null);
   useScrollLock(menuOpen);
 
   useEffect(() => {
@@ -708,20 +708,7 @@ export default function App() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  useEffect(() => {
-    const el = document.getElementById("projects");
-    projectsRef.current = el;
-    if (!el) return;
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        setIsProjectsVisible(entry.isIntersecting);
-      },
-      { threshold: 0 }
-    );
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => setHeroLoaded(true), 100);
@@ -777,10 +764,10 @@ export default function App() {
               <div className={`hero-badge${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".1s" }}>
                 <span className="badge-dot" /><span>Veneth ChandraKumar · UI/UX Designer &amp; No-Code Developer</span>
               </div>
-<h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
-                 I Design Websites That Help Businesses Look Premium and Get More Clients
-                </h1>
-<p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Helping small and growing businesses transform their online presence into a powerful client-generating system through strategic design.</p>
+              <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
+                I Design Websites That Help Businesses Look Premium and Get More Clients
+              </h1>
+              <p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Helping small and growing businesses transform their online presence into a powerful client-generating system through strategic design.</p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
                 <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Book Your Free Consultation</MagBtn>
                 <button className="hero-talk-btn" onClick={() => scrollTo("contact")}>
@@ -863,20 +850,20 @@ export default function App() {
                   <p className="about-para">I started my journey with curiosity about how websites are made and how design can influence the way people experience a brand online. Over time, I developed skills in tools like Figma, Framer, Wix Studio, Vibe Coding, and Some AI tools also use. And started working on real and practice projects to improve my craft.</p>
                   <p className="about-para">Right now, I’m still growing as a designer and building my experience through freelance work and personal projects. Each project helps me learn more about user behavior, layout thinking, and how to create clean and usable interfaces.</p>
                   <p className="about-para">Outside of design, I spend time learning new tools, exploring UI trends, and improving my design process step by step.</p>
-                  
-<div className="about-icons" data-reveal>
-                      <span className="skill-icon">UI/UX Design</span>
-                      <span className="skill-icon">Website Design</span>
-                      <span className="skill-icon">Landing Pages</span>
-                      <span className="skill-icon">Brand Identity</span>
-                      <span className="skill-icon">Vibe Coding</span>
-                      <span className="skill-icon">Motion Design</span>
-                      <span className="skill-icon">Framer</span>
-                      <span className="skill-icon">Webflow</span>
-                      <span className="skill-icon">Wix Studio</span>
-                      <span className="skill-icon">Figma</span>
-                    
-                    </div>
+
+                  <div className="about-icons" data-reveal>
+                    <span className="skill-icon">UI/UX Design</span>
+                    <span className="skill-icon">Website Design</span>
+                    <span className="skill-icon">Landing Pages</span>
+                    <span className="skill-icon">Brand Identity</span>
+                    <span className="skill-icon">Vibe Coding</span>
+                    <span className="skill-icon">Motion Design</span>
+                    <span className="skill-icon">Framer</span>
+                    <span className="skill-icon">Webflow</span>
+                    <span className="skill-icon">Wix Studio</span>
+                    <span className="skill-icon">Figma</span>
+
+                  </div>
                   <p className="about-trust">I prefer working with clients who value quality, clarity, and long-term brand growth over quick, low-cost solutions.</p>
                   <div className="about-links">
                     <a href="mailto:venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
@@ -900,7 +887,7 @@ export default function App() {
             <div className="scroll-stack-container">
               <ScrollStack
                 useWindowScroll
-                active={isProjectsVisible}
+                active={true}
                 itemDistance={90}
                 itemStackDistance={25}
                 stackPosition="18%"
@@ -914,6 +901,7 @@ export default function App() {
                       <div className="ssc-body">
                         <div className="ssc-meta">
                           <span className="ssc-tag" style={{ color: p.accent }}>{p.tag}</span>
+                          {p.ongoing && <span className="ongoing-badge">Ongoing</span>}
                           <span className="ssc-num">{p.num}</span>
                         </div>
                         <h3 className="ssc-title">{p.title}</h3>
@@ -1006,61 +994,61 @@ export default function App() {
               </div>
             </div>
           </section>
-         </main>
-       </div>
+        </main>
+      </div>
 
-        {/* ── FOOTER ── */}
-<footer className="site-footer">
-  <div className="ft-wrap">
-    <div className="ft-grid">
-      <div className="ft-brand-col">
-        <div className="ft-logo">Veneth Studio</div>
-        <p className="ft-tagline">Transforming ideas into impactful digital experiences through thoughtful design and strategy.</p>
-        <div className="ft-social">
-          <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Instagram">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z"/><circle cx="12" cy="12" r="3"/><path d="M17.5 6.5h.01"/></svg>
-          </a>
-          <a href="https://www.behance.net/veneth_studio" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Behance">
-            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2Zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168Zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219Zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061ZM3.002 11.97H6.94c2.056 0 2.654-.876 2.654-2.157 0-1.282-.598-2.157-2.654-2.157H3.002v4.314Zm0 2.051v4.966h3.986c2.211 0 2.884-1.052 2.884-2.483 0-1.43-.673-2.483-2.884-2.483H3.002Z"/></svg>
-          </a>
+      {/* ── FOOTER ── */}
+      <footer className="site-footer">
+        <div className="ft-wrap">
+          <div className="ft-grid">
+            <div className="ft-brand-col">
+              <div className="ft-logo">Veneth Studio</div>
+              <p className="ft-tagline">Transforming ideas into impactful digital experiences through thoughtful design and strategy.</p>
+              <div className="ft-social">
+                <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Instagram">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z" /><circle cx="12" cy="12" r="3" /><path d="M17.5 6.5h.01" /></svg>
+                </a>
+                <a href="https://www.behance.net/veneth_studio" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Behance">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22 7h-7V5h7v2Zm1.726 10c-.442 1.297-2.029 3-5.101 3-3.074 0-5.564-1.729-5.564-5.675 0-3.91 2.325-5.92 5.466-5.92 3.082 0 4.964 1.782 5.375 4.426.078.506.109 1.188.095 2.14H15.97c.13 3.211 3.483 3.312 4.588 2.029h3.168Zm-7.686-4h4.965c-.105-1.547-1.136-2.219-2.477-2.219-1.466 0-2.277.768-2.488 2.219Zm-9.574 6.988H0V5.021h6.953c5.476.081 5.58 5.444 2.72 6.906 3.461 1.26 3.577 8.061-3.207 8.061ZM3.002 11.97H6.94c2.056 0 2.654-.876 2.654-2.157 0-1.282-.598-2.157-2.654-2.157H3.002v4.314Zm0 2.051v4.966h3.986c2.211 0 2.884-1.052 2.884-2.483 0-1.43-.673-2.483-2.884-2.483H3.002Z" /></svg>
+                </a>
+              </div>
+            </div>
+            <div className="ft-col">
+              <h4 className="ft-col-title">What I Do</h4>
+              <ul className="ft-nav">
+                <li><span>Web Design</span></li>
+                <li><span>UI/UX Design</span></li>
+                <li><span>Brand Identity</span></li>
+                <li><span>E-commerce</span></li>
+              </ul>
+            </div>
+            <div className="ft-col">
+              <h4 className="ft-col-title">Quick Links</h4>
+              <ul className="ft-nav">
+                <li><a onClick={() => scrollTo('top')}>Home</a></li>
+                <li><a onClick={() => scrollTo('projects')}>Projects</a></li>
+                <li><a onClick={() => scrollTo('process')}>Process</a></li>
+                <li><a onClick={() => scrollTo('contact')}>Contact</a></li>
+              </ul>
+            </div>
+            <div className="ft-col">
+              <h4 className="ft-col-title">Get in Touch</h4>
+              <ul className="ft-nav">
+                <li className="ft-location">Tamil Nadu, India</li>
+                <li><a href="mailto:hello@venethstudio.com">venethck34@gmail.com</a></li>
+              </ul>
+            </div>
+          </div>
+          <div className="ft-bottom">
+            <span className="ft-copy">&copy; {new Date().getFullYear()} Veneth Studio. All rights reserved.</span>
+            <span className="ft-made">Made with passion in Tamil Nadu</span>
+          </div>
         </div>
-      </div>
-      <div className="ft-col">
-        <h4 className="ft-col-title">What I Do</h4>
-        <ul className="ft-nav">
-          <li><span>Web Design</span></li>
-          <li><span>UI/UX Design</span></li>
-          <li><span>Brand Identity</span></li>
-          <li><span>E-commerce</span></li>
-        </ul>
-      </div>
-      <div className="ft-col">
-        <h4 className="ft-col-title">Quick Links</h4>
-        <ul className="ft-nav">
-          <li><a onClick={() => scrollTo('top')}>Home</a></li>
-          <li><a onClick={() => scrollTo('projects')}>Projects</a></li>
-          <li><a onClick={() => scrollTo('process')}>Process</a></li>
-          <li><a onClick={() => scrollTo('contact')}>Contact</a></li>
-        </ul>
-      </div>
-      <div className="ft-col">
-        <h4 className="ft-col-title">Get in Touch</h4>
-        <ul className="ft-nav">
-          <li className="ft-location">Tamil Nadu, India</li>
-          <li><a href="mailto:hello@venethstudio.com">venethck34@gmail.com</a></li>
-        </ul>
-      </div>
-    </div>
-    <div className="ft-bottom">
-      <span className="ft-copy">&copy; {new Date().getFullYear()} Veneth Studio. All rights reserved.</span>
-      <span className="ft-made">Made with passion in Tamil Nadu</span>
-    </div>
-  </div>
-</footer>
+      </footer>
 
-        {/* MODALS */}
-        {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
-        {previewProj && <PreviewModal project={previewProj} onClose={() => setPreviewProj(null)} />}
+      {/* MODALS */}
+      {contactOpen && <ContactModal onClose={() => setContactOpen(false)} />}
+      {previewProj && <PreviewModal project={previewProj} onClose={() => setPreviewProj(null)} />}
     </SmoothScroll>
   );
 }

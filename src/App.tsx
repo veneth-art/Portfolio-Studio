@@ -524,6 +524,7 @@ function StyledSelect({ label, value, onChange, options }: { label: string; valu
 
 /* ── CONTACT MODAL ──────────────────────────────────────────────────────────── */
 const API_URL = "/api/contact";
+export const WHATSAPP_URL = "https://wa.me/919092081231";
 
 function ContactModal({ onClose }: { onClose: () => void }) {
   const [sent, setSent] = useState(false);
@@ -591,6 +592,10 @@ function ContactModal({ onClose }: { onClose: () => void }) {
             <div className="ct-head">
               <span className="eyebrow">Get in Touch</span>
               <h2 className="ct-title" id="ct-title">Let's Build<br /><em>Something Great.</em></h2>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="ct-wa-banner">
+                <span>💬</span>
+                <span>Chat directly on WhatsApp: <strong>+91 90920 81231</strong> ↗</span>
+              </a>
             </div>
             <form className="ct-form" onSubmit={handleSubmit}>
               <div className="ct-row">
@@ -745,7 +750,7 @@ export default function App() {
               {[["about", "About"], ["services", "Services"], ["projects", "Work"], ["process", "Process"]].map(([id, label]) => (
                 <button key={id} className="nav-item" onClick={() => scrollTo(id)}>{label}</button>
               ))}
-              <button className="nav-cta" onClick={() => { setContactOpen(true); setMenuOpen(false); }}>Contact</button>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="nav-cta" onClick={() => setMenuOpen(false)}>Contact</a>
             </nav>
             <button className="burger" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle navigation menu" aria-expanded={menuOpen}>
               <span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} /><span className={menuOpen ? "x" : ""} />
@@ -769,10 +774,10 @@ export default function App() {
               </h1>
               <p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Helping small and growing businesses transform their online presence into a powerful client-generating system through strategic design.</p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
-                <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Book Your Free Consultation</MagBtn>
-                <button className="hero-talk-btn" onClick={() => scrollTo("contact")}>
+                <MagBtn className="btn-dark" href={WHATSAPP_URL} target="_blank">Book Your Free Consultation</MagBtn>
+                {/* <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hero-talk-btn">
                   Get in touch
-                </button>
+                </a> */}
               </div>
               <div className={`hero-stats${heroLoaded ? " in" : ""}`}>
                 {[["5+", "Projects Delivered"], ["3", "No-Code Platforms"], ["100%", "Client Satisfaction"]].map(([n, l]) => (
@@ -785,7 +790,7 @@ export default function App() {
               <div className="photo-stack">
                 <div className="ps-back" />
                 <div className="ps-front">
-                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="ps-photo" width="380" height="480" loading="eager" fetchpriority="high" />
+                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="ps-photo" width="380" height="480" loading="eager" fetchPriority="high" />
                   <div className="ps-overlay" />
                   <div className="ps-pill"><span className="pill-dot" />Available for Projects</div>
                 </div>
@@ -834,7 +839,7 @@ export default function App() {
               <div className="about-grid">
                 <div className="about-photo-col" data-reveal>
                   <div className="about-photo-frame">
-                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="about-photo" width="400" height="533" loading="eager" fetchpriority="high" />
+                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="about-photo" width="400" height="533" loading="eager" fetchPriority="high" />
                     <div className="apf-deco" />
                     <div className="apf-badge">
                       <span className="apf-name">Veneth ChandraKumar</span>
@@ -869,7 +874,7 @@ export default function App() {
                     <a href="mailto:venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
                     <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
                   </div>
-                  <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Work With Me</MagBtn>
+                  <MagBtn className="btn-dark" href={WHATSAPP_URL} target="_blank">Work With Me</MagBtn>
                 </div>
               </div>
             </div>
@@ -986,10 +991,10 @@ export default function App() {
               <div className="cta-box" data-reveal>
                 <span className="eyebrow cta-eyebrow">Let’s Work Together</span>
                 <h2 className="cta-h2">Let’s Work Together</h2>
-                <p className="cta-sub">I work with businesses who value premium design and measurable results. If that’s you, let’s discuss your project.</p>
+                <p className="cta-sub">I work with businesses who value premium design and measurable results. Connect directly with me on WhatsApp to discuss your project.</p>
                 <div className="cta-btns">
-                  <MagBtn className="btn-dark" onClick={() => setContactOpen(true)}>Book a Free Consultation</MagBtn>
-                  <MagBtn className="btn-outline" onClick={() => setContactOpen(true)}>Send Me a Message</MagBtn>
+                  {/* <MagBtn className="btn-dark" href={WHATSAPP_URL} target="_blank">Chat on WhatsApp</MagBtn> */}
+                  <MagBtn className="btn-outline" href={WHATSAPP_URL} target="_blank">Book a Free Consultation</MagBtn>
                 </div>
               </div>
             </div>
@@ -1028,14 +1033,15 @@ export default function App() {
                 <li><a onClick={() => scrollTo('top')}>Home</a></li>
                 <li><a onClick={() => scrollTo('projects')}>Projects</a></li>
                 <li><a onClick={() => scrollTo('process')}>Process</a></li>
-                <li><a onClick={() => scrollTo('contact')}>Contact</a></li>
+                <li><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">Contact</a></li>
               </ul>
             </div>
             <div className="ft-col">
               <h4 className="ft-col-title">Get in Touch</h4>
               <ul className="ft-nav">
                 <li className="ft-location">Tamil Nadu, India</li>
-                <li><a href="mailto:hello@venethstudio.com">venethck34@gmail.com</a></li>
+                <li><a href="mailto:venethck34@gmail.com">venethck34@gmail.com</a></li>
+                <li><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp: +91 90920 81231</a></li>
               </ul>
             </div>
           </div>

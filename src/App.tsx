@@ -150,7 +150,7 @@ const PROJECTS: Project[] = [
     id: 5,
     num: "05",
     tag: "Events & Decoration",
-    title: "Ravanaa Events ( Demo )",
+    title: "Ravanaa Events",
     subtitle: "Birthday & Wedding Decoration · Web Design",
     liveUrl: "https://ravanaa.netlify.app/",
     thumb: null,
@@ -1034,7 +1034,7 @@ export default function App() {
               <ul className="ft-nav">
                 <li className="ft-location">Tamil Nadu, India</li>
                 <li><a href="mailto:venethck34@gmail.com">venethck34@gmail.com</a></li>
-                <li><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">WhatsApp: +91 90920 81231</a></li>
+                <li><a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer"></a></li>
               </ul>
             </div>
           </div>

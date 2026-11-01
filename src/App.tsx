@@ -82,7 +82,7 @@ const PROJECTS: Project[] = [
     tag: "E-commerce",
     title: "GSSS & Co",
     subtitle: "Home Décor · Web Design",
-    liveUrl: "https://gsss-co.web.app/",
+    liveUrl: "https://saran-co.web.app/",
     thumb: null,
     accent: "#6b705c",
     ongoing: true,

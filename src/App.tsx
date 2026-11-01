@@ -187,13 +187,6 @@ const TESTIMONIALS: Testimonial[] = [
     text: "The business card design exceeded my expectations. Veneth understood my vision perfectly and created something elegant yet modern — exactly what my brand needed.",
     initials: "SD",
   },
-  {
-    id: 4,
-    name: "Ravanaa Events Team",
-    role: "Founder, Ravanaa Events, Tamil Nadu",
-    text: "Veneth created a stunning website for Ravanaa Events that perfectly highlights our birthday and wedding decoration work. The design is vibrant, elegant, and brings us great client inquiries.",
-    initials: "RE",
-  },
 ];
 
 /* ── MAG BTN (helper) ───────────────────────────────────────────────────────── */

@@ -411,10 +411,12 @@ select {
 .btn-outline {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   font-size: 14px;
   font-weight: 600;
   padding: 14px 28px;
+  min-height: 48px;
   border-radius: var(--r);
   background: transparent;
   color: var(--dark);
@@ -762,8 +764,6 @@ select {
 .hl {
   display: block
 }
-
-.hl-serif {}
 
 .hl-italic {
   font-style: italic;
@@ -2789,7 +2789,28 @@ select {
   }
 
   .hero-btns {
-    flex-direction: column
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero-btns .btn-dark,
+  .hero-btns .btn-outline {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .hero-btns .btn-outline {
+    padding-left: 44px;
+    padding-right: 44px;
+  }
+
+  .hero-btns .btn-outline .btn-arrow {
+    position: absolute;
+    top: 0;
+    right: 20px;
+    height: 100%;
+    display: flex;
+    align-items: center;
   }
 
   .hero-stats {
@@ -3709,21 +3730,6 @@ textarea:focus-visible {
   transform-origin: center center;
 }
 
-@keyframes spin {
-  -webkit-transform-origin: center center;
-  transform-origin: center center;
-}
-
-@keyframes mq {
-  -webkit-transform-origin: center center;
-  transform-origin: center center;
-}
-
-@keyframes ringRot {
-  -webkit-transform-origin: center center;
-  transform-origin: center center;
-}
-
 /* Safari flexbox gap fallback */
 
 /* Safari 14.1- min-height: 100vh fix */
@@ -3828,9 +3834,6 @@ body,
 .hero-left {
   grid-area: content;
   padding-top: -50px;
-}
-
-.hero-right {
 }
 
 /* Firefox animation performance */
@@ -4329,7 +4332,85 @@ body,
   position: absolute;
   top: 0;
   left: 0;
+  z-index: 2;
   border-radius: 28px 28px 0 0;
+}
+
+.ssc-inner.has-thumb {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+/* 1️⃣ Container that holds the background image */
+.ssc-thumb-col {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+/* 2️⃣ The image itself – low‑opacity + subtle blur */
+.ssc-thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  opacity: 0.5;               /* faint background */
+  filter: blur(4px);          /* subtle blur */
+  transition: opacity 0.3s ease, filter 0.3s ease;
+}
+
+/* 3️⃣ Dark overlay to keep text readable */
+.ssc-thumb-col::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);   /* darken a bit */
+}
+
+/* 4️⃣ Hover – reveal image crisp, hide contact block */
+.ssc-inner.has-thumb:hover .ssc-thumb {
+  opacity: 1;                /* full visibility */
+  filter: blur(0);           /* remove blur */
+}
+.ssc-inner.has-thumb .ssc-meta,
+.ssc-inner.has-thumb .ssc-title,
+.ssc-inner.has-thumb .ssc-desc,
+.ssc-inner.has-thumb .ssc-feats {
+  transition: opacity 0.25s ease;
+}
+
+.ssc-inner.has-thumb:hover .ssc-meta,
+.ssc-inner.has-thumb:hover .ssc-title,
+.ssc-inner.has-thumb:hover .ssc-desc,
+.ssc-inner.has-thumb:hover .ssc-feats {
+  opacity: 0;
+}
+
+.ssc-inner.has-thumb .ssc-body {
+  position: relative;
+  z-index: 1;
+  align-items: center;
+  max-width: 62%;
+  margin: 0 auto;
+}
+
+.ssc-inner.has-thumb .ssc-meta,
+.ssc-inner.has-thumb .ssc-feats,
+.ssc-inner.has-thumb .ssc-actions {
+  justify-content: center;
+}
+
+.ssc-inner.has-thumb .ssc-title,
+.ssc-inner.has-thumb .ssc-desc {
+  text-align: center;
+  text-shadow: 0 1px 14px rgba(0, 0, 0, 0.6);
 }
 
 .ssc-body {
@@ -4477,6 +4558,28 @@ body,
     padding: 2.5rem 1.5rem;
   }
 
+  .ssc-inner.has-thumb {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .ssc-inner.has-thumb .ssc-body {
+    align-items: center;
+    max-width: 100%;
+  }
+
+  .ssc-inner.has-thumb .ssc-meta,
+  .ssc-inner.has-thumb .ssc-title,
+  .ssc-inner.has-thumb .ssc-desc,
+  .ssc-inner.has-thumb .ssc-feats,
+  .ssc-inner.has-thumb .ssc-actions {
+    justify-content: center;
+    text-align: center;
+  }
+
   .ssc-body {
     gap: 12px;
   }
@@ -4531,4 +4634,4 @@ body,
   background: rgba(37, 211, 102, 0.2);
   border-color: rgba(37, 211, 102, 0.6);
   transform: translateY(-2px);
-}
+}

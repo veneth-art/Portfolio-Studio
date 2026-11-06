@@ -82,8 +82,8 @@ const PROJECTS: Project[] = [
     title: "GSSS & Co",
     subtitle: "Home Décor · Web Design",
     liveUrl: "https://saran-co.web.app/",
-    thumb: null,
     accent: "#6b705c",
+    thumb: null,
     ongoing: true,
     description: "Designed a luxury-inspired website for GSSS & Co, a premium home décor and lifestyle products manufacturer. Features elegant visuals, clean layouts, and a seamless browsing experience.",
     features: [
@@ -796,7 +796,7 @@ export default function App() {
                   className="btn-outline"
                   onClick={(e) => { e.preventDefault(); scrollTo("projects"); }}
                 >
-                  View Our Work <span className="btn-arrow" aria-hidden="true">→</span>
+                  View Our Work
                 </a>
                 {/* <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hero-talk-btn">
                   Get in touch
@@ -923,8 +923,13 @@ export default function App() {
               >
                 {PROJECTS.map(p => (
                   <ScrollStackItem key={p.id}>
-                    <div className="ssc-inner">
+                    <div className={`ssc-inner${p.thumb ? " has-thumb" : ""}`}>
                       <div className="ssc-accent" style={{ background: p.accent }} />
+                      {p.thumb && (
+                        <div className="ssc-thumb-col">
+                          <img src={p.thumb} alt={`${p.title} website preview`} className="ssc-thumb" loading="lazy" />
+                        </div>
+                      )}
                       <div className="ssc-body">
                         <div className="ssc-meta">
                           <span className="ssc-tag" style={{ color: p.accent }}>{p.tag}</span>

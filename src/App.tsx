@@ -187,6 +187,13 @@ const TESTIMONIALS: Testimonial[] = [
     text: "The business card design exceeded my expectations. Veneth understood my vision perfectly and created something elegant yet modern — exactly what my brand needed.",
     initials: "SD",
   },
+  {
+    id: 4,
+    name: "Mr. K. Ravichandran",
+    role: "Founder, Ravanaa Events, Tamil Nadu, India",
+    text: "Veneth rebuilt our event website with a beautiful, visual-rich design that truly showcases our decoration work. We now receive more enquiries and bookings than before — a fantastic experience from start to finish.",
+    initials: "KR",
+  },
 ];
 
 /* ── MAG BTN (helper) ───────────────────────────────────────────────────────── */
@@ -773,7 +780,7 @@ export default function App() {
                 </a> */}
               </div>
               <div className={`hero-stats${heroLoaded ? " in" : ""}`}>
-                {[["5+", "Projects Delivered"], ["3", "No-Code Platforms"], ["100%", "Client Satisfaction"]].map(([n, l]) => (
+                {[["10+", "Projects Delivered"], ["6+", "No-Code Platforms"], ["100%", "Client Satisfaction"]].map(([n, l]) => (
                   <div key={l} className="hstat"><span className="hstat-n">{n}</span><span className="hstat-l">{l}</span></div>
                 ))}
               </div>
@@ -792,7 +799,7 @@ export default function App() {
                   <span className="ps-tool">Figma</span>
                   <span className="ps-tool">Webflow</span>
                   <span className="ps-tool">Framer</span>
-                  <span className="ps-tool">Three.js</span>
+                  <span className="ps-tool">AI Antigraivty</span>
                 </div>
               </div>
             </div>
@@ -801,7 +808,7 @@ export default function App() {
 
         {/* ── MARQUEE STRIP ── */}
         <div className="strip" aria-hidden="true">
-          <Marquee items={["UI/UX Design", "No-Code Dev", "Wix Studio", "Framer", "Webflow", "Motion Design", "Three.js", "GSAP", "Brand Systems", "Figma", "Prototyping", "Vibe Coding"]} />
+          <Marquee items={["UI/UX Design", "No-Code Dev", "Wix Studio", "Framer", "Webflow", "Motion Design", "Three.js", "Brand Systems", "Figma", "Prototyping", "Vibe Coding"]} />
         </div>
 
         {/* ── SERVICES ── */}
@@ -836,7 +843,7 @@ export default function App() {
                     <div className="apf-deco" />
                     <div className="apf-badge">
                       <span className="apf-name">Veneth ChandraKumar</span>
-                      <span className="apf-role">UI/UX · No-Code Developer</span>
+                      <span className="apf-role">UI/UX Designer · Vibe Coding</span>
                       <span className="apf-loc">📍 Trichy, Tamil Nadu</span>
                     </div>
                   </div>
@@ -850,10 +857,9 @@ export default function App() {
                   <p className="about-para">Outside of design, I spend time learning new tools, exploring UI trends, and improving my design process step by step.</p>
 
                   <div className="about-icons" data-reveal>
-                    <span className="skill-icon">UI/UX Design</span>
                     <span className="skill-icon">Website Design</span>
-                    <span className="skill-icon">Landing Pages</span>
-                    <span className="skill-icon">Brand Identity</span>
+                    <span className="skill-icon">Moblie Design</span>
+                    <span className="skill-icon">Graphic Designer</span>
                     <span className="skill-icon">Vibe Coding</span>
                     <span className="skill-icon">Motion Design</span>
                     <span className="skill-icon">Framer</span>
@@ -865,7 +871,7 @@ export default function App() {
                   <p className="about-trust">I prefer working with clients who value quality, clarity, and long-term brand growth over quick, low-cost solutions.</p>
                   <div className="about-links">
                     <a href="mailto:venethck34@gmail.com" className="alink">✉ Venethck34@gmail.com</a>
-                    <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
+                    <a href="https://www.instagram.com/veneth_studio/" target="_blank" rel="noreferrer" className="alink">Instagram ↗</a>
                   </div>
                   <MagBtn className="btn-dark" href={WHATSAPP_URL} target="_blank">Work With Me</MagBtn>
                 </div>
@@ -1003,7 +1009,7 @@ export default function App() {
               <div className="ft-logo">Veneth Studio</div>
               <p className="ft-tagline">Transforming ideas into impactful digital experiences through thoughtful design and strategy.</p>
               <div className="ft-social">
-                <a href="https://instagram.com/Veneth_design" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Instagram">
+                <a href="https://www.instagram.com/veneth_studio/" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Instagram">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M17 2H7a5 5 0 0 0-5 5v10a5 5 0 0 0 5 5h10a5 5 0 0 0 5-5V7a5 5 0 0 0-5-5Z" /><circle cx="12" cy="12" r="3" /><path d="M17.5 6.5h.01" /></svg>
                 </a>
                 <a href="https://www.behance.net/veneth_studio" target="_blank" rel="noreferrer" className="ft-social-link" aria-label="Behance">

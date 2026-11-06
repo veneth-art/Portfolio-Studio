@@ -40,37 +40,36 @@ const SERVICES: Service[] = [
   {
     id: 1,
     num: "01",
-    title: "Website Design",
+    title: "Website Design & Development",
     items: [
-      "Premium website design",
-      "Conversion-focused UI",
-      "Responsive across devices",
-      "Performance optimization",
-      "SEO-friendly structure"
+      "Business websites",
+      "Landing pages",
     ],
   },
   {
     id: 2,
     num: "02",
-    title: "Landing Pages",
+    title: "Website Redesign",
     items: [
-      "High-converting landing pages",
-      "A/B testing ready",
-      "Clear CTAs",
-      "Fast load times",
-      "Analytics integration"
+      "Modernize existing business websites",
     ],
   },
   {
     id: 3,
     num: "03",
-    title: "Visiting Card & Branding",
+    title: "UI/UX Design",
     items: [
-      "Brand identity design",
-      "Logo and visual assets",
-      "Business card design",
-      "Brand guidelines",
-      "Consistent across touchpoints"
+      "User-friendly interfaces",
+      "User-friendly experiences",
+    ],
+  },
+  {
+    id: 4,
+    num: "04",
+    title: "Graphic Design",
+    items: [
+      "Business cards",
+      "Brand materials",
     ],
   },
 ];
@@ -531,7 +530,7 @@ function ContactModal({ onClose }: { onClose: () => void }) {
   const [loading, setLoading] = useState(false);
   const [isIndia, setIsIndia] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [form, setForm] = useState({ name: "", email: "", phone: "", project: "", budget: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", phone: "", project: "", budget: "", message: "", honeypot: "" });
   useScrollLock(true);
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -546,6 +545,12 @@ function ContactModal({ onClose }: { onClose: () => void }) {
     e.preventDefault();
     setLoading(true);
     setError(null);
+
+    if (form.honeypot) {
+      setLoading(false);
+      setSent(true);
+      return;
+    }
 
     const contactData = {
       name: form.name,
@@ -598,6 +603,16 @@ function ContactModal({ onClose }: { onClose: () => void }) {
               </a>
             </div>
             <form className="ct-form" onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="website"
+                className="ct-honeypot"
+                tabIndex={-1}
+                autoComplete="off"
+                aria-hidden="true"
+                value={form.honeypot}
+                onChange={e => setForm(v => ({ ...v, honeypot: e.target.value }))}
+              />
               <div className="ct-row">
                 <div className="ct-field">
                   <label htmlFor="ct-name">Your Name *</label>
@@ -772,9 +787,17 @@ export default function App() {
               <h1 className={`hero-h1${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".25s" }}>
                 I Design Websites That Help Businesses Look Premium and Get More Clients
               </h1>
-              <p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Helping small and growing businesses transform their online presence into a powerful client-generating system through strategic design.</p>
+              <p className={`hero-para${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".4s" }}>Veneth Studio helps businesses build a stronger online presence through modern website design, 
+                UI/UX and conversion-focused digital experiences.</p>
               <div className={`hero-btns${heroLoaded ? " in" : ""}`} style={{ transitionDelay: ".55s" }}>
-                <MagBtn className="btn-dark" href={WHATSAPP_URL} target="_blank">Book Your Free Consultation</MagBtn>
+                <MagBtn className="btn-dark" href={WHATSAPP_URL} target="_blank">Start Your Project</MagBtn>
+                <a
+                  href="#projects"
+                  className="btn-outline"
+                  onClick={(e) => { e.preventDefault(); scrollTo("projects"); }}
+                >
+                  View Our Work <span className="btn-arrow" aria-hidden="true">→</span>
+                </a>
                 {/* <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="hero-talk-btn">
                   Get in touch
                 </a> */}
@@ -790,7 +813,7 @@ export default function App() {
               <div className="photo-stack">
                 <div className="ps-back" />
                 <div className="ps-front">
-                  <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="ps-photo" width="380" height="480" loading="eager" fetchPriority="high" />
+                  <img src="/veneth-hero.webp" alt="Veneth ChandraKumar portrait" className="ps-photo" width="380" height="480" loading="eager" fetchPriority="high" />
                   <div className="ps-overlay" />
                   <div className="ps-pill"><span className="pill-dot" />Available for Projects</div>
                 </div>
@@ -839,7 +862,7 @@ export default function App() {
               <div className="about-grid">
                 <div className="about-photo-col" data-reveal>
                   <div className="about-photo-frame">
-                    <img src="/veneth-hero.png" alt="Veneth ChandraKumar portrait" className="about-photo" width="400" height="533" loading="eager" fetchPriority="high" />
+                    <img src="/veneth-hero.webp" alt="Veneth ChandraKumar portrait" className="about-photo" width="400" height="533" loading="eager" fetchPriority="high" />
                     <div className="apf-deco" />
                     <div className="apf-badge">
                       <span className="apf-name">Veneth ChandraKumar</span>

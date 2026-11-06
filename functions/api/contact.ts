@@ -35,6 +35,13 @@ export async function onRequest(context: { request: Request; env: Env }): Promis
     
     const { name, email, phone, project, budget, message, location } = data;
 
+    if (data.website) {
+      return new Response(JSON.stringify({ success: true }), {
+        status: 200,
+        headers: { "Content-Type": "application/json", ...corsHeaders }
+      });
+    }
+
     if (!name || !email || !message) {
       return new Response(JSON.stringify({ error: "Name, email, and message are required" }), {
         status: 400,

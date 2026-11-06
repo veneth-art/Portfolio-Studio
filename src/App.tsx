@@ -57,10 +57,10 @@ const SERVICES: Service[] = [
   {
     id: 3,
     num: "03",
-    title: "UI/UX Design",
+    title: "Mobile App Design",
     items: [
-      "User-friendly interfaces",
-      "User-friendly experiences",
+      "iOS & Android app design",
+      "User-friendly app experiences",
     ],
   },
   {
@@ -1044,7 +1044,7 @@ export default function App() {
               <h4 className="ft-col-title">What I Do</h4>
               <ul className="ft-nav">
                 <li><span>Web Design</span></li>
-                <li><span>UI/UX Design</span></li>
+                <li><span>Mobile App Design</span></li>
                 <li><span>Brand Identity</span></li>
                 <li><span>E-commerce</span></li>
               </ul>
